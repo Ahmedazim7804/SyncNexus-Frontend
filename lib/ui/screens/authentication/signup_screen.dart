@@ -52,7 +52,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         phoneInvalid = false;
       });
 
-      context.push('/screens/signup/otp');
+      FocusManager.instance.primaryFocus?.unfocus();
+      context.push('/screens/authentication/otp');
     }
   }
 

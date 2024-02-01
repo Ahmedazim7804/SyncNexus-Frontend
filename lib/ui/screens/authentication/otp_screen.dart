@@ -10,10 +10,10 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   int otpIndextAt = 0;
-  final List<String?> inputOtpList = ['', '', '', ''];
+  final List<String?> inputOtpList = ['', '', '', '', '', ''];
 
   void inputOtp(String input) {
-    if (otpIndextAt > 3) {
+    if (otpIndextAt > 5) {
       return;
     }
     setState(() {
@@ -80,8 +80,8 @@ class _OtpScreenState extends State<OtpScreen> {
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(8))),
-                height: 45,
-                width: 45,
+                height: 40,
+                width: 40,
                 child: Text(
                   inputOtpList[0] ?? '',
                   style: const TextStyle(
@@ -94,8 +94,8 @@ class _OtpScreenState extends State<OtpScreen> {
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(8))),
-                height: 45,
-                width: 45,
+                height: 40,
+                width: 40,
                 child: Text(
                   inputOtpList[1] ?? '',
                   style: const TextStyle(
@@ -108,8 +108,8 @@ class _OtpScreenState extends State<OtpScreen> {
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(8))),
-                height: 45,
-                width: 45,
+                height: 40,
+                width: 40,
                 child: Text(
                   inputOtpList[2] ?? '',
                   style: const TextStyle(
@@ -122,10 +122,38 @@ class _OtpScreenState extends State<OtpScreen> {
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(8))),
-                height: 45,
-                width: 45,
+                height: 40,
+                width: 40,
                 child: Text(
                   inputOtpList[3] ?? '',
+                  style: const TextStyle(
+                      fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
+                height: 40,
+                width: 40,
+                child: Text(
+                  inputOtpList[4] ?? '',
+                  style: const TextStyle(
+                      fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
+                height: 40,
+                width: 40,
+                child: Text(
+                  inputOtpList[5] ?? '',
                   style: const TextStyle(
                       fontSize: 28, fontWeight: FontWeight.bold),
                 ),

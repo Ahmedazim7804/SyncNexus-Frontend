@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "816795186680",
+    "project_id": "solution-challenge-ca554",
+    "storage_bucket": "solution-challenge-ca554.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816795186680:android:22c405dce47dc6ff77920d",
+        "android_client_info": {
+          "package_name": "com.example.worker_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYIMATueJuTbsgtTnjR2ltWI15d8YmfKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

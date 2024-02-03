@@ -11,10 +11,6 @@ class TaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void onPressed() {
-      context.read<JobCubit>().finishedATask(task);
-    }
-
     final bool jobActive = context.read<JobCubit>().isJobActive;
 
     return Card(
@@ -38,7 +34,11 @@ class TaskWidget extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: jobActive ? Colors.green : Colors.grey,
                     shape: const CircleBorder()),
-                onPressed: onPressed,
+                onPressed: () {
+                  if (jobActive) {
+                    context.read<JobCubit>().finishedATask(task);
+                  }
+                },
                 icon: const Icon(Icons.check)),
           )
         ]));

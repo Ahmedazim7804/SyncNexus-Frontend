@@ -4,8 +4,8 @@ class Job {
   Job({required this.title, required this.deadline});
   final String title;
   final String deadline;
-  int totalTasks = 5;
-  int completedTasks = 4;
+  late int totalTasks = 0;
+  late int completedTasks = 0;
 
   List<WorkerTask> tasks = [
     WorkerTask(task: "Pick up Materials", deadline: "23 Jan, 1PM"),

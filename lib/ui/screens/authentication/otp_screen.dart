@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,7 +15,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   void inputOtp(String input) {
     if (otpIndextAt > 5) {
-      return;
+      final String otp = inputOtpList.join();
     }
     setState(() {
       inputOtpList[otpIndextAt] = input;

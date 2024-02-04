@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:worker_app/bloc/cubit/job_cubit.dart';
 import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/models/worker_task_model.dart';
@@ -6,6 +11,7 @@ import 'package:worker_app/ui/widgets/workers/heading_text_widget.dart';
 import 'package:worker_app/ui/widgets/workers/job_card.dart';
 import 'package:worker_app/ui/widgets/workers/task_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 
 class WorkerHomeScreen extends StatefulWidget {
   const WorkerHomeScreen({super.key});
@@ -15,6 +21,32 @@ class WorkerHomeScreen extends StatefulWidget {
 }
 
 class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+  CameraPosition? initialLocation;
+  final CameraPosition _kGooglePlex = const CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
+  @override
+  void initState() {
+    Permission.locationWhenInUse.request().then((value) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best);
+        double lat = position.latitude;
+        double long = position.longitude;
+        _controller.future.then((value) => value.animateCamera(
+            CameraUpdate.newCameraPosition(
+                CameraPosition(target: LatLng(lat, long), zoom: 14.4746))));
+      });
+    });
+
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +68,18 @@ class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
       body: Center(
         child: Column(
           children: [
-            Image.asset('assets/images/map.png')
+            SizedBox(
+              height: 500,
+              width: 500,
+              child: GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition: initialLocation ?? _kGooglePlex,
+                onMapCreated: (controller) {
+                  _controller.complete(controller);
+                },
+              ),
+            )
+            // Image.asset('assets/images/map.png')
 
             // First Draft
             // Stack(
@@ -100,8 +143,8 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
               if (state is JobLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else {
-                Job job = (state as dynamic).job;
-                JobStatus jobStatus = (state as dynamic).jobStatus;
+                Job job = context.read<JobCubit>().job;
+                JobStatus jobStatus = context.read<JobCubit>().jobStatus;
                 List<WorkerTask> tasks = job.tasks;
 
                 return SingleChildScrollView(

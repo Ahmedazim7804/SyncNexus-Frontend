@@ -20,8 +20,8 @@ class JobCardWidget extends StatelessWidget {
         if (state is JobLoading) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          Job job = (state as dynamic).job;
-          JobStatus jobStatus = (state as dynamic).jobStatus;
+          Job job = context.read<JobCubit>().job;
+          JobStatus jobStatus = context.read<JobCubit>().jobStatus;
 
           return Card(
               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),

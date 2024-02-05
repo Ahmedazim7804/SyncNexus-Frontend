@@ -42,7 +42,10 @@ Future<bool> createUser(
       await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return true;
-  } else {
+  } else if (response.statusCode == 417) {
+    return false;
+  }
+  else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode}');
   }

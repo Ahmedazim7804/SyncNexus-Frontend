@@ -90,3 +90,16 @@ Future<bool> addEmployee(
         'Failed to load data from endpoint: ${response.statusCode}');
   }
 }
+
+Future<List<dynamic>> getEmployees() async {
+  final Uri uri = Uri.parse(
+      '${getBaseURL()}/employer/get-employees/');
+  Map<String, String> header = headers();
+  final response = await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode}');
+  }
+}

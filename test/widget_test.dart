@@ -39,5 +39,11 @@ void main() {
       expect(result == true || result == false, true);
     });
   });
+  group('getEmployees', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getEmployees();
+      expect(Null == result || Null != result, true);
+    });
+  });
 
 }

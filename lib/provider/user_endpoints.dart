@@ -7,7 +7,7 @@ String getBaseURL() {
 
 Map<String, String> headers() {
   String idToken =
-      "eyJhbGciOiJSUzI1NiIsImtpZCI6IjY5NjI5NzU5NmJiNWQ4N2NjOTc2Y2E2YmY0Mzc3NGE3YWE5OTMxMjkiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQWplZW0gQWhtYWQiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSkwyblNBQmo2U1NqWjVVRGcyOUhLVl9CSHExakR4X2NNa0M2U28wS3FhQU5NPXM5Ni1jIiwidXNlcl9pZCI6InZRMExOSXFCWkdmVFg2VHRveTZJTnJTaU5sYzIiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc29sdXRpb24tY2hhbGxlbmdlLWNhNTU0IiwiYXVkIjoic29sdXRpb24tY2hhbGxlbmdlLWNhNTU0IiwiYXV0aF90aW1lIjoxNzA3MjM3MTUwLCJzdWIiOiJ2UTBMTklxQlpHZlRYNlR0b3k2SU5yU2lObGMyIiwiaWF0IjoxNzA3MjM3MTUwLCJleHAiOjE3MDcyNDA3NTAsImVtYWlsIjoiYWhtZWRhemltNzgwNEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwNDk5ODQyMzAyMDcwMzYzMDY3MCJdLCJlbWFpbCI6WyJhaG1lZGF6aW03ODA0QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6ImN1c3RvbSJ9fQ.alTd7ATH8Y0C5ERoMmbuc91iosSMxB_eJ9AcxCzIi3CrcVS_ipTT4VX1wfT72adk_TGYLABWHziVHsJxONLAhVTbYPK1gHdB4gOPfL1-kmEU8kcjSWv5l-tfBsgr2Vme-hIkzXe4m39ACqU6KyQYMDndIS0wC70oGYCB4yTeacCPOsSS8rS90B7tF5COI9J2M6Ni4pg78zkcafygeTlf5AICoXaUmA--OWQFcM789GRo21JnlsbqunTpqGTUApt3Qim51oQyfL8jrA5HwWGK-rLtNeyJFCrORQ7x8VxjbNkcJ7osWmewnWKZ0RO9GOhfZDsYA9k4NsR6fg4PiDDT4A";
+      "eyJhbGciOiJSUzI1NiIsImtpZCI6IjY5NjI5NzU5NmJiNWQ4N2NjOTc2Y2E2YmY0Mzc3NGE3YWE5OTMxMjkiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQWplZW0gQWhtYWQiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSkwyblNBQmo2U1NqWjVVRGcyOUhLVl9CSHExakR4X2NNa0M2U28wS3FhQU5NPXM5Ni1jIiwidXNlcl9pZCI6InZRMExOSXFCWkdmVFg2VHRveTZJTnJTaU5sYzIiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc29sdXRpb24tY2hhbGxlbmdlLWNhNTU0IiwiYXVkIjoic29sdXRpb24tY2hhbGxlbmdlLWNhNTU0IiwiYXV0aF90aW1lIjoxNzA3MjQwODUyLCJzdWIiOiJ2UTBMTklxQlpHZlRYNlR0b3k2SU5yU2lObGMyIiwiaWF0IjoxNzA3MjQwODUyLCJleHAiOjE3MDcyNDQ0NTIsImVtYWlsIjoiYWhtZWRhemltNzgwNEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwNDk5ODQyMzAyMDcwMzYzMDY3MCJdLCJlbWFpbCI6WyJhaG1lZGF6aW03ODA0QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6ImN1c3RvbSJ9fQ.nRNiTwwVmLdKSIdHpC1lymIjyBn5hmkz96h2IL8VPsuaKK-YHmIls-caOC4DTDj9gr6j8CLnoyAx4BV-pbw2MqU6pTi0BdfRrw2fd6AeANS1Rjzb7XBBaZrG0LC3dNSkUyK6oh4-ipj8brj0keFZPaALdrIb8kbXUP-2CNLjMe0kQGzmWpDFQDuRBU-IhZbexkqYipwVPnxE12l0i-oGoRf-btSmMyaDsDF463utSSES97QoqYhLEo1x017XsP_r0wiQYfHzHd71-taQxUCVboYEo4LOvpkgFSA1hSfAg5hBfcWmRkb-0jXWJke02Q5yygVLhviRWja_cWf3HdHdDQ";
   return {"Authorization": "Bearer $idToken",'Content-Type': 'application/json'};
 }
 
@@ -37,7 +37,6 @@ Future<bool> createUser(
     "firebase_user_id": firebaseUserId
   };
   Map<String, String> header = headers();
-  print(jsonEncode(requestData));
   final response =
       await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
@@ -53,6 +52,7 @@ Future<bool> createUser(
 
 Future<bool> addTask(
     String employeeID, String heading, String description, DateTime lastDate) async {
+  lastDate = lastDate.toUtc();
   final Uri uri = Uri.parse(
       '${getBaseURL()}/employer/add-task/');
   final requestData = {
@@ -67,6 +67,23 @@ Future<bool> addTask(
   if (response.statusCode == 200) {
     return true;
   } else if (response.statusCode == 401) {
+    return false;
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode}');
+  }
+}
+
+Future<bool> addEmployee(
+    String employeeID) async {
+  final Uri uri = Uri.parse(
+      '${getBaseURL()}/employer/$employeeID/add-employee/');
+  Map<String, String> header = headers();
+  final response =
+  await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return true;
+  } else if (response.statusCode == 406) {
     return false;
   } else {
     throw Exception(

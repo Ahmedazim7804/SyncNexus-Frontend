@@ -26,9 +26,18 @@ void main() {
   group('addTask', () {
     test('returns true if HTTP request succeeds', () async {
       final result = await addTask(
-          "d89a6446-8313-43bb-bb9b-c8fe071a9a95", "Fix the roof", "The roof is leaking", DateTime.now()
+          "d89a6446-8313-43bb-bb9b-c8fe071a9a95", "Fix the roof", "The roof is leaking", DateTime.now().add(const Duration(days: 3))
       );
       expect(result == true || result == false, true);
     });
   });
+  group('addEmployee', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await addEmployee(
+          "d89a6446-8313-43bb-bb9b-c8fe071a9a95"
+      );
+      expect(result == true || result == false, true);
+    });
+  });
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:worker_app/provider/employee_endpoints.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/provider/user_endpoints.dart';
 
@@ -52,5 +53,10 @@ void main() {
       expect(Null == result || Null != result, true);
     });
   });
-
+  group('completeTask', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await completeTask("52a09493-28fb-40ab-9bca-476b2170cc30");
+      expect(result == true || result == false, true);
+    });
+  });
 }

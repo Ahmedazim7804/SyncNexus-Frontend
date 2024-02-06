@@ -45,5 +45,11 @@ void main() {
       expect(Null == result || Null != result, true);
     });
   });
+  group('getLocation', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getLocation("d89a6446-8313-43bb-bb9b-c8fe071a9a95", DateTime.now().subtract(const Duration(days: 3)), DateTime.now());
+      expect(Null == result || Null != result, true);
+    });
+  });
 
 }

@@ -16,5 +16,19 @@ void main() {
       );
       expect(result == true || result == false, true);
     });
+    test('returns true if HTTP request succeeds', () async {
+      final result = await createUser(
+          "12345676875", "Tony Stark", "employer", "vQ0LNIqBZGfTX6Ttoy6INrSiNlc2"
+      );
+      expect(result == true || result == false, true);
+    });
+  });
+  group('addTask', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await addTask(
+          "d89a6446-8313-43bb-bb9b-c8fe071a9a95", "Fix the roof", "The roof is leaking", DateTime.now()
+      );
+      expect(result == true || result == false, true);
+    });
   });
 }

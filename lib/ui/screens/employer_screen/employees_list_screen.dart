@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:go_router/go_router.dart';
+import 'package:worker_app/provider/employer_endpoints.dart';
 
 class EmployeesListScreen extends StatefulWidget {
   const EmployeesListScreen({super.key});
@@ -12,6 +13,7 @@ class EmployeesListScreen extends StatefulWidget {
 class _EmployeesListScreenState extends State<EmployeesListScreen> {
   @override
   Widget build(BuildContext context) {
+    getEmployees().then((value) => print(value));
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 234, 196, 72),
         appBar: AppBar(

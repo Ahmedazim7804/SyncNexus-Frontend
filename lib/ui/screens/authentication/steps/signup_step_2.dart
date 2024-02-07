@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:worker_app/provider/user_provider.dart';
 
 class SignUpStep2 extends StatefulWidget {
   const SignUpStep2({super.key});
@@ -13,15 +14,23 @@ class SignUpStep2 extends StatefulWidget {
 
 class _SignUpStepsScreenState extends State<SignUpStep2> {
   void nextEmployee() async {
-    final prefs = context.read<SharedPreferences>();
-    prefs.setBool('employee', true);
-    context.go('/screens/worker/homescreen');
+    context.read<UserProvider>().employee = true;
+
+    context.read<UserProvider>().createUser().then((_) {
+      final prefs = context.read<SharedPreferences>();
+      prefs.setBool('employee', true);
+      context.go('/screens/worker/homescreen');
+    });
   }
 
   void nextEmployer() async {
-    final prefs = context.read<SharedPreferences>();
-    prefs.setBool('employee', false);
-    context.go('/screens/employer/homescreen');
+    context.read<UserProvider>().employee = false;
+
+    context.read<UserProvider>().createUser().then((_) {
+      final prefs = context.read<SharedPreferences>();
+      prefs.setBool('employee', false);
+      context.go('/screens/employer/homescreen');
+    });
   }
 
   @override

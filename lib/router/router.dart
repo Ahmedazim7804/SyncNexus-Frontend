@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/router/auth_listenable.dart';
 import 'package:worker_app/ui/screens/authentication/otp_screen.dart';
 import 'package:worker_app/ui/screens/authentication/signup_screen.dart';
@@ -27,6 +28,7 @@ class MyAppRouter {
       redirect: (context, state) {
         if (!authListen.isSignedIn) {
           if (authListen.user != null) {
+            context.read<UidProvider>().uid = authListen.user!.uid;
             authListen.isSignedIn = true;
             authListen.subscription.cancel();
 
@@ -50,10 +52,12 @@ class MyAppRouter {
               const MaterialPage(child: SignUpScreen()),
         ),
         GoRoute(
-          path: '/screens/authentication/signup/steps/1',
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: SignUpStep1()),
-        ),
+            name: '/screens/authentication/signup/steps/1',
+            path: '/screens/authentication/signup/steps/1/:uid',
+            pageBuilder: (context, state) {
+              String uid = state.pathParameters['uid']!;
+              return MaterialPage(child: SignUpStep1(uid: uid));
+            }),
         GoRoute(
             path: '/screens/authentication/signup/steps/2',
             pageBuilder: (context, state) {

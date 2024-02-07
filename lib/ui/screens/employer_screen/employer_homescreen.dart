@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/ui/widgets/workers/add_employee_widget.dart';
 
 class EmployerHomeScreen extends StatefulWidget {
@@ -21,6 +23,7 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(context.read<UidProvider>().uid);
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 234, 196, 72),
         appBar: AppBar(

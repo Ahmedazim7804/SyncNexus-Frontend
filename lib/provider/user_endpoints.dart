@@ -6,7 +6,7 @@ import 'base_endpoints.dart';
 
 Future<bool> checkUser() async {
   final Uri uri = Uri.parse('${getBaseURL()}/user/check-user/');
-  Map<String, String> header = headers();
+  Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return true;
@@ -30,7 +30,7 @@ Future<bool> createUserOnBackend(
     "user_type": userType,
     "firebase_user_id": firebaseUserId
   };
-  Map<String, String> header = headers();
+  Map<String, String> header = await headers();
   final response =
       await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {

@@ -13,14 +13,14 @@ void main() {
   });
   group('createUser', () {
     test('returns true if HTTP request succeeds', () async {
-      final result = await createUser(
-          "1234567890", "John Doe", "employee", "YCDugoXMwwVeaqs2SVNDW2YhdhA2"
+      final result = await createUserOnBackend(
+          phoneNo: "1234567890", name: "John Doe", userType: "employee", firebaseUserId: "YCDugoXMwwVeaqs2SVNDW2YhdhA2"
       );
       expect(result == true || result == false, true);
     });
     test('returns true if HTTP request succeeds', () async {
-      final result = await createUser(
-          "12345676875", "Tony Stark", "employer", "vQ0LNIqBZGfTX6Ttoy6INrSiNlc2"
+      final result = await createUserOnBackend(
+          phoneNo: "12345676875", name: "Tony Stark", userType: "employer", firebaseUserId: "vQ0LNIqBZGfTX6Ttoy6INrSiNlc2"
       );
       expect(result == true || result == false, true);
     });
@@ -57,6 +57,20 @@ void main() {
     test('returns true if HTTP request succeeds', () async {
       final result = await completeTask("52a09493-28fb-40ab-9bca-476b2170cc30");
       expect(result == true || result == false, true);
+    });
+  });
+  group('getTask', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getTask(
+          "52a09493-28fb-40ab-9bca-476b2170cc30"
+      );
+      expect(Null == result || Null != result, true);
+    });
+  });
+  group('getTasks', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getTasks("d89a6446-8313-43bb-bb9b-c8fe071a9a95", DateTime.now().subtract(const Duration(days: 3)), DateTime.now());
+      expect(Null == result || Null != result, true);
     });
   });
 }

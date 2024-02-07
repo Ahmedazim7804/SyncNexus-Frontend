@@ -4,6 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worker_app/bloc/cubit/job_cubit.dart';
+import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/router/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,13 +17,17 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  UidProvider uidProvider = UidProvider();
   FlutterNativeSplash.remove();
 
   runApp(
     BlocProvider(
       create: (context) => JobCubit(),
       child: MultiProvider(
-        providers: [Provider(create: (_) => prefs)],
+        providers: [
+          Provider(create: (_) => prefs),
+          Provider(create: (_) => uidProvider)
+        ],
         child: MaterialApp.router(
           routeInformationParser: MyAppRouter.goRouter.routeInformationParser,
           routeInformationProvider:

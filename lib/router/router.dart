@@ -8,6 +8,7 @@ import 'package:worker_app/ui/screens/authentication/otp_screen.dart';
 import 'package:worker_app/ui/screens/authentication/signup_screen.dart';
 import 'package:worker_app/ui/screens/authentication/steps/signup_step_1.dart';
 import 'package:worker_app/ui/screens/authentication/steps/signup_step_2.dart';
+import 'package:worker_app/ui/screens/employer_screen/employee_tasks_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employees_list_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_homescreen.dart';
 import 'package:worker_app/ui/screens/employer_screen/jobs_list_screen.dart';
@@ -81,6 +82,11 @@ class MyAppRouter {
           path: '/screens/employer/profile',
           pageBuilder: (context, state) =>
               const MaterialPage(child: EmployerProfileScreen()),
+        ),
+        GoRoute(
+          path: '/screens/employer/employee',
+          pageBuilder: (context, state) =>
+              const MaterialPage(child: EmployeeTaskListScreen()),
         ),
         GoRoute(
           path: '/screens/employer/homescreen',

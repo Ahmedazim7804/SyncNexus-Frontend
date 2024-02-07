@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
+import 'package:worker_app/ui/widgets/workers/add_employee_widget.dart';
 
 class EmployerHomeScreen extends StatefulWidget {
   const EmployerHomeScreen({super.key});
@@ -10,6 +11,14 @@ class EmployerHomeScreen extends StatefulWidget {
 }
 
 class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
+  void addEmployeeSheet() {
+    showModalBottomSheet(
+        useSafeArea: true,
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => const AddEmployeeWidget());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +73,7 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
             FloatingActionButton.extended(
               heroTag: 'btn3',
               backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-              onPressed: () {},
+              onPressed: addEmployeeSheet,
               label: const Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [Icon(Icons.person), Text(' Employee')],

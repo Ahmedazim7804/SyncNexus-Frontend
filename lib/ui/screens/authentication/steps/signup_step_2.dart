@@ -18,6 +18,12 @@ class _SignUpStepsScreenState extends State<SignUpStep2> {
     context.go('/screens/worker/homescreen');
   }
 
+  void nextEmployer() async {
+    final prefs = context.read<SharedPreferences>();
+    prefs.setBool('employee', false);
+    context.go('/screens/employer/homescreen');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,7 +124,7 @@ class _SignUpStepsScreenState extends State<SignUpStep2> {
                               )),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: nextEmployer,
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4)),

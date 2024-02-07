@@ -4,8 +4,6 @@ import "package:http/http.dart" as http;
 
 import 'base_endpoints.dart';
 
-
-
 Future<bool> checkUser() async {
   final Uri uri = Uri.parse('${getBaseURL()}/user/check-user/');
   Map<String, String> header = headers();
@@ -20,8 +18,11 @@ Future<bool> checkUser() async {
   }
 }
 
-Future<bool> createUser(
-    String phoneNo, String name, String userType, String firebaseUserId) async {
+Future<bool> createUserOnBackend(
+    {required String phoneNo,
+    required String name,
+    required String userType,
+    required String firebaseUserId}) async {
   final Uri uri = Uri.parse('${getBaseURL()}/user/create-user/');
   final requestData = {
     "phone_no": phoneNo,

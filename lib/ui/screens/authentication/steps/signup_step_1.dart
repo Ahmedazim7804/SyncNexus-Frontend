@@ -4,9 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:worker_app/provider/user_provider.dart';
 
 class SignUpStep1 extends StatefulWidget {
-  const SignUpStep1({super.key});
+  const SignUpStep1({super.key, required this.uid});
+
+  final String uid;
 
   @override
   State<SignUpStep1> createState() => _SignUpStepsScreenState();
@@ -60,6 +63,10 @@ class _SignUpStepsScreenState extends State<SignUpStep1> {
       final prefs = context.read<SharedPreferences>();
       prefs.setString('name', name).then((_) {
         prefs.setString('phone', phone).then((__) {
+          context.read<UserProvider>().uid = widget.uid;
+          context.read<UserProvider>().name = name;
+          context.read<UserProvider>().phone = phone;
+
           context.go('/screens/authentication/signup/steps/2');
         });
       });

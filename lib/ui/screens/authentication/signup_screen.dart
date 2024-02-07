@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:worker_app/provider/uid_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -28,8 +30,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     FirebaseAuth.instance
         .signInWithCredential(credential)
         .then((userCredential) {
+      context.read<UidProvider>().uid = userCredential.user!.uid;
+
       if (userCredential.additionalUserInfo!.isNewUser) {
-        context.go('/screens/authentication/signup/steps/1');
+        context.goNamed('/screens/authentication/signup/steps/1',
+            pathParameters: {'uid': userCredential.user!.uid});
       } else {
         context.go('/screens/worker/homescreen');
       }

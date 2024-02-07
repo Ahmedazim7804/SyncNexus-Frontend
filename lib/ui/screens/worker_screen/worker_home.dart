@@ -9,7 +9,7 @@ import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/models/worker_task_model.dart';
 import 'package:worker_app/ui/widgets/workers/heading_text_widget.dart';
 import 'package:worker_app/ui/widgets/workers/job_card.dart';
-import 'package:worker_app/ui/widgets/workers/task_widget.dart';
+import 'package:worker_app/ui/widgets/workers/task_widget_employee.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 

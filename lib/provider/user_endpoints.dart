@@ -20,6 +20,7 @@ Future<bool> checkUser() async {
 
 Future<bool> createUserOnBackend(
     {required String phoneNo,
+      required String email,
     required String name,
     required String userType,
     required String firebaseUserId}) async {
@@ -30,12 +31,15 @@ Future<bool> createUserOnBackend(
     "user_type": userType,
     "firebase_user_id": firebaseUserId
   };
+  if (email != "") {
+    requestData["email"] = email;
+  }
   Map<String, String> header = await headers();
   final response =
       await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return true;
-  } else if (response.statusCode == 417) {
+  } else if (response.statusCode == 417 || response.statusCode == 409) {
     return false;
   } else {
     throw Exception(

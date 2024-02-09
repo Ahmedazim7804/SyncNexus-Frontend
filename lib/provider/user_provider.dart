@@ -15,6 +15,7 @@ class UserProvider extends ChangeNotifier {
     return await createUserOnBackend(
         phoneNo: phone,
         name: name,
+        email: email,
         userType: employee ? "employee" : "employer",
         firebaseUserId: uid);
   }

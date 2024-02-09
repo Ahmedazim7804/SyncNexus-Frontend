@@ -25,9 +25,9 @@ Future<bool> addTask(String employeeID, String heading, String description,
   }
 }
 
-Future<bool> addEmployee(String employeeID) async {
+Future<bool> addEmployee(String employeeID, String title) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/$employeeID/add-employee/');
+  Uri.parse('${getBaseURL()}/employer/$employeeID/add-employee/$title');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {

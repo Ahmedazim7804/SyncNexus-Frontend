@@ -37,8 +37,8 @@ class _EmployerPaymentScreenState extends State<EmployerPaymentScreen> {
             Center(
               child: Image.asset(
                 'assets/images/payment.png',
-                width: 300,
-                height: 300,
+                width: 320,
+                height: 275,
               ),
             ),
             const PaymentCard(),

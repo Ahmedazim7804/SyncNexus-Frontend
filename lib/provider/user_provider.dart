@@ -12,6 +12,10 @@ class UserProvider extends ChangeNotifier {
   late bool employee;
 
   Future<bool> createUser() async {
+    print(phone);
+    print(name);
+    print(email);
+
     return await createUserOnBackend(
         phoneNo: phone,
         name: name,

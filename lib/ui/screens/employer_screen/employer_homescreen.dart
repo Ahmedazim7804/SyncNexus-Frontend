@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/ui/widgets/workers/add_employee_widget.dart';
 
@@ -13,6 +15,13 @@ class EmployerHomeScreen extends StatefulWidget {
 }
 
 class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
+  @override
+  void initState() {
+    getEmployees();
+    // TODO: implement initState
+    super.initState();
+  }
+
   void addEmployeeSheet() {
     showModalBottomSheet(
         useSafeArea: true,
@@ -23,7 +32,7 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(context.read<UidProvider>().uid);
+    getEmployees().then((value) => print(value));
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 234, 196, 72),
         appBar: AppBar(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'base_endpoints.dart';
 import "package:http/http.dart" as http;
@@ -45,6 +46,132 @@ Future<List<dynamic>> getTasks(String employeeID, DateTime startTime,
   Uri.parse('${getBaseURL()}/employee/$employeeID/get-tasks/');
   Map<String, String> header = await headers();
   final response = await http.post(uri, headers: header, body: jsonEncode(requestData));
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}'
+    );
+  }
+}
+
+Future<List<dynamic>> getJobDetail(String jobID, DateTime startTime,
+    DateTime endTime) async {
+  startTime = startTime.toUtc();
+  endTime = endTime.toUtc();
+  final requestData = {
+    "start_time": startTime.toIso8601String(),
+    "end_time": endTime.toIso8601String()
+  };
+  final Uri uri =
+  Uri.parse('${getBaseURL()}/employee/$jobID/ get-job-detail/');
+  Map<String, String> header = await headers();
+  final response = await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}'
+    );
+  }
+}
+
+Future<dynamic> getEmployer(String employerID, DateTime startTime,
+    DateTime endTime) async {
+  startTime = startTime.toUtc();
+  endTime = endTime.toUtc();
+  final requestData = {
+    "start_time": startTime.toIso8601String(),
+    "end_time": endTime.toIso8601String()
+  };
+  final Uri uri =
+  Uri.parse('${getBaseURL()}/employee/$employerID/get-employer/');
+  Map<String, String> header = await headers();
+  final response = await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}'
+    );
+  }
+}
+
+Future<List<dynamic>> addLocation(String employeeID, DateTime startTime,
+    DateTime endTime) async {
+  startTime = startTime.toUtc();
+  endTime = endTime.toUtc();
+  final requestData = {
+    "start_time": startTime.toIso8601String(),
+    "end_time": endTime.toIso8601String()
+  };
+  final Uri uri =
+  Uri.parse('${getBaseURL()}/employee/add-location/');
+  Map<String, String> header = await headers();
+  final response = await http.post(uri, headers: header, body: jsonEncode(requestData));
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}'
+    );
+  }
+}
+
+Future<List<dynamic>> getJobs(String employeeID, DateTime startTime,
+    DateTime endTime) async {
+  startTime = startTime.toUtc();
+  endTime = endTime.toUtc();
+  final requestData = {
+    "start_time": startTime.toIso8601String(),
+    "end_time": endTime.toIso8601String()
+  };
+  final Uri uri =
+  Uri.parse('${getBaseURL()}/employee/get-jobs/');
+  Map<String, String> header = await headers();
+  final response = await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}'
+    );
+  }
+}
+
+Future<bool> leaveJob(String employeeID, DateTime startTime,
+    DateTime endTime) async {
+  startTime = startTime.toUtc();
+  endTime = endTime.toUtc();
+  final requestData = {
+    "start_time": startTime.toIso8601String(),
+    "end_time": endTime.toIso8601String()
+  };
+  final Uri uri =
+  Uri.parse('${getBaseURL()}/employee/leave-job/');
+  Map<String, String> header = await headers();
+  final response = await http.post(uri, headers: header);
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}'
+    );
+  }
+}
+
+Future<bool> approvePayment(String paymentID, DateTime startTime,
+    DateTime endTime) async {
+  startTime = startTime.toUtc();
+  endTime = endTime.toUtc();
+  final requestData = {
+    "start_time": startTime.toIso8601String(),
+    "end_time": endTime.toIso8601String()
+  };
+  final Uri uri =
+  Uri.parse('${getBaseURL()}/employee/$paymentID/approve-payment/');
+  Map<String, String> header = await headers();
+  final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {

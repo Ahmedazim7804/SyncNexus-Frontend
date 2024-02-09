@@ -15,7 +15,7 @@ void main() {
   group('createUser', () {
     test('returns true if HTTP request succeeds', () async {
       final result = await createUserOnBackend(
-          phoneNo: "1234567890", name: "John Doe", userType: "employee", firebaseUserId: "YCDugoXMwwVeaqs2SVNDW2YhdhA2", email: "john@gmail.com"
+          phoneNo: "9315082028", name: "Mahesh", userType: "employee", firebaseUserId: "MM0A6CZw5hVglML2Fk7K0rWaqKn1", email: "***REMOVED***.ahmad.ug23@nsut.ac.in"
       );
       expect(result == true || result == false, true);
     });

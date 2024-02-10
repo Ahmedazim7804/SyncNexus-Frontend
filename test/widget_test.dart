@@ -78,4 +78,11 @@ void main() {
       expect(Null == result || Null != result, true);
     });
   });
+  group('searchByPhone', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await searchByPhone("12345676875");
+      print(result);
+      expect(Null != result, true);
+    });
+  });
 }

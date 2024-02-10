@@ -19,6 +19,7 @@ class EmployerHomeScreen extends StatefulWidget {
 }
 
 class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
+<<<<<<< HEAD
   final OverlayPortalController overlayPortalController =
       OverlayPortalController();
   late final EmployersDataProvider employersDataProvider =
@@ -27,13 +28,33 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
       ValueNotifier<List<Employee>>(employersDataProvider.employeesList);
   List jobList = [];
 
+||||||| e76931d
+=======
+  final OverlayPortalController overlayPortalController =
+      OverlayPortalController();
+  List employeesList = [];
+  List jobList = [];
+
+>>>>>>> 86ceac9
   @override
   void initState() {
+<<<<<<< HEAD
     overlayPortalController.show();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // context.read<EmployersDataProvider>().getAllEmployees();
       overlayPortalController.hide();
     });
+||||||| e76931d
+    getEmployees();
+=======
+    overlayPortalController.show();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        getEmployees().then((value) => employeesList = value);
+      });
+      overlayPortalController.hide();
+    });
+>>>>>>> 86ceac9
     // TODO: implement initState
     super.initState();
   }
@@ -165,6 +186,7 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
               const SizedBox(
                 height: 80,
               ),
+<<<<<<< HEAD
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -218,6 +240,66 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
                     ),
                   ),
                 ],
+||||||| e76931d
+            ),
+            Container(
+              width: MediaQuery.sizeOf(context).width,
+              // padding: const EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 226, 181, 31),
+=======
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    height: 165,
+                    width: 150,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 226, 181, 31),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Total\nEmployees",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          employeesList.length.toString(),
+                          style: const TextStyle(
+                              fontSize: 64, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 165,
+                    width: 150,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 226, 181, 31),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: const Column(
+                      children: [
+                        Text(
+                          "Total\nJobs",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '2',
+                          style: TextStyle(
+                              fontSize: 64, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+>>>>>>> 86ceac9
               ),
               const SizedBox(
                 height: 20,

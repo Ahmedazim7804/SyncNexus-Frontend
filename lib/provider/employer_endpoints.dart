@@ -82,7 +82,7 @@ Future<List<dynamic>> getLocation(
 
 Future<dynamic> searchByPhone(String PhoneNo) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/$PhoneNo/search-employee-phone/');
+      Uri.parse('${getBaseURL()}/employer/$PhoneNo/search-employee-phone/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {

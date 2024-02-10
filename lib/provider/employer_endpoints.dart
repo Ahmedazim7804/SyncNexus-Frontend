@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import "package:http/http.dart" as http;
+
 import 'base_endpoints.dart';
 
 Future<bool> addTask(String employeeID, String heading, String description,
@@ -14,7 +16,7 @@ Future<bool> addTask(String employeeID, String heading, String description,
   };
   Map<String, String> header = await headers();
   final response =
-  await http.post(uri, headers: header, body: jsonEncode(requestData));
+      await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return true;
   } else if (response.statusCode == 401) {
@@ -27,7 +29,7 @@ Future<bool> addTask(String employeeID, String heading, String description,
 
 Future<bool> addEmployee(String employeeID, String title) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/$employeeID/add-employee/$title');
+      Uri.parse('${getBaseURL()}/employer/$employeeID/add-employee/$title');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
@@ -53,12 +55,12 @@ Future<List<dynamic>> getEmployees() async {
 }
 
 Future<List<dynamic>> getLocation(
-    String employeeID,
-    DateTime startTime,
-    DateTime endTime,
-    ) async {
+  String employeeID,
+  DateTime startTime,
+  DateTime endTime,
+) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/$employeeID/get-employee-location/');
+      Uri.parse('${getBaseURL()}/employer/$employeeID/get-employee-location/');
   Map<String, String> header = await headers();
   startTime = startTime.toUtc();
   endTime = endTime.toUtc();
@@ -67,7 +69,7 @@ Future<List<dynamic>> getLocation(
     "end_time": endTime.toIso8601String()
   };
   final response =
-  await http.post(uri, headers: header, body: jsonEncode(requestData));
+      await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else if (response.statusCode == 404) {

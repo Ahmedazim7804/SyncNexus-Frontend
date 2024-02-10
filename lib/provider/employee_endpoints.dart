@@ -55,14 +55,7 @@ Future<List<dynamic>> getTasks(String employeeID, DateTime startTime,
   }
 }
 
-Future<List<dynamic>> getJobDetail(String jobID, DateTime startTime,
-    DateTime endTime) async {
-  startTime = startTime.toUtc();
-  endTime = endTime.toUtc();
-  final requestData = {
-    "start_time": startTime.toIso8601String(),
-    "end_time": endTime.toIso8601String()
-  };
+Future<List<dynamic>> getJobDetail(String jobID) async {
   final Uri uri =
   Uri.parse('${getBaseURL()}/employee/$jobID/ get-job-detail/');
   Map<String, String> header = await headers();
@@ -76,14 +69,7 @@ Future<List<dynamic>> getJobDetail(String jobID, DateTime startTime,
   }
 }
 
-Future<dynamic> getEmployer(String employerID, DateTime startTime,
-    DateTime endTime) async {
-  startTime = startTime.toUtc();
-  endTime = endTime.toUtc();
-  final requestData = {
-    "start_time": startTime.toIso8601String(),
-    "end_time": endTime.toIso8601String()
-  };
+Future<dynamic> getEmployer(String employerID) async {
   final Uri uri =
   Uri.parse('${getBaseURL()}/employee/$employerID/get-employer/');
   Map<String, String> header = await headers();
@@ -97,13 +83,13 @@ Future<dynamic> getEmployer(String employerID, DateTime startTime,
   }
 }
 
-Future<List<dynamic>> addLocation(String employeeID, DateTime startTime,
-    DateTime endTime) async {
-  startTime = startTime.toUtc();
-  endTime = endTime.toUtc();
+Future<List<dynamic>> addLocation(String employeeID,
+double locationLat,
+double locationLong
+) async {
   final requestData = {
-    "start_time": startTime.toIso8601String(),
-    "end_time": endTime.toIso8601String()
+    "location_lat": locationLat,
+    "location_long": locationLong
   };
   final Uri uri =
   Uri.parse('${getBaseURL()}/employee/add-location/');
@@ -118,35 +104,30 @@ Future<List<dynamic>> addLocation(String employeeID, DateTime startTime,
   }
 }
 
-Future<List<dynamic>> getJobs(String employeeID, DateTime startTime,
-    DateTime endTime) async {
-  startTime = startTime.toUtc();
-  endTime = endTime.toUtc();
-  final requestData = {
-    "start_time": startTime.toIso8601String(),
-    "end_time": endTime.toIso8601String()
-  };
+Future<List<dynamic>> getJobs(
+    double locationLat,
+    double locationLong
+    ) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employee/get-jobs/');
+  Uri.parse('${getBaseURL()}/employer/get-jobs/');
   Map<String, String> header = await headers();
-  final response = await http.get(uri, headers: header);
+  final requestData = {
+    "location_lat": locationLat,
+    "location_long": locationLong
+  };
+  final response =
+  await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
+  } else if (response.statusCode == 404) {
+    return [];
   } else {
     throw Exception(
-        'Failed to load data from endpoint: ${response.statusCode} ${response.body}'
-    );
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
 
-Future<bool> leaveJob(String employeeID, DateTime startTime,
-    DateTime endTime) async {
-  startTime = startTime.toUtc();
-  endTime = endTime.toUtc();
-  final requestData = {
-    "start_time": startTime.toIso8601String(),
-    "end_time": endTime.toIso8601String()
-  };
+Future<bool> leaveJob(String employeeID) async {
   final Uri uri =
   Uri.parse('${getBaseURL()}/employee/leave-job/');
   Map<String, String> header = await headers();
@@ -160,14 +141,7 @@ Future<bool> leaveJob(String employeeID, DateTime startTime,
   }
 }
 
-Future<bool> approvePayment(String paymentID, DateTime startTime,
-    DateTime endTime) async {
-  startTime = startTime.toUtc();
-  endTime = endTime.toUtc();
-  final requestData = {
-    "start_time": startTime.toIso8601String(),
-    "end_time": endTime.toIso8601String()
-  };
+Future<bool> approvePayment(String paymentID) async {
   final Uri uri =
   Uri.parse('${getBaseURL()}/employee/$paymentID/approve-payment/');
   Map<String, String> header = await headers();

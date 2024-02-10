@@ -1,9 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/ui/screens/employer_screen/employees_list_screen.dart';
 
 class AddEmployeeWidget extends StatelessWidget {
   const AddEmployeeWidget({super.key});
+
+  void searchEmployeeOnFirebase() {
+    final firebase = FirebaseAuth.instance;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +76,7 @@ class AddEmployeeWidget extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: searchEmployeeOnFirebase,
                     icon: const Icon(Icons.check),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightGreen,

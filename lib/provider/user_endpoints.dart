@@ -67,36 +67,6 @@ Future<dynamic> getUser(
   }
 }
 
-// Future<bool> getUserLogs(
-//     {required String phoneNo,
-//       required String email,
-//       required String name,
-//       required String userType,
-//       required String firebaseUserId}) async {
-//   final Uri uri = Uri.parse('${getBaseURL()}/{user_id}/get-user-logs/');
-//   final requestData = {
-//     "phone_no": phoneNo,
-//     "name": name,
-//     "user_type": userType,
-//     "firebase_user_id": firebaseUserId
-//   };
-//   if (email != "") {
-//     requestData["email"] = email;
-//   }
-//   Map<String, String> header = await headers();
-//   final response =
-//   await http.get(uri, headers: header);
-//   print(response.statusCode);
-//   if (response.statusCode == 200) {
-//     return true;
-//   } else if (response.statusCode == 417 || response.statusCode == 409) {
-//     return false;
-//   } else {
-//     throw Exception(
-//         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
-//   }
-// }
-
 Future<bool> addRating(
     {required String userTo,
       required String userFrom,

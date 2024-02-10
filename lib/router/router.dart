@@ -7,7 +7,7 @@ import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/router/auth_listenable.dart';
 import 'package:worker_app/ui/screens/authentication/otp_screen.dart';
 import 'package:worker_app/ui/screens/authentication/signup_screen.dart';
-import 'package:worker_app/ui/screens/authentication/steps/other_details_screen.dart';
+import 'package:worker_app/ui/screens/authentication/steps/user_details_screen.dart';
 import 'package:worker_app/ui/screens/authentication/steps/signup_step_1.dart';
 import 'package:worker_app/ui/screens/authentication/steps/signup_step_2.dart';
 import 'package:worker_app/ui/screens/employer_screen/employee_tasks_screen.dart';
@@ -29,8 +29,7 @@ class MyAppRouter {
   static GoRouter goRouter = GoRouter(
       navigatorKey: _rootNavigatorKey,
       refreshListenable: authListen,
-      initialLocation:
-          '/screens/authentication/other', //'/screens/authentication/signup',
+      initialLocation: '/screens/authentication/signup',
       redirect: (context, state) {
         if (!authListen.isSignedIn) {
           if (authListen.user != null) {
@@ -38,9 +37,13 @@ class MyAppRouter {
             authListen.isSignedIn = true;
             authListen.subscription.cancel();
 
-            if (context.read<SharedPreferences>().getBool('employee')!) {
-              return '/screens/worker/homescreen';
-            } else {
+            try {
+              if (context.read<SharedPreferences>().getBool('employee')!) {
+                return '/screens/worker/homescreen';
+              } else {
+                return '/screens/employer/homescreen';
+              }
+            } catch (e) {
               return '/screens/employer/homescreen';
             }
           } else {

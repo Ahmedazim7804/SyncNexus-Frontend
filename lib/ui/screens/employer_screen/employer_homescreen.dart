@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
+import 'package:worker_app/provider/employers_data_provider.dart';
 import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/ui/widgets/overlay_widget.dart';
 import 'package:worker_app/ui/widgets/workers/add_employee_widget.dart';
+import 'package:worker_app/ui/widgets/workers/add_task.dart';
 
 class EmployerHomeScreen extends StatefulWidget {
   const EmployerHomeScreen({super.key});
@@ -18,16 +21,17 @@ class EmployerHomeScreen extends StatefulWidget {
 class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
   final OverlayPortalController overlayPortalController =
       OverlayPortalController();
-  List employeesList = [];
+  late final EmployersDataProvider employersDataProvider =
+      EmployersDataProvider();
+  late final employeesList =
+      ValueNotifier<List<Employee>>(employersDataProvider.employeesList);
   List jobList = [];
 
   @override
   void initState() {
     overlayPortalController.show();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        getEmployees().then((value) => employeesList = value);
-      });
+      // context.read<EmployersDataProvider>().getAllEmployees();
       overlayPortalController.hide();
     });
     // TODO: implement initState
@@ -40,6 +44,14 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
         context: context,
         isScrollControlled: true,
         builder: (context) => const AddEmployeeWidget());
+  }
+
+  void addTaskSheet() {
+    showModalBottomSheet(
+        useSafeArea: true,
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => const AddTaskWidget());
   }
 
   @override
@@ -70,21 +82,9 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
           distance: 65,
           children: [
             FloatingActionButton.extended(
-              heroTag: 'btn1',
-              backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-              onPressed: () {},
-              label: const Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  Icon(Icons.work),
-                  Text(" Job"),
-                ],
-              ),
-            ),
-            FloatingActionButton.extended(
               heroTag: 'btn2',
               backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-              onPressed: () {},
+              onPressed: addTaskSheet,
               label: const Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
@@ -183,10 +183,13 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          employeesList.length.toString(),
-                          style: const TextStyle(
-                              fontSize: 64, fontWeight: FontWeight.bold),
+                        ValueListenableBuilder(
+                          valueListenable: employeesList,
+                          builder: (context, value, child) => Text(
+                            value.length.toString(),
+                            style: const TextStyle(
+                                fontSize: 64, fontWeight: FontWeight.bold),
+                          ),
                         )
                       ],
                     ),

@@ -12,12 +12,16 @@ import 'package:worker_app/ui/screens/authentication/steps/signup_step_2.dart';
 import 'package:worker_app/ui/screens/employer_screen/employee_tasks_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employees_list_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_homescreen.dart';
+import 'package:worker_app/ui/screens/employer_screen/employer_payment.dart';
+import 'package:worker_app/ui/screens/employer_screen/employer_root_scaffold.dart';
 import 'package:worker_app/ui/screens/employer_screen/jobs_list_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/profile_screen.dart';
 
 import 'package:worker_app/ui/screens/worker_screen/worker_home.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorEmployerKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellEmployer');
 
 class MyAppRouter {
   static AuthListen authListen = AuthListen();
@@ -46,6 +50,45 @@ class MyAppRouter {
         return null;
       },
       routes: [
+        StatefulShellRoute.indexedStack(
+            builder: (context, state, child) =>
+                EmployerRootScaffold(child: child),
+            branches: [
+              StatefulShellBranch(
+                  navigatorKey: _shellNavigatorEmployerKey,
+                  routes: [
+                    GoRoute(
+                      path: '/screens/employer/employees',
+                      pageBuilder: (context, state) =>
+                          const MaterialPage(child: EmployeesListScreen()),
+                    ),
+                    GoRoute(
+                      path: '/screens/employer/jobs',
+                      pageBuilder: (context, state) =>
+                          const MaterialPage(child: JobsListScreen()),
+                    ),
+                    GoRoute(
+                      path: '/screens/employer/profile',
+                      pageBuilder: (context, state) =>
+                          const MaterialPage(child: EmployerProfileScreen()),
+                    ),
+                    GoRoute(
+                      path: '/screens/employer/employee',
+                      pageBuilder: (context, state) =>
+                          const MaterialPage(child: EmployeeTaskListScreen()),
+                    ),
+                    GoRoute(
+                      path: '/screens/employer/homescreen',
+                      pageBuilder: (context, state) =>
+                          const MaterialPage(child: EmployerHomeScreen()),
+                    ),
+                    GoRoute(
+                      path: '/screens/employer/payment',
+                      pageBuilder: (context, state) =>
+                          const MaterialPage(child: EmployerPaymentScreen()),
+                    ),
+                  ])
+            ]),
         GoRoute(
           path: '/screens/authentication/signup',
           pageBuilder: (context, state) =>
@@ -71,31 +114,6 @@ class MyAppRouter {
           path: '/screens/worker/homescreen',
           pageBuilder: (context, state) =>
               const MaterialPage(child: WorkerHomeScreen()),
-        ),
-        GoRoute(
-          path: '/screens/employer/employees',
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: EmployeesListScreen()),
-        ),
-        GoRoute(
-          path: '/screens/employer/jobs',
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: JobsListScreen()),
-        ),
-        GoRoute(
-          path: '/screens/employer/profile',
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: EmployerProfileScreen()),
-        ),
-        GoRoute(
-          path: '/screens/employer/employee',
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: EmployeeTaskListScreen()),
-        ),
-        GoRoute(
-          path: '/screens/employer/homescreen',
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: EmployerHomeScreen()),
         ),
       ]);
 }

@@ -66,8 +66,10 @@ class _SignUpStepsScreenState extends State<SignUpStep1> {
           context.read<UserProvider>().uid = widget.uid;
           context.read<UserProvider>().name = name;
           context.read<UserProvider>().phone = phone;
+          context.read<UserProvider>().email =
+              FirebaseAuth.instance.currentUser!.email!;
 
-          context.go('/screens/authentication/signup/steps/2');
+          context.push('/screens/authentication/signup/steps/2');
         });
       });
     }

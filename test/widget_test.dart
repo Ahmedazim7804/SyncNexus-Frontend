@@ -85,4 +85,27 @@ void main() {
       expect(Null != result, true);
     });
   });
+  group('addJobs', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await addJobs("description, I'm iron man @#^54192379", "title", 28.704060, 77.102493, 20000);
+      expect(result, true);
+    });
+  });
+  group('addPayments', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await addPayments(
+        "1824b2de-bc70-470c-a80f-f52c9da8588e", "Tea/Coffee for FY23", "USD", 100000
+      );
+      expect(true == result, true);
+    });
+  });
+  group('getEmployeePayments', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getEmployeePayments("1824b2de-bc70-470c-a80f-f52c9da8588e");
+      print(result);
+      expect(Null != result, true);
+    });
+  });
+
+
 }

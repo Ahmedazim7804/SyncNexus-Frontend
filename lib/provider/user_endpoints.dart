@@ -47,15 +47,14 @@ Future<bool> createUserOnBackend(
 
 Future<dynamic> getUser(
     {required String userId,
-      required String phoneNo,
-      required String email,
-      required String name,
-      required String userType,
-      required String firebaseUserId}) async {
+    required String phoneNo,
+    required String email,
+    required String name,
+    required String userType,
+    required String firebaseUserId}) async {
   final Uri uri = Uri.parse('${getBaseURL()}/{user_id}/get-user/');
   Map<String, String> header = await headers();
-  final response =
-  await http.get(uri, headers: header);
+  final response = await http.get(uri, headers: header);
   print(response.statusCode);
   if (response.statusCode == 200) {
     return true;
@@ -69,18 +68,14 @@ Future<dynamic> getUser(
 
 Future<bool> addRating(
     {required String userTo,
-      required String userFrom,
-      required String rate,
-      required String comment
-    }) async {
+    required String userFrom,
+    required String rate,
+    required String comment}) async {
   final Uri uri = Uri.parse('${getBaseURL()}/{user_id}/add-rating/');
-  final requestData = {
-    "user_from": userFrom,
-    "user_to": userTo
-  };
+  final requestData = {"user_from": userFrom, "user_to": userTo};
   Map<String, String> header = await headers();
   final response =
-  await http.post(uri, headers: header, body: jsonEncode(requestData));
+      await http.post(uri, headers: header, body: jsonEncode(requestData));
   print(response.statusCode);
   if (response.statusCode == 200) {
     return true;
@@ -92,13 +87,10 @@ Future<bool> addRating(
   }
 }
 
-Future<bool> getRating(
-    {required String rate,
-      required String count}) async {
+Future<bool> getRating({required String rate, required String count}) async {
   final Uri uri = Uri.parse('${getBaseURL()}/{user_id}/get-rating/');
   Map<String, String> header = await headers();
-  final response =
-  await http.get(uri, headers: header);
+  final response = await http.get(uri, headers: header);
   print(response.statusCode);
   if (response.statusCode == 200) {
     return true;
@@ -110,16 +102,16 @@ Future<bool> getRating(
   }
 }
 
-Future<bool> getPayments(
-    {required String paymentId,
-      required String amount,
-      required String createdAt,
-      required String fromUserID,
-      required String toUserID,
-      required String currency,
-      required String remarks,
-      required String approvedAt,
-    }) async {
+Future<bool> getPayments({
+  required String paymentId,
+  required String amount,
+  required String createdAt,
+  required String fromUserID,
+  required String toUserID,
+  required String currency,
+  required String remarks,
+  required String approvedAt,
+}) async {
   final Uri uri = Uri.parse('${getBaseURL()}/user/get-payments/');
   final requestData = {
     "payment_id": paymentId,
@@ -133,7 +125,7 @@ Future<bool> getPayments(
   };
   Map<String, String> header = await headers();
   final response =
-  await http.post(uri, headers: header, body: jsonEncode(requestData));
+      await http.post(uri, headers: header, body: jsonEncode(requestData));
   print(response.statusCode);
   if (response.statusCode == 200) {
     return true;
@@ -147,9 +139,8 @@ Future<bool> getPayments(
 
 Future<bool> addFeedback(
     {required String fromUserID,
-      required String rating,
-      required String feedback
-    }) async {
+    required String rating,
+    required String feedback}) async {
   final Uri uri = Uri.parse('${getBaseURL()}/user/add-feedback/');
   final requestData = {
     "from_user_id": fromUserID,
@@ -158,7 +149,7 @@ Future<bool> addFeedback(
   };
   Map<String, String> header = await headers();
   final response =
-  await http.post(uri, headers: header, body: jsonEncode(requestData));
+      await http.post(uri, headers: header, body: jsonEncode(requestData));
   print(response.statusCode);
   if (response.statusCode == 200) {
     return true;

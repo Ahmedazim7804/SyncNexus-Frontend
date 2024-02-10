@@ -20,7 +20,7 @@ Future<bool> checkUser() async {
 
 Future<bool> createUserOnBackend(
     {required String phoneNo,
-      required String email,
+    required String email,
     required String name,
     required String userType,
     required String firebaseUserId}) async {

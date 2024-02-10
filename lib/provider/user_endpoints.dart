@@ -37,6 +37,7 @@ Future<bool> createUserOnBackend(
   Map<String, String> header = await headers();
   final response =
       await http.post(uri, headers: header, body: jsonEncode(requestData));
+  print(response.statusCode);
   if (response.statusCode == 200) {
     return true;
   } else if (response.statusCode == 417 || response.statusCode == 409) {

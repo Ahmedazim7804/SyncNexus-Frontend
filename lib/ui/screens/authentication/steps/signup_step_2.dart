@@ -19,7 +19,7 @@ class _SignUpStepsScreenState extends State<SignUpStep2> {
     context.read<UserProvider>().createUser().then((_) {
       final prefs = context.read<SharedPreferences>();
       prefs.setBool('employee', true);
-      context.go('/screens/worker/homescreen');
+      // context.go('/screens/employer/homescreen');
     });
   }
 

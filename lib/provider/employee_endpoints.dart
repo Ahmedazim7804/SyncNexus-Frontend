@@ -50,7 +50,7 @@ Future<List<dynamic>> getTasks(
   }
 }
 
-Future<List<dynamic>> getJobDetail(String jobID) async { // under testing
+Future<dynamic> getJobDetail(String jobID) async {
   final Uri uri = Uri.parse('${getBaseURL()}/employee/$jobID/get-job-detail/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
@@ -62,7 +62,7 @@ Future<List<dynamic>> getJobDetail(String jobID) async { // under testing
   }
 }
 
-Future<dynamic> getEmployer() async { // under testing
+Future<dynamic> getEmployer() async {
   final Uri uri = Uri.parse('${getBaseURL()}/employee/get-employer/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
@@ -74,7 +74,7 @@ Future<dynamic> getEmployer() async { // under testing
   }
 }
 
-Future<List<dynamic>> addLocation( // under testing
+Future<bool> addLocation(
     double locationLat, double locationLong) async {
   final requestData = {
     "location_lat": locationLat,
@@ -85,14 +85,14 @@ Future<List<dynamic>> addLocation( // under testing
   final response =
       await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
-    return jsonDecode(response.body);
+    return true;
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
 
-Future<List<dynamic>> getJobs(double locationLat, double locationLong) async { // under testing
+Future<List<dynamic>> getJobs(double locationLat, double locationLong) async {
   final Uri uri = Uri.parse('${getBaseURL()}/employee/get-jobs/');
   Map<String, String> header = await headers();
   final requestData = {
@@ -111,25 +111,25 @@ Future<List<dynamic>> getJobs(double locationLat, double locationLong) async { /
   }
 }
 
-Future<bool> leaveJob() async { // under testing
+Future<bool> leaveJob() async {
   final Uri uri = Uri.parse('${getBaseURL()}/employee/leave-job/');
   Map<String, String> header = await headers();
-  final response = await http.post(uri, headers: header);
+  final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
-    return jsonDecode(response.body);
+    return true;
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
 
-Future<bool> approvePayment(String paymentID) async { // under testing
+Future<bool> approvePayment(String paymentID) async {
   final Uri uri =
       Uri.parse('${getBaseURL()}/employee/$paymentID/approve-payment/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
-    return jsonDecode(response.body);
+    return true;
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');

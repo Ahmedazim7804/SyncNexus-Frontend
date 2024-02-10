@@ -85,6 +85,7 @@ void main() {
       expect(Null != result, true);
     });
   });
+<<<<<<< HEAD
   group('addJobs', () {
     test('returns true if HTTP request succeeds', () async {
       final result = await addJobs("description, I'm iron man @#^54192379", "title", 28.704060, 77.102493, 20000);
@@ -109,3 +110,8 @@ void main() {
 
 
 }
+||||||| parent of 362187b (changes)
+}
+=======
+}
+>>>>>>> 362187b (changes)

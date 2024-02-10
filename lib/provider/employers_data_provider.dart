@@ -7,6 +7,7 @@ class EmployersDataProvider extends ChangeNotifier {
   EmployersDataProvider() {
     getAllEmployees();
   }
+
   List<Employee> employeesList = [];
   List jobsList = [];
   List<WorkerTask> tasks = [];

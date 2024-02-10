@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import "package:http/http.dart" as http;
+
 import 'base_endpoints.dart';
 
 Future<bool> addTask(String employeeID, String heading, String description,
@@ -14,7 +16,7 @@ Future<bool> addTask(String employeeID, String heading, String description,
   };
   Map<String, String> header = await headers();
   final response =
-  await http.post(uri, headers: header, body: jsonEncode(requestData));
+      await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return true;
   } else if (response.statusCode == 401) {
@@ -27,7 +29,7 @@ Future<bool> addTask(String employeeID, String heading, String description,
 
 Future<bool> addEmployee(String employeeID, String title) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/$employeeID/add-employee/$title');
+      Uri.parse('${getBaseURL()}/employer/$employeeID/add-employee/$title');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
@@ -53,12 +55,12 @@ Future<List<dynamic>> getEmployees() async {
 }
 
 Future<List<dynamic>> getLocation(
-    String employeeID,
-    DateTime startTime,
-    DateTime endTime,
-    ) async {
+  String employeeID,
+  DateTime startTime,
+  DateTime endTime,
+) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/$employeeID/get-employee-location/');
+      Uri.parse('${getBaseURL()}/employer/$employeeID/get-employee-location/');
   Map<String, String> header = await headers();
   startTime = startTime.toUtc();
   endTime = endTime.toUtc();
@@ -67,7 +69,7 @@ Future<List<dynamic>> getLocation(
     "end_time": endTime.toIso8601String()
   };
   final response =
-  await http.post(uri, headers: header, body: jsonEncode(requestData));
+      await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else if (response.statusCode == 404) {
@@ -80,7 +82,7 @@ Future<List<dynamic>> getLocation(
 
 Future<dynamic> searchByPhone(String PhoneNo) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/$PhoneNo/search-employee-phone/');
+      Uri.parse('${getBaseURL()}/employer/$PhoneNo/search-employee-phone/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
@@ -90,9 +92,9 @@ Future<dynamic> searchByPhone(String PhoneNo) async {
   }
 }
 
-Future<bool> addJobs(String description, String title, double latitude, double longitude, int amount) async {
-  final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/add-jobs/');
+Future<bool> addJobs(String description, String title, double latitude,
+    double longitude, int amount) async {
+  final Uri uri = Uri.parse('${getBaseURL()}/employer/add-jobs/');
   Map<String, String> header = await headers();
   final requestData = {
     "description": description,
@@ -101,45 +103,45 @@ Future<bool> addJobs(String description, String title, double latitude, double l
     "location_long": longitude,
     "amount": amount
   };
-  final response = await http.post(uri, headers: header, body: jsonEncode(requestData));
+  final response =
+      await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return true;
   } else {
     throw Exception(
-        'Failed to load data from endpoint: ${response.statusCode} ${response.body}'
-    );
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
 
-Future<bool> addPayments(String employeeID, String remarks, String currency, int amount) async {
+Future<bool> addPayments(
+    String employeeID, String remarks, String currency, int amount) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/$employeeID/add-payment/');
+      Uri.parse('${getBaseURL()}/employer/$employeeID/add-payment/');
   Map<String, String> header = await headers();
   final requestData = {
     "remarks": remarks,
     "currency": currency,
     "amount": amount
   };
-  final response = await http.post(uri, headers: header, body: jsonEncode(requestData));
+  final response =
+      await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return true;
   } else {
     throw Exception(
-        'Failed to load data from endpoint: ${response.statusCode} ${response.body}'
-    );
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
 
 Future<List<dynamic>> getEmployeePayments(String employeeID) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/$employeeID/get-payment/');
+      Uri.parse('${getBaseURL()}/employer/$employeeID/get-payment/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
     throw Exception(
-        'Failed to load data from endpoint: ${response.statusCode} ${response.body}'
-    );
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }

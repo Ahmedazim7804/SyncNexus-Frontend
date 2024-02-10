@@ -77,3 +77,15 @@ Future<List<dynamic>> getLocation(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
+
+Future<dynamic> searchByPhone(String PhoneNo) async {
+  final Uri uri =
+  Uri.parse('${getBaseURL()}/employer/$PhoneNo/search-employee-phone/');
+  Map<String, String> header = await headers();
+  final response = await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    return {};
+  }
+}

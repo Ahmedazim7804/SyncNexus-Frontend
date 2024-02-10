@@ -50,7 +50,7 @@ Future<List<dynamic>> getTasks(
   }
 }
 
-Future<List<dynamic>> getJobDetail(String jobID) async {
+Future<List<dynamic>> getJobDetail(String jobID) async { // under testing
   final Uri uri = Uri.parse('${getBaseURL()}/employee/$jobID/get-job-detail/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
@@ -62,8 +62,7 @@ Future<List<dynamic>> getJobDetail(String jobID) async {
   }
 }
 
-Future<dynamic> getEmployer() async {
-  // pending
+Future<dynamic> getEmployer() async { // under testing
   final Uri uri = Uri.parse('${getBaseURL()}/employee/get-employer/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
@@ -75,7 +74,7 @@ Future<dynamic> getEmployer() async {
   }
 }
 
-Future<List<dynamic>> addLocation(
+Future<List<dynamic>> addLocation( // under testing
     double locationLat, double locationLong) async {
   final requestData = {
     "location_lat": locationLat,
@@ -93,7 +92,7 @@ Future<List<dynamic>> addLocation(
   }
 }
 
-Future<List<dynamic>> getJobs(double locationLat, double locationLong) async {
+Future<List<dynamic>> getJobs(double locationLat, double locationLong) async { // under testing
   final Uri uri = Uri.parse('${getBaseURL()}/employee/get-jobs/');
   Map<String, String> header = await headers();
   final requestData = {
@@ -112,7 +111,7 @@ Future<List<dynamic>> getJobs(double locationLat, double locationLong) async {
   }
 }
 
-Future<bool> leaveJob() async {
+Future<bool> leaveJob() async { // under testing
   final Uri uri = Uri.parse('${getBaseURL()}/employee/leave-job/');
   Map<String, String> header = await headers();
   final response = await http.post(uri, headers: header);
@@ -124,7 +123,7 @@ Future<bool> leaveJob() async {
   }
 }
 
-Future<bool> approvePayment(String paymentID) async {
+Future<bool> approvePayment(String paymentID) async { // under testing
   final Uri uri =
       Uri.parse('${getBaseURL()}/employee/$paymentID/approve-payment/');
   Map<String, String> header = await headers();

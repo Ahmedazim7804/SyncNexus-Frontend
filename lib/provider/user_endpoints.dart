@@ -45,99 +45,66 @@ Future<bool> createUserOnBackend(
   }
 }
 
-Future<dynamic> getUser(
-    {required String userId,
-    required String phoneNo,
-    required String email,
-    required String name,
-    required String userType,
-    required String firebaseUserId}) async {
-  final Uri uri = Uri.parse('${getBaseURL()}/{user_id}/get-user/');
+Future<dynamic> getUser(// under testing
+    ) async {
+  final Uri uri = Uri.parse('${getBaseURL()}/get-user/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
-  print(response.statusCode);
   if (response.statusCode == 200) {
-    return true;
-  } else if (response.statusCode == 417 || response.statusCode == 409) {
-    return false;
+    return jsonDecode(response.body);
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
 
-Future<bool> addRating(
-    {required String userTo,
-    required String userFrom,
-    required String rate,
-    required String comment}) async {
-  final Uri uri = Uri.parse('${getBaseURL()}/{user_id}/add-rating/');
-  final requestData = {"user_from": userFrom, "user_to": userTo};
+Future<bool> addRating(String userTo, String rate, String comment) async {// under testing
+  final Uri uri = Uri.parse('${getBaseURL()}/$userTo/add-rating/');
+  final requestData = {"rate": rate, "comment": comment};
   Map<String, String> header = await headers();
   final response =
       await http.post(uri, headers: header, body: jsonEncode(requestData));
   print(response.statusCode);
   if (response.statusCode == 200) {
     return true;
-  } else if (response.statusCode == 417 || response.statusCode == 409) {
-    return false;
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
 
-Future<bool> getRating({required String rate, required String count}) async {
-  final Uri uri = Uri.parse('${getBaseURL()}/{user_id}/get-rating/');
+Future<bool> getRating(String userTo) async {// under testing
+  final Uri uri = Uri.parse('${getBaseURL()}/$userTo/get-rating/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
-  print(response.statusCode);
   if (response.statusCode == 200) {
-    return true;
-  } else if (response.statusCode == 417 || response.statusCode == 409) {
-    return false;
+    return jsonDecode(response.body);
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
 
-Future<bool> getPayments({
-  required String paymentId,
-  required String amount,
-  required String createdAt,
-  required String fromUserID,
-  required String toUserID,
-  required String currency,
-  required String remarks,
-  required String approvedAt,
-}) async {
-  final Uri uri = Uri.parse('${getBaseURL()}/user/get-payments/');
+Future<bool> getPayments(DateTime startTime, DateTime endTime) async {// under testing
+  startTime = startTime.toUtc();
+  endTime = endTime.toUtc();
   final requestData = {
-    "payment_id": paymentId,
-    "amount": amount,
-    "created_at": createdAt,
-    "from_user_id": fromUserID,
-    "to_user_id": toUserID,
-    "currency": currency,
-    "remarks": remarks,
-    "approved_at": approvedAt
+    "start_time": startTime.toIso8601String(),
+    "end_time": endTime.toIso8601String()
   };
+  final Uri uri = Uri.parse('${getBaseURL()}/user/get-payments/');
   Map<String, String> header = await headers();
   final response =
       await http.post(uri, headers: header, body: jsonEncode(requestData));
-  print(response.statusCode);
   if (response.statusCode == 200) {
-    return true;
-  } else if (response.statusCode == 417 || response.statusCode == 409) {
-    return false;
+    return jsonDecode(response.body);
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
 
-Future<bool> addFeedback(
+Future<bool> addFeedback(// under testing
     {required String fromUserID,
     required String rating,
     required String feedback}) async {

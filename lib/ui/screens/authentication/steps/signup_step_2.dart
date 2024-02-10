@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -15,11 +16,11 @@ class SignUpStep2 extends StatefulWidget {
 class _SignUpStepsScreenState extends State<SignUpStep2> {
   void nextEmployee() async {
     context.read<UserProvider>().employee = true;
-
+    print(await FirebaseAuth.instance.currentUser!.getIdToken());
     context.read<UserProvider>().createUser().then((_) {
       final prefs = context.read<SharedPreferences>();
       prefs.setBool('employee', true);
-      // context.go('/screens/employer/homescreen');
+      context.go('/screens/employer/homescreen');
     });
   }
 

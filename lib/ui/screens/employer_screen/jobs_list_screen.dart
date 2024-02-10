@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:worker_app/ui/widgets/workers/add_job.dart';
 import 'package:worker_app/ui/widgets/workers/heading_text_widget.dart';
 
 class JobsListScreen extends StatefulWidget {
@@ -9,18 +10,34 @@ class JobsListScreen extends StatefulWidget {
 }
 
 class _JobsListScreenState extends State<JobsListScreen> {
+  void showAddJobSheet() {
+    showModalBottomSheet(
+        useSafeArea: true,
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => const AddJobWidget());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+        // appBar: AppBar(
+        //   backgroundColor: const Color.fromARGB(255, 226, 181, 31),
+        //   title: const Text(
+        //     "Jobs",
+        //     style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+        //   ),
+        //   centerTitle: true,
+        // ),
+        floatingActionButton: FloatingActionButton.extended(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-          title: const Text(
-            "Jobs",
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
+          onPressed: showAddJobSheet,
+          label: const Text("Add Job"),
+          icon: const Icon(Icons.add),
         ),
-        backgroundColor: const Color.fromARGB(255, 234, 196, 72),
+        // backgroundColor: Colors.grey.shade50,
         body: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,16 +59,13 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
   late final AnimationController controller;
   bool isExpanded = false;
 
-  ShapeBorder cardShape = const ContinuousRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(20)));
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 250),
     );
     heightFactorAnimation = Tween<double>(
       begin: 0.0,
@@ -66,38 +80,36 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
 
   void toggleTaskItem() {
     if (isExpanded) {
-      setState(() {
-        cardShape = const ContinuousRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)));
-      });
-
       controller.reverse();
     } else {
       controller.forward();
-
-      setState(() {
-        cardShape = const ContinuousRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20)));
-      });
     }
     isExpanded = !isExpanded;
-
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
       child: Column(
         children: [
+          Container(
+            width: MediaQuery.sizeOf(context).width,
+            height: 200,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+            child: Image.asset(
+              'assets/images/jobs4.png',
+              height: 100,
+            ),
+          ),
           InkWell(
-            onTap: () => toggleTaskItem(),
+            onTap: toggleTaskItem,
             child: Card(
-              shape: cardShape,
+              shape: const ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
               margin: const EdgeInsets.symmetric(vertical: 1.5, horizontal: 4),
               color: const Color.fromARGB(255, 226, 181, 31),
+              surfaceTintColor: Colors.transparent,
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -109,6 +121,7 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
                       children: [
                         Icon(
                           Icons.info_outlined,
+                          size: 30,
                         ),
                         SizedBox(
                           width: 10,
@@ -116,12 +129,12 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
                         Text(
                           "Fix The Roof",
                           style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 16),
+                              fontWeight: FontWeight.bold, fontSize: 22),
                         ),
                       ],
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Row(children: [
                       const Icon(Icons.person),
@@ -147,60 +160,31 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
                                         fontWeight: FontWeight.normal)),
                               ])),
                     ]),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(children: [
-                      const Icon(Icons.punch_clock),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      RichText(
-                          textAlign: TextAlign.left,
-                          text: const TextSpan(
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              text: "Deadline : ",
-                              children: [
-                                WidgetSpan(
-                                    child: SizedBox(
-                                  width: 10,
-                                )),
-                                TextSpan(
-                                    text: "19/02/2024",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal)),
-                              ])),
-                    ]),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(children: [
-                      const Icon(Icons.lock_clock),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      RichText(
-                          textAlign: TextAlign.left,
-                          text: const TextSpan(
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              text: "Tasks : ",
-                              children: [
-                                WidgetSpan(
-                                    child: SizedBox(
-                                  width: 10,
-                                )),
-                                TextSpan(
-                                    text: "4/5",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal)),
-                              ])),
-                    ]),
+
+                    // Row(children: [
+                    //   const Icon(Icons.lock_clock),
+                    //   const SizedBox(
+                    //     width: 10,
+                    //   ),
+                    //   RichText(
+                    //       textAlign: TextAlign.left,
+                    //       text: const TextSpan(
+                    //           style: TextStyle(
+                    //               color: Colors.black,
+                    //               fontSize: 16,
+                    //               fontWeight: FontWeight.w500),
+                    //           text: "Tasks : ",
+                    //           children: [
+                    //             WidgetSpan(
+                    //                 child: SizedBox(
+                    //               width: 10,
+                    //             )),
+                    //             TextSpan(
+                    //                 text: "4/5",
+                    //                 style: TextStyle(
+                    //                     fontWeight: FontWeight.normal)),
+                    //           ])),
+                    // ]),
                     const SizedBox(
                       height: 10,
                     ),
@@ -211,98 +195,114 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
                       ),
                       RichText(
                           textAlign: TextAlign.left,
-                          text: const TextSpan(
-                              style: TextStyle(
+                          text: TextSpan(
+                              style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500),
                               text: "Status : ",
                               children: [
-                                WidgetSpan(
+                                const WidgetSpan(
                                     child: SizedBox(
                                   width: 10,
                                 )),
-                                TextSpan(
-                                    text: "Active",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal))
+                                WidgetSpan(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4)),
+                                        color:
+                                            Color.fromARGB(255, 234, 196, 72)),
+                                    child: const Text(
+                                      "Active",
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 23, 67, 25),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
                               ])),
-                      const Spacer(),
-                      IconButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              shape: const CircleBorder()),
-                          onPressed: () {},
-                          icon: const Icon(Icons.remove)),
-                      IconButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              shape: const CircleBorder()),
-                          onPressed: () {},
-                          icon: const Icon(Icons.check)),
                     ]),
+
+                    SizeTransition(
+                      sizeFactor: heightFactorAnimation,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                color: Color.fromARGB(255, 234, 196, 72)),
+                            child: const Text(
+                              "Description",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 5),
+                            child: Text(
+                              "You have to collect some material and fix the roof. You have to bring tools they will not be provided",
+                              style: TextStyle(fontSize: 15),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                shape: ContinuousRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5))),
+                            onPressed: () {},
+                            label: const Text(
+                              "Remove",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            icon: const Icon(
+                              Icons.remove,
+                              color: Colors.black,
+                            )),
+                        ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                shape: ContinuousRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5))),
+                            onPressed: () {},
+                            label: const Text(
+                              "Complete",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            icon: const Icon(
+                              Icons.check,
+                              color: Colors.black,
+                            )),
+                      ],
+                    )
                   ],
                 ),
               ),
             ),
           ),
-          SizeTransition(
-              sizeFactor: heightFactorAnimation, child: const TaskItem()),
-          SizeTransition(
-              sizeFactor: heightFactorAnimation,
-              child: const TaskItem(
-                last: true,
-              )),
         ],
       ),
     );
-  }
-}
-
-class TaskItem extends StatelessWidget {
-  const TaskItem({super.key, this.last = false});
-
-  final bool last;
-
-  @override
-  Widget build(BuildContext context) {
-    late final ShapeBorder cardShape;
-
-    if (last) {
-      cardShape = const ContinuousRectangleBorder(
-          borderRadius: BorderRadius.only(
-        bottomRight: Radius.circular(20),
-        bottomLeft: Radius.circular(20),
-      ));
-    } else {
-      cardShape = const ContinuousRectangleBorder();
-    }
-
-    return Card(
-        margin: const EdgeInsets.symmetric(vertical: 1.5, horizontal: 4),
-        shape: cardShape,
-        color: const Color.fromARGB(255, 226, 181, 31),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          ListTile(
-            dense: true,
-            leading: const Icon(Icons.info),
-            title: const Text("Pick up the material"),
-            subtitle: RichText(
-              text: const TextSpan(
-                  text: "Deadline: ",
-                  style: TextStyle(color: Colors.black, fontSize: 12),
-                  children: [
-                    TextSpan(
-                      text: "23 Jan, 1PM",
-                    )
-                  ]),
-            ),
-            trailing: IconButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red, shape: const CircleBorder()),
-                onPressed: () {},
-                icon: const Icon(Icons.remove)),
-          )
-        ]));
   }
 }

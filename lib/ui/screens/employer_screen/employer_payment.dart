@@ -99,9 +99,9 @@ class _PaymentCardState extends State<PaymentCard>
       onTap: toggleExpand,
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        color: Colors.white,
+        // color: Colors.white,
         surfaceTintColor: Colors.transparent,
-        // color: const Color.fromARGB(255, 234, 196, 72),
+        color: Colors.grey.shade200,
         shadowColor: Colors.transparent,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
@@ -196,10 +196,11 @@ class AddPaymentWidget extends StatelessWidget {
       width: MediaQuery.sizeOf(context).width,
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-        color: Color.fromRGBO(234, 196, 72, 1),
-      ),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          color: Colors.white
+          // color: Color.fromRGBO(234, 196, 72, 1),
+          ),
       child: SingleChildScrollView(
           child: Padding(
         padding:
@@ -241,7 +242,7 @@ class AddPaymentWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 filled: true,
-                fillColor: const Color.fromARGB(255, 226, 181, 31),
+                fillColor: const Color(0xFFfafafa),
               ),
             ),
             const SizedBox(
@@ -275,7 +276,7 @@ class AddPaymentWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 filled: true,
-                fillColor: const Color.fromARGB(255, 226, 181, 31),
+                fillColor: const Color(0xFFfafafa),
               ),
             ),
             const SizedBox(
@@ -301,7 +302,7 @@ class AddPaymentWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   filled: true,
-                  fillColor: const Color.fromARGB(255, 226, 181, 31),
+                  fillColor: const Color(0xFFfafafa),
                 ),
                 items: const [DropdownMenuItem(child: Text('Ramesh'))],
                 onChanged: (aa) {}),
@@ -328,7 +329,7 @@ class AddPaymentWidget extends StatelessWidget {
             //       borderRadius: BorderRadius.circular(8),
             //     ),
             //     filled: true,
-            //     fillColor: const Color.fromARGB(255, 226, 181, 31),
+            //     fillColor: Color(0xFAFAFA),
             //   ),
             // ),
             const SizedBox(
@@ -367,7 +368,7 @@ class AddPaymentWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 filled: true,
-                fillColor: const Color.fromARGB(255, 226, 181, 31),
+                fillColor: const Color(0xFFfafafa),
               ),
             ),
             const SizedBox(
@@ -379,7 +380,7 @@ class AddPaymentWidget extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () => Navigator.pop(context),
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: const Color(0xFFfafafa),
                         elevation: 0,
                         side: const BorderSide(color: Colors.black),
                         shape: RoundedRectangleBorder(

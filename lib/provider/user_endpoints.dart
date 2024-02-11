@@ -45,9 +45,9 @@ Future<bool> createUserOnBackend(
   }
 }
 
-Future<dynamic> getUser(// under testing
+Future<dynamic> getUser(
     ) async {
-  final Uri uri = Uri.parse('${getBaseURL()}/get-user/');
+  final Uri uri = Uri.parse('${getBaseURL()}/user/get-user/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
@@ -58,8 +58,8 @@ Future<dynamic> getUser(// under testing
   }
 }
 
-Future<bool> addRating(String userTo, String rate, String comment) async {// under testing
-  final Uri uri = Uri.parse('${getBaseURL()}/$userTo/add-rating/');
+Future<bool> addRating(String userTo, int rate, String comment) async {
+  final Uri uri = Uri.parse('${getBaseURL()}/user/$userTo/add-rating/');
   final requestData = {"rate": rate, "comment": comment};
   Map<String, String> header = await headers();
   final response =
@@ -67,14 +67,16 @@ Future<bool> addRating(String userTo, String rate, String comment) async {// und
   print(response.statusCode);
   if (response.statusCode == 200) {
     return true;
+  } else if(response.statusCode == 500){
+    return false;
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
 
-Future<bool> getRating(String userTo) async {// under testing
-  final Uri uri = Uri.parse('${getBaseURL()}/$userTo/get-rating/');
+Future<dynamic> getRating(String userID) async {
+  final Uri uri = Uri.parse('${getBaseURL()}/user/$userID/get-rating/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
@@ -85,7 +87,7 @@ Future<bool> getRating(String userTo) async {// under testing
   }
 }
 
-Future<bool> getPayments(DateTime startTime, DateTime endTime) async {// under testing
+Future<List<dynamic>> getPayments(DateTime startTime, DateTime endTime) async {
   startTime = startTime.toUtc();
   endTime = endTime.toUtc();
   final requestData = {
@@ -104,24 +106,17 @@ Future<bool> getPayments(DateTime startTime, DateTime endTime) async {// under t
   }
 }
 
-Future<bool> addFeedback(// under testing
-    {required String fromUserID,
-    required String rating,
-    required String feedback}) async {
+Future<bool> addFeedback(int rating, String feedback) async {
   final Uri uri = Uri.parse('${getBaseURL()}/user/add-feedback/');
   final requestData = {
-    "from_user_id": fromUserID,
-    "rating": rating,
-    "feedback": feedback
+    "rate": rating,
+    "comment": feedback
   };
   Map<String, String> header = await headers();
   final response =
       await http.post(uri, headers: header, body: jsonEncode(requestData));
-  print(response.statusCode);
   if (response.statusCode == 200) {
     return true;
-  } else if (response.statusCode == 417 || response.statusCode == 409) {
-    return false;
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');

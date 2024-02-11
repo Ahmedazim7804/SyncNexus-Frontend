@@ -15,7 +15,8 @@ enum JobStatus {
 
 class JobCubit extends Cubit<JobState> {
   JobCubit() : super(JobLoading());
-  Job job = Job(title: "Fix the roof", deadline: "Today");
+  Job job = Job(
+      title: "Fix the roof", desc: "Today", amount: 'sd', employerId: 'asdas');
   bool isJobActive = false;
   late JobStatus jobStatus;
 
@@ -36,14 +37,5 @@ class JobCubit extends Cubit<JobState> {
     }
   }
 
-  void finishedATask(WorkerTask task) {
-    job.tasks.remove(task);
-    if (job.tasks.isNotEmpty) {
-      jobStatus = JobStatus.active;
-      emit(JobLoaded());
-    } else {
-      jobStatus = JobStatus.completed;
-      emit(JobCompleted());
-    }
-  }
+  void finishedATask(WorkerTask task) {}
 }

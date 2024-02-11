@@ -7,7 +7,7 @@ import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/models/payment_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/provider/user_endpoints.dart';
-import 'package:worker_app/ui/widgets/workers/heading_text_widget.dart';
+import 'package:worker_app/ui/screens/employe_screen/widgets/workers/heading_text_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 

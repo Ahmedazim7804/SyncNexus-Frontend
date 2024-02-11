@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:worker_app/provider/uid_provider.dart';
-import 'package:worker_app/ui/widgets/overlay_widget.dart';
+import 'package:worker_app/widgets/overlay_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -18,6 +21,66 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final OverlayPortalController overlayPortalController =
       OverlayPortalController();
   late final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showPermissionRequestDialog();
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void showPermissionRequestDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text(
+            "Permission Request",
+            style:
+                GoogleFonts.urbanist(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+          content: Text(
+            "This is app need Location permission to work. Please allow permission to continue to use app.",
+            style: GoogleFonts.urbanist(fontSize: 16),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                requestPermission();
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 234, 196, 72),
+                  shape: ContinuousRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+              child: const Text(
+                "Allow",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void requestPermission() async {
+    if (await Permission.location.isPermanentlyDenied) {
+      openAppSettings();
+      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    }
+
+    Permission.locationWhenInUse.request().then((permissionStatus) {
+      if (permissionStatus == PermissionStatus.denied ||
+          permissionStatus == PermissionStatus.permanentlyDenied) {
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      }
+    });
+  }
 
   void signInWithGoogle() async {
     overlayPortalController.show();
@@ -44,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       } else {
         overlayPortalController.hide();
-        context.go('/screens/employer/homescreen');
+        context.go('/screens/worker/homescreen');
       }
     });
   }

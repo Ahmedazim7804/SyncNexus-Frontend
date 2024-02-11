@@ -6,11 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/router/auth_listenable.dart';
-import 'package:worker_app/ui/screens/authentication/otp_screen.dart';
 import 'package:worker_app/ui/screens/authentication/signup_screen.dart';
-import 'package:worker_app/ui/screens/authentication/steps/signup_step_1.dart';
-import 'package:worker_app/ui/screens/authentication/steps/signup_step_2.dart';
-import 'package:worker_app/ui/screens/authentication/steps/user_details_screen.dart';
+import 'package:worker_app/ui/screens/authentication/user_details_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employee_tasks_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employees_list_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_homescreen.dart';
@@ -19,7 +16,9 @@ import 'package:worker_app/ui/screens/employer_screen/employer_root_scaffold.dar
 import 'package:worker_app/ui/screens/employer_screen/jobs_list_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/profile_screen.dart';
 
-import 'package:worker_app/ui/screens/worker_screen/worker_home.dart';
+import 'package:worker_app/ui/screens/employe_screen/employee_homescreen.dart';
+import 'package:worker_app/ui/screens/employe_screen/employee_jobs_screen.dart';
+import 'package:worker_app/ui/screens/employe_screen/employee_root_scaffold.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorEmployerDashboardKey =
@@ -30,14 +29,17 @@ final _shellNavigatorEmployerPaymentKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellEmployerPayment');
 final _shellNavigatorEmployerProfileKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellEmployerProfile');
+final _shellNavigatorEmployeeDashboardKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellEmployeeDashboard');
+final _shellNavigatorEmployeeJobsKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellEmployeeProfile');
 
 class MyAppRouter {
   static AuthListen authListen = AuthListen();
   static GoRouter goRouter = GoRouter(
       navigatorKey: _rootNavigatorKey,
       refreshListenable: authListen,
-      initialLocation:
-          '/screens/authentication/other', //'/screens/authentication/signup',
+      initialLocation: '/screens/authentication/signup',
       redirect: (context, state) {
         if (!authListen.isSignedIn) {
           if (authListen.user != null) {
@@ -49,10 +51,10 @@ class MyAppRouter {
               if (context.read<SharedPreferences>().getBool('employee')!) {
                 return '/screens/worker/homescreen';
               } else {
-                return '/screens/employer/homescreen';
+                return '/screens/worker/homescreen';
               }
             } catch (e) {
-              return '/screens/employer/homescreen';
+              return '/screens/worker/homescreen';
             }
           } else {
             authListen.isSignedIn = true;
@@ -118,6 +120,29 @@ class MyAppRouter {
                     ),
                   ]),
             ]),
+        StatefulShellRoute.indexedStack(
+            builder: (context, state, child) =>
+                EmployeeRootScaffold(child: child),
+            branches: [
+              StatefulShellBranch(
+                  navigatorKey: _shellNavigatorEmployeeDashboardKey,
+                  routes: [
+                    GoRoute(
+                      path: '/screens/worker/homescreen',
+                      pageBuilder: (context, state) =>
+                          const MaterialPage(child: WorkerHomeScreen()),
+                    ),
+                  ]),
+              StatefulShellBranch(
+                  navigatorKey: _shellNavigatorEmployeeJobsKey,
+                  routes: [
+                    GoRoute(
+                      path: '/screens/employee/jobs',
+                      pageBuilder: (context, state) =>
+                          const MaterialPage(child: EmployeeJobsScreen()),
+                    ),
+                  ]),
+            ]),
         GoRoute(
           path: '/screens/authentication/signup',
           pageBuilder: (context, state) =>
@@ -127,27 +152,6 @@ class MyAppRouter {
           path: '/screens/authentication/other',
           pageBuilder: (context, state) =>
               const MaterialPage(child: OthersDetailScreen()),
-        ),
-        GoRoute(
-            name: '/screens/authentication/signup/steps/1',
-            path: '/screens/authentication/signup/steps/1/:uid',
-            pageBuilder: (context, state) {
-              String uid = state.pathParameters['uid']!;
-              return MaterialPage(child: SignUpStep1(uid: uid));
-            }),
-        GoRoute(
-            path: '/screens/authentication/signup/steps/2',
-            pageBuilder: (context, state) {
-              return const MaterialPage(child: SignUpStep2());
-            }),
-        GoRoute(
-            path: '/screens/authentication/otp',
-            pageBuilder: (context, state) =>
-                const MaterialPage(child: OtpScreen())),
-        GoRoute(
-          path: '/screens/worker/homescreen',
-          pageBuilder: (context, state) =>
-              const MaterialPage(child: WorkerHomeScreen()),
         ),
       ]);
 }

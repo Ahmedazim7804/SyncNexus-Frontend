@@ -22,8 +22,14 @@ import 'package:worker_app/ui/screens/employer_screen/profile_screen.dart';
 import 'package:worker_app/ui/screens/worker_screen/worker_home.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorEmployerKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shellEmployer');
+final _shellNavigatorEmployerDashboardKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellEmployerDashboard');
+final _shellNavigatorEmployerJobsKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellEmployerJobs');
+final _shellNavigatorEmployerPaymentKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellEmployerPayment');
+final _shellNavigatorEmployerProfileKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellEmployerProfile');
 
 class MyAppRouter {
   static AuthListen authListen = AuthListen();
@@ -62,22 +68,12 @@ class MyAppRouter {
                 EmployerRootScaffold(child: child),
             branches: [
               StatefulShellBranch(
-                  navigatorKey: _shellNavigatorEmployerKey,
+                  navigatorKey: _shellNavigatorEmployerDashboardKey,
                   routes: [
                     GoRoute(
                       path: '/screens/employer/employees',
                       pageBuilder: (context, state) =>
                           const MaterialPage(child: EmployeesListScreen()),
-                    ),
-                    GoRoute(
-                      path: '/screens/employer/jobs',
-                      pageBuilder: (context, state) =>
-                          const MaterialPage(child: JobsListScreen()),
-                    ),
-                    GoRoute(
-                      path: '/screens/employer/profile',
-                      pageBuilder: (context, state) =>
-                          const MaterialPage(child: EmployerProfileScreen()),
                     ),
                     GoRoute(
                         path: '/screens/employer/employee',
@@ -93,12 +89,34 @@ class MyAppRouter {
                       pageBuilder: (context, state) =>
                           const MaterialPage(child: EmployerHomeScreen()),
                     ),
+                  ]),
+              StatefulShellBranch(
+                  navigatorKey: _shellNavigatorEmployerJobsKey,
+                  routes: [
+                    GoRoute(
+                      path: '/screens/employer/jobs',
+                      pageBuilder: (context, state) =>
+                          const MaterialPage(child: JobsListScreen()),
+                    ),
+                  ]),
+              StatefulShellBranch(
+                  navigatorKey: _shellNavigatorEmployerPaymentKey,
+                  routes: [
                     GoRoute(
                       path: '/screens/employer/payment',
                       pageBuilder: (context, state) =>
                           const MaterialPage(child: EmployerPaymentScreen()),
                     ),
-                  ])
+                  ]),
+              StatefulShellBranch(
+                  navigatorKey: _shellNavigatorEmployerProfileKey,
+                  routes: [
+                    GoRoute(
+                      path: '/screens/employer/profile',
+                      pageBuilder: (context, state) =>
+                          const MaterialPage(child: EmployerProfileScreen()),
+                    ),
+                  ]),
             ]),
         GoRoute(
           path: '/screens/authentication/signup',

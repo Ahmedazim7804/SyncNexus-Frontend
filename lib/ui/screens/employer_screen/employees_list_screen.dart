@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:worker_app/bloc/cubit/employer_data_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
-import 'package:worker_app/provider/employers_data_provider.dart';
 
 class EmployeesListScreen extends StatefulWidget {
   const EmployeesListScreen({super.key});
@@ -14,7 +14,7 @@ class EmployeesListScreen extends StatefulWidget {
 
 class _EmployeesListScreenState extends State<EmployeesListScreen> {
   late List<Employee> employeesList =
-      context.watch<EmployersDataProvider>().employeesList;
+      context.watch<EmployerDataCubit>().employeesList;
 
   @override
   Widget build(BuildContext context) {

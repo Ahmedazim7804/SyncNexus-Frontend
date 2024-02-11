@@ -140,11 +140,8 @@ Future<bool> addJobs(String description, String title, double latitude,
 Future<bool> removeEmployee(String employeeID) async {
   final Uri uri = Uri.parse('${getBaseURL()}/$employeeID/remove-employee/');
   Map<String, String> header = await headers();
-  final requestData = {
-    "employer_id": employeeID
-  };
   final response =
-  await http.post(uri, headers: header, body: jsonEncode(requestData));
+  await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return true;
   } else {

@@ -43,7 +43,7 @@ void main() {
   group('addEmployee', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
-      await addEmployee("1824b2de-bc70-470c-a80f-f52c9da8588e", "Manager");
+          await addEmployee("1824b2de-bc70-470c-a80f-f52c9da8588e", "Manager");
       expect(result == true || result == false, true);
     });
   });
@@ -106,7 +106,7 @@ void main() {
   group('getEmployeePayments', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
-      await getEmployeePayments("1824b2de-bc70-470c-a80f-f52c9da8588e");
+          await getEmployeePayments("1824b2de-bc70-470c-a80f-f52c9da8588e");
       print(result);
       expect(Null != result, true);
     });
@@ -114,7 +114,7 @@ void main() {
   group('addFeedback', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
-      await addFeedback(4, "I want to pay to employee by app only.");
+          await addFeedback(4, "I want to pay to employee by app only.");
       expect(true == result, true);
     });
   });
@@ -136,7 +136,7 @@ void main() {
   group('addRating', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
-      await addRating("1824b2de-bc70-470c-a80f-f52c9da8588e", 4, "");
+          await addRating("1824b2de-bc70-470c-a80f-f52c9da8588e", 4, "");
       expect(true == result, true);
     });
     test('returns true if HTTP request succeeds', () async {
@@ -191,7 +191,7 @@ void main() {
   group('approvePayment', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
-      await approvePayment("3228feed-d782-4075-a8f2-360224be3b51");
+          await approvePayment("3228feed-d782-4075-a8f2-360224be3b51");
       expect(true == result, true);
     });
   });

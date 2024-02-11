@@ -151,6 +151,45 @@ Future<bool> removeEmployee(String employeeID) async {
   }
 }
 
+Future<bool> deleteTask(String taskID) async {
+  final Uri uri = Uri.parse('${getBaseURL()}/employer/$taskID/delete-task/');
+  Map<String, String> header = await headers();
+  final response =
+  await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
+  }
+}
+
+Future<bool> deleteJob(String jobID) async {
+  final Uri uri = Uri.parse('${getBaseURL()}/employer/$jobID/delete-job/');
+  Map<String, String> header = await headers();
+  final response =
+  await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
+  }
+}
+
+Future<bool> completeJob(String jobID) async {
+  final Uri uri = Uri.parse('${getBaseURL()}/employer/$jobID/complete-job/');
+  Map<String, String> header = await headers();
+  final response =
+  await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
+  }
+}
+
 Future<bool> addPayments(
     String employeeID, String remarks, String currency, int amount) async {
   final Uri uri =
@@ -174,6 +213,19 @@ Future<bool> addPayments(
 Future<List<dynamic>> getEmployeePayments(String employeeID) async {
   final Uri uri =
       Uri.parse('${getBaseURL()}/employer/$employeeID/get-payment/');
+  Map<String, String> header = await headers();
+  final response = await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
+  }
+}
+
+Future<List<dynamic>> getPostedJobs() async {
+  final Uri uri =
+  Uri.parse('${getBaseURL()}/employer/get-jobs/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {

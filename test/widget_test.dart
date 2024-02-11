@@ -254,4 +254,12 @@ void main() {
       expect({} != result, true);
     });
   });
+  group('searchUserByID', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await getUserByID("8dc0ce60-c48c-48bc-8bf5-6373b658cbe8");
+      print(result);
+      expect({} != result, true);
+    });
+  });
 }

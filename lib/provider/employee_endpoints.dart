@@ -93,7 +93,7 @@ Future<bool> addLocation(
 }
 
 Future<List<dynamic>> getJobs(double locationLat, double locationLong) async {
-  final Uri uri = Uri.parse('${getBaseURL()}/employee/get-jobs/');
+  final Uri uri = Uri.parse('${getBaseURL()}/employee/find-jobs/');
   Map<String, String> header = await headers();
   final requestData = {
     "location_lat": locationLat,

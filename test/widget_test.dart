@@ -217,10 +217,39 @@ void main() {
       expect(true == result, true);
     });
   });
+  group('deleteTask', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await deleteTask("2ab3d493-a877-4f86-bd16-91934b0a4acc");
+      expect(true == result, true);
+    });
+  });
+  group('deleteJob', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await deleteJob("b8ee59fb-5ccc-40e4-9c1c-d5dc8c17a5e5");
+      expect(true == result, true);
+    });
+  });
+  group('completeJob', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await completeJob("51d42b59-2eae-4a41-bbb7-f1dd72f31162");
+      expect(true == result, true);
+    });
+  });
   group('searchEmployeeByEmail', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
       await searchByEmail("apple@gmail.com");
+      print(result);
+      expect({} != result, true);
+    });
+  });
+  group('getEmployerJobs', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await getPostedJobs();
       print(result);
       expect({} != result, true);
     });

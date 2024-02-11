@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 
-enum TaskStatus {
-  pending,
-  completed,
-}
+enum TaskStatus { pending, completed, deleted }
 
 class WorkerTask extends Equatable {
-  WorkerTask({required this.task, required this.deadline});
+  WorkerTask(
+      {required this.task,
+      required this.deadline,
+      this.status = TaskStatus.pending});
 
   final String task;
   final String deadline;
-  TaskStatus taskStatus = TaskStatus.pending;
+  TaskStatus status;
 
   @override
   // TODO: implement props

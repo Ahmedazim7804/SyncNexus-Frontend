@@ -122,3 +122,15 @@ Future<bool> addFeedback(int rating, String feedback) async {
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
+
+Future<dynamic> getUserByID(String userID) async {
+  final Uri uri = Uri.parse('${getBaseURL()}/user/$userID/fetch-user-by-id/');
+  Map<String, String> header = await headers();
+  final response = await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
+  }
+}

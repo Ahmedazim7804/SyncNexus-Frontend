@@ -1,28 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
-import 'package:worker_app/ui/screens/employer_screen/employees_list_screen.dart';
 
-class AddTaskWidget extends StatefulWidget {
-  const AddTaskWidget({super.key});
+class AddJobWidget extends StatelessWidget {
+  const AddJobWidget({super.key});
 
-  @override
-  State<AddTaskWidget> createState() => _AddTaskWidgetState();
-}
-
-class _AddTaskWidgetState extends State<AddTaskWidget> {
-  List<Employee> employeesList = [];
-
-  @override
-  void initState() {
-    getMyEmployees();
-    // TODO: implement initState
-    super.initState();
-  }
-
-  void getMyEmployees() async {}
+  void addJob() {}
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +27,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Text("Add New Task",
+              child: Text("Add New Job",
                   style: GoogleFonts.urbanist(
                       fontSize: 24, fontWeight: FontWeight.bold)),
             ),
@@ -83,29 +66,89 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
               height: 20,
             ),
             Text(
-              "Employee",
+              "Payment (INR)",
               style: GoogleFonts.urbanist(
                   fontSize: 18, fontWeight: FontWeight.w600),
             ),
-            DropdownButtonFormField(
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  filled: true,
-                  fillColor: const Color(0xFFfafafa),
+            TextField(
+              decoration: InputDecoration(
+                labelText: '0',
+                labelStyle: const TextStyle(
+                  // color: Colors.black,
+                  fontSize: 16,
+                  fontFamily: 'Epilogue',
+                  fontWeight: FontWeight.w500,
+                  height: 0.06,
                 ),
-                items: const [DropdownMenuItem(child: Text('Ramesh'))],
-                onChanged: (aa) {}),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                filled: true,
+                fillColor: const Color(0xFFfafafa),
+              ),
+            ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // Text(
+            //   "Paid To",
+            //   style: GoogleFonts.urbanist(
+            //       fontSize: 18, fontWeight: FontWeight.w600),
+            // ),
+            // DropdownButtonFormField(
+            //     decoration: InputDecoration(
+            //       floatingLabelBehavior: FloatingLabelBehavior.never,
+            //       contentPadding:
+            //           const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            //       border: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(8),
+            //       ),
+            //       enabledBorder: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(8),
+            //       ),
+            //       focusedBorder: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(8),
+            //       ),
+            //       filled: true,
+            //       fillColor: const Color(0xFFfafafa),
+            //     ),
+            //     items: const [DropdownMenuItem(child: Text('Ramesh'))],
+            //     onChanged: (aa) {}),
+            // TextField(
+            //   decoration: InputDecoration(
+            //     labelText: 'Paid To',
+            //     labelStyle: const TextStyle(
+            //       // color: Colors.black,
+            //       fontSize: 16,
+            //       fontFamily: 'Epilogue',
+            //       fontWeight: FontWeight.w500,
+            //       height: 0.06,
+            //     ),
+            //     floatingLabelBehavior: FloatingLabelBehavior.never,
+            //     contentPadding:
+            //         const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(8),
+            //     ),
+            //     enabledBorder: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(8),
+            //     ),
+            //     focusedBorder: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(8),
+            //     ),
+            //     filled: true,
+            //     fillColor: Color(0xFAFAFA),
+            //   ),
+            // ),
             const SizedBox(
               height: 20,
             ),
@@ -164,7 +207,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                         style: GoogleFonts.urbanist(
                             color: Colors.black, fontWeight: FontWeight.bold))),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: addJob,
                     style: ElevatedButton.styleFrom(
                         elevation: 0,
                         backgroundColor:

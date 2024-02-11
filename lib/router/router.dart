@@ -49,12 +49,12 @@ class MyAppRouter {
 
             try {
               if (context.read<SharedPreferences>().getBool('employee')!) {
-                return '/screens/worker/homescreen';
+                return '/screens/employer/homescreen';
               } else {
-                return '/screens/worker/homescreen';
+                return '/screens/employer/homescreen';
               }
             } catch (e) {
-              return '/screens/worker/homescreen';
+              return '/screens/employer/homescreen';
             }
           } else {
             authListen.isSignedIn = true;

@@ -20,6 +20,15 @@ class EmployeeLocationCubit extends Cubit<EmployeeLocationState> {
 
   LatLong position = LatLong(lat: 0, long: 0);
 
+  void isLocationEnabled() async {
+    final isLocationOn =
+        await Permission.locationWhenInUse.serviceStatus.isEnabled;
+
+    if (isLocationOn) {
+      emit(LocationOn());
+    }
+  }
+
   void sendLocationAfter5Minutes() async {
     final isLocationOn =
         await Permission.locationWhenInUse.serviceStatus.isEnabled;
@@ -32,7 +41,7 @@ class EmployeeLocationCubit extends Cubit<EmployeeLocationState> {
 
       emit(LocationAvailable());
 
-      await addLocation(lat, long);
+      // await addLocation(lat, long);
     } else {
       emit(LocationDisabled());
     }

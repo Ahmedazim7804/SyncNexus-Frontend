@@ -3,18 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/router/auth_listenable.dart';
 import 'package:worker_app/ui/screens/authentication/otp_screen.dart';
 import 'package:worker_app/ui/screens/authentication/signup_screen.dart';
-<<<<<<< HEAD
-import 'package:worker_app/ui/screens/authentication/steps/user_details_screen.dart';
-||||||| e76931d
-=======
-import 'package:worker_app/ui/screens/authentication/steps/other_details_screen.dart';
->>>>>>> 86ceac9
 import 'package:worker_app/ui/screens/authentication/steps/signup_step_1.dart';
 import 'package:worker_app/ui/screens/authentication/steps/signup_step_2.dart';
+import 'package:worker_app/ui/screens/authentication/steps/user_details_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employee_tasks_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employees_list_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_homescreen.dart';
@@ -84,10 +80,14 @@ class MyAppRouter {
                           const MaterialPage(child: EmployerProfileScreen()),
                     ),
                     GoRoute(
-                      path: '/screens/employer/employee',
-                      pageBuilder: (context, state) =>
-                          const MaterialPage(child: EmployeeTaskListScreen()),
-                    ),
+                        path: '/screens/employer/employee',
+                        pageBuilder: (context, state) {
+                          Employee employee = state.extra as Employee;
+                          return MaterialPage(
+                              child: EmployeeTaskListScreen(
+                            employee: employee,
+                          ));
+                        }),
                     GoRoute(
                       path: '/screens/employer/homescreen',
                       pageBuilder: (context, state) =>

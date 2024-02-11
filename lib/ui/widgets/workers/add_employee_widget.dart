@@ -118,39 +118,11 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
                   employee: searchedEmployee[index],
                   overlayController: overlayPortalController,
                 ),
-<<<<<<< HEAD
               )
             ],
           ),
         )),
       ),
-||||||| e76931d
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.check),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightGreen,
-                        shape: const CircleBorder()))
-              ],
-            ),
-            SearchedEmployeeItem(employee: searchedEmployee[0])
-          ],
-        ),
-      )),
-=======
-                IconButton(
-                    onPressed: searchEmployeeOnFirebase,
-                    icon: const Icon(Icons.check),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightGreen,
-                        shape: const CircleBorder()))
-              ],
-            ),
-            SearchedEmployeeItem(employee: searchedEmployee[0])
-          ],
-        ),
-      )),
->>>>>>> 86ceac9
     );
   }
 }

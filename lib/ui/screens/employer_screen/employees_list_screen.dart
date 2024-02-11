@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
+import 'package:worker_app/provider/employers_data_provider.dart';
 
 class EmployeesListScreen extends StatefulWidget {
   const EmployeesListScreen({super.key});
@@ -11,9 +13,11 @@ class EmployeesListScreen extends StatefulWidget {
 }
 
 class _EmployeesListScreenState extends State<EmployeesListScreen> {
+  late List<Employee> employeesList =
+      context.watch<EmployersDataProvider>().employeesList;
+
   @override
   Widget build(BuildContext context) {
-    getEmployees().then((value) => print(value));
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 234, 196, 72),
         appBar: AppBar(
@@ -24,15 +28,11 @@ class _EmployeesListScreenState extends State<EmployeesListScreen> {
           ),
           centerTitle: true,
         ),
-        body: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // EmployeeItem(
-            //   employee: Employee(name: "sss", phone: "sss"),
-            // )
-          ],
+        body: ListView.builder(
+          shrinkWrap: true,
+          itemCount: employeesList.length,
+          itemBuilder: (context, index) =>
+              EmployeeItem(employee: employeesList[index]),
         ));
   }
 }
@@ -56,7 +56,8 @@ class _EmployeeItemState extends State<EmployeeItem> {
         color: Colors.red,
       ),
       child: InkWell(
-        onTap: () => context.push('/screens/employer/employee'),
+        onTap: () =>
+            context.push('/screens/employer/employee', extra: widget.employee),
         child: Container(
             width: MediaQuery.sizeOf(context).width,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -80,19 +81,27 @@ class _EmployeeItemState extends State<EmployeeItem> {
                     const SizedBox(
                       width: 15,
                     ),
-                    RichText(
-                      text: const TextSpan(
-                          text: "Manoj Kumar\n",
-                          style: TextStyle(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.employee.name,
+                          style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.black),
+                        ),
+                        const Wrap(
                           children: [
-                            TextSpan(
-                                text: "Since 19/01/2023",
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.black87))
-                          ]),
+                            // Icon(Icons.phone),
+                            // SizedBox(width: 5),
+                            Text(
+                              '📞 9315082028',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                     const Spacer(),
                     IconButton(
@@ -103,11 +112,6 @@ class _EmployeeItemState extends State<EmployeeItem> {
                         onPressed: () {}),
                   ],
                 ),
-                const ListTile(
-                  // dense: true,
-                  leading: Icon(Icons.phone),
-                  title: Text('9315082028'),
-                )
               ],
             )),
       ),

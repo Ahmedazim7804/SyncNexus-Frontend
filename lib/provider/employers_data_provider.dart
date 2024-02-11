@@ -22,6 +22,7 @@ class EmployersDataProvider extends ChangeNotifier {
             id: employee['employee_id']));
       }
     });
+    notifyListeners();
   }
 
   void getAllJobs() {}

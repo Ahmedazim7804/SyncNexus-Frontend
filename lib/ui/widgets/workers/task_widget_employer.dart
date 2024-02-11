@@ -9,10 +9,10 @@ class TaskWidgetEmployer extends StatelessWidget {
 
   final WorkerTask task;
 
+  void removeTask() {}
+
   @override
   Widget build(BuildContext context) {
-    final bool jobActive = context.read<JobCubit>().isJobActive;
-
     return Card(
         elevation: 4,
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
@@ -34,11 +34,7 @@ class TaskWidgetEmployer extends StatelessWidget {
             trailing: IconButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red, shape: const CircleBorder()),
-                onPressed: () {
-                  if (jobActive) {
-                    context.read<JobCubit>().finishedATask(task);
-                  }
-                },
+                onPressed: () {},
                 icon: const Icon(Icons.remove)),
           )
         ]));

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worker_app/provider/user_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:worker_app/ui/widgets/overlay_widget.dart';
+import 'package:worker_app/widgets/overlay_widget.dart';
 
 class OthersDetailScreen extends StatefulWidget {
   const OthersDetailScreen({super.key});

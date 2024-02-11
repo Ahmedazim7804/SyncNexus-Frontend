@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_job.dart';
-import 'package:worker_app/ui/widgets/workers/heading_text_widget.dart';
+import 'package:worker_app/ui/screens/employe_screen/widgets/workers/heading_text_widget.dart';
 
 class JobsListScreen extends StatefulWidget {
   const JobsListScreen({super.key});

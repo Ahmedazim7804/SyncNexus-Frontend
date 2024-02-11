@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:worker_app/bloc/cubit/job_cubit.dart';
+
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/ui/screens/employer_screen/jobs_list_screen.dart';
-import 'package:worker_app/ui/widgets/workers/task_widget_employee.dart';
-import 'package:worker_app/ui/widgets/workers/task_widget_employer.dart';
+import 'package:worker_app/ui/screens/employe_screen/widgets/workers/task_widget_employee.dart';
+import 'package:worker_app/ui/screens/employe_screen/widgets/workers/task_widget_employer.dart';
 
 class EmployeeTaskListScreen extends StatefulWidget {
   const EmployeeTaskListScreen({super.key, required this.employee});

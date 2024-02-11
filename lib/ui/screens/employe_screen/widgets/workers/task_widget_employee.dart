@@ -11,7 +11,7 @@ class TaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool jobActive = context.read<JobCubit>().isJobActive;
+    const bool jobActive = true; //context.read<JobCubit>().isJobActive;
 
     return Card(
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),

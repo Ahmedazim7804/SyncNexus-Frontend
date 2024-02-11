@@ -8,7 +8,7 @@ import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/provider/uid_provider.dart';
-import 'package:worker_app/ui/widgets/overlay_widget.dart';
+import 'package:worker_app/widgets/overlay_widget.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_employee_widget.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_task.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

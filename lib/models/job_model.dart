@@ -1,14 +1,20 @@
+import 'package:worker_app/bloc/cubit/employee_location_cubit.dart';
 import 'package:worker_app/models/worker_task_model.dart';
 
 class Job {
-  Job({required this.title, required this.deadline});
+  Job(
+      {required this.title,
+      required this.desc,
+      required this.employerId,
+      required this.amount,
+      this.latLong,
+      this.done,
+      this.deleted});
   final String title;
-  final String deadline;
-  late int totalTasks = 0;
-  late int completedTasks = 0;
-
-  List<WorkerTask> tasks = [
-    WorkerTask(task: "Pick up Materials", deadline: "23 Jan, 1PM"),
-    WorkerTask(task: "Fix tire", deadline: "24 Jan, 1PM"),
-  ];
+  final String desc;
+  final String employerId;
+  final String amount;
+  LatLong? latLong;
+  bool? done;
+  bool? deleted;
 }

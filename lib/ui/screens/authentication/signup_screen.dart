@@ -107,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       } else {
         overlayPortalController.hide();
-        context.go('/screens/worker/homescreen');
+        context.go('/screens/employer/homescreen');
       }
     });
   }

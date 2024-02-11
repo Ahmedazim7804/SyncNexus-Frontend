@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_job.dart';
 import 'package:worker_app/ui/screens/employe_screen/widgets/workers/heading_text_widget.dart';
+import 'package:worker_app/widgets/overlay_widget.dart';
 
 class JobsListScreen extends StatefulWidget {
   const JobsListScreen({super.key});
@@ -10,40 +11,39 @@ class JobsListScreen extends StatefulWidget {
 }
 
 class _JobsListScreenState extends State<JobsListScreen> {
+  final OverlayPortalController overlayPortalController =
+      OverlayPortalController();
+
   void showAddJobSheet() {
     showModalBottomSheet(
         useSafeArea: true,
         context: context,
         isScrollControlled: true,
-        builder: (context) => const AddJobWidget());
+        builder: (context) =>
+            AddJobWidget(controller: overlayPortalController));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-        //   title: const Text(
-        //     "Jobs",
-        //     style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-        //   ),
-        //   centerTitle: true,
-        // ),
-        floatingActionButton: FloatingActionButton.extended(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-          onPressed: showAddJobSheet,
-          label: const Text("Add Job"),
-          icon: const Icon(Icons.add),
-        ),
-        // backgroundColor: Colors.grey.shade50,
-        body: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [JobItem()],
-        ));
+    return OverlayPortal(
+      controller: overlayPortalController,
+      overlayChildBuilder: overlayChildBuilder,
+      child: Scaffold(
+          floatingActionButton: FloatingActionButton.extended(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            backgroundColor: const Color.fromARGB(255, 226, 181, 31),
+            onPressed: showAddJobSheet,
+            label: const Text("Add Job"),
+            icon: const Icon(Icons.add),
+          ),
+          body: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [JobItem()],
+          )),
+    );
   }
 }
 

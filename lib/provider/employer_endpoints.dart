@@ -55,7 +55,7 @@ Future<List<dynamic>> getEmployees() async {
 }
 
 Future<dynamic> getEmployee(String employeeID) async {
-  final Uri uri = Uri.parse('${getBaseURL()}/$employeeID/get-employee/');
+  final Uri uri = Uri.parse('${getBaseURL()}/employer/$employeeID/get-employee/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
@@ -112,6 +112,7 @@ Future<dynamic> searchByEmail(String email) async {
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
+    print("${response.body}");
     return {};
   }
 }
@@ -138,7 +139,7 @@ Future<bool> addJobs(String description, String title, double latitude,
 }
 
 Future<bool> removeEmployee(String employeeID) async {
-  final Uri uri = Uri.parse('${getBaseURL()}/$employeeID/remove-employee/');
+  final Uri uri = Uri.parse('${getBaseURL()}/employer/$employeeID/remove-employee/');
   Map<String, String> header = await headers();
   final response =
   await http.get(uri, headers: header);

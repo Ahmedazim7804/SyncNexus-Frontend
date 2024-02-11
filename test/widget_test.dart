@@ -202,4 +202,27 @@ void main() {
       expect(Null == result || Null != result, true);
     });
   });
+  group('getEmployee', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await getEmployee("1824b2de-bc70-470c-a80f-f52c9da8588e");
+      print(result);
+      expect(Null != result, true);
+    });
+  });
+  group('removeEmployee', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await removeEmployee("1824b2de-bc70-470c-a80f-f52c9da8588e");
+      expect(true == result, true);
+    });
+  });
+  group('searchEmployeeByEmail', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await searchByEmail("apple@gmail.com");
+      print(result);
+      expect({} != result, true);
+    });
+  });
 }

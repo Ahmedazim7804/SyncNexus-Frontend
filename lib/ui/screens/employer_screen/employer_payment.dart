@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:worker_app/bloc/cubit/employer_data_cubit.dart';
+import 'package:worker_app/bloc/cubit/employer_payments_cubit.dart';
+import 'package:worker_app/models/employer_model.dart';
+import 'package:worker_app/models/payment_model.dart';
+import 'package:worker_app/provider/employer_endpoints.dart';
+import 'package:worker_app/provider/user_endpoints.dart';
 import 'package:worker_app/ui/widgets/workers/heading_text_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class EmployerPaymentScreen extends StatefulWidget {
   const EmployerPaymentScreen({super.key});
@@ -10,6 +19,8 @@ class EmployerPaymentScreen extends StatefulWidget {
 }
 
 class _EmployerPaymentScreenState extends State<EmployerPaymentScreen> {
+  late final EmployerPaymentsCubit employerPaymentsCubit;
+
   void showPaymentSheet() {
     showModalBottomSheet(
         useSafeArea: true,
@@ -19,31 +30,56 @@ class _EmployerPaymentScreenState extends State<EmployerPaymentScreen> {
   }
 
   @override
+  void initState() {
+    employerPaymentsCubit = EmployerPaymentsCubit();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-        onPressed: showPaymentSheet,
-        label: const Text("Add Payment"),
-        icon: const Icon(Icons.add),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Center(
-              child: Image.asset(
-                'assets/images/payment.png',
-                width: 320,
-                height: 275,
-              ),
-            ),
-            const PaymentCard(),
-            const PaymentCard(),
-          ],
+    return BlocProvider(
+      create: (context) => employerPaymentsCubit,
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          backgroundColor: const Color.fromARGB(255, 226, 181, 31),
+          onPressed: showPaymentSheet,
+          label: const Text("Add Payment"),
+          icon: const Icon(Icons.add),
+        ),
+        body: BlocBuilder<EmployerPaymentsCubit, EmployerPaymentsState>(
+          builder: (context, state) {
+            if (state is EmployerPaymentsLoaded) {
+              List<Payment> payments =
+                  context.read<EmployerPaymentsCubit>().payments;
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Center(
+                      child: Image.asset(
+                        'assets/images/payment.png',
+                        width: 320,
+                        height: 275,
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: payments.length,
+                      itemBuilder: (context, index) =>
+                          PaymentCard(payment: payments[index]),
+                    )
+                  ],
+                ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
         ),
       ),
     );
@@ -51,7 +87,9 @@ class _EmployerPaymentScreenState extends State<EmployerPaymentScreen> {
 }
 
 class PaymentCard extends StatefulWidget {
-  const PaymentCard({super.key});
+  const PaymentCard({super.key, required this.payment});
+
+  final Payment payment;
 
   @override
   State<PaymentCard> createState() => _PaymentCardState();
@@ -127,7 +165,7 @@ class _PaymentCardState extends State<PaymentCard>
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          "Dec 25, 2024 07:15",
+                          widget.payment.createdAt,
                           style: GoogleFonts.urbanist(
                               fontSize: 13,
                               color: Colors.grey.shade900,
@@ -155,7 +193,7 @@ class _PaymentCardState extends State<PaymentCard>
                           size: 20,
                         ),
                         Text(
-                          '128.00',
+                          '${widget.payment.amount.toDouble()}',
                           style: GoogleFonts.urbanist(
                               fontSize: 19, fontWeight: FontWeight.bold),
                         )
@@ -166,15 +204,14 @@ class _PaymentCardState extends State<PaymentCard>
               ),
               SizeTransition(
                 sizeFactor: heightFactorAnimation,
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HeadingText(text: "Notes"),
+                    const HeadingText(text: "Notes"),
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                      child: Text(
-                          "For transportation asdashdkj asdjash jkashdasdjk djsahdjk ashdkj sahkdjk haskj dhskajdhsakj dnash ahsjkd nhasjkd nhasjkd nhndhjdnhsajdhn kasd nhk"),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 8),
+                      child: Text(widget.payment.remarks),
                     ),
                   ],
                 ),
@@ -187,8 +224,56 @@ class _PaymentCardState extends State<PaymentCard>
   }
 }
 
-class AddPaymentWidget extends StatelessWidget {
+class AddPaymentWidget extends StatefulWidget {
   const AddPaymentWidget({super.key});
+
+  @override
+  State<AddPaymentWidget> createState() => _AddPaymentWidgetState();
+}
+
+class _AddPaymentWidgetState extends State<AddPaymentWidget> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  TextEditingController notesController = TextEditingController();
+  late final employeesList = context.read<EmployerDataCubit>().employeesList;
+
+  bool showTitleErrorText = false;
+  bool showAmountErrorText = false;
+
+  String? paidToUid;
+
+  bool get inputIsValid {
+    if (titleController.text.length < 5) {
+      setState(() {
+        showTitleErrorText = true;
+      });
+      return false;
+    }
+
+    final amount = int.tryParse(amountController.text);
+    if (amount == null || amount <= 0) {
+      setState(() {
+        showAmountErrorText = true;
+      });
+      return false;
+    }
+
+    if (paidToUid == null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  void addPayment() {
+    if (inputIsValid) {
+      String title = titleController.text;
+      String amount = amountController.text;
+      String notes = notesController.text;
+
+      addPayments(paidToUid!, notes, 'INR', int.parse(amount));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -220,6 +305,16 @@ class AddPaymentWidget extends StatelessWidget {
                   fontSize: 18, fontWeight: FontWeight.w600),
             ),
             TextField(
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  if (showTitleErrorText) {
+                    setState(() {
+                      showTitleErrorText = false;
+                    });
+                  }
+                }
+              },
+              controller: titleController,
               decoration: InputDecoration(
                 labelText: 'Title',
                 labelStyle: const TextStyle(
@@ -241,6 +336,8 @@ class AddPaymentWidget extends StatelessWidget {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
+                errorText:
+                    showTitleErrorText ? "Please enter valid title" : null,
                 filled: true,
                 fillColor: const Color(0xFFfafafa),
               ),
@@ -254,6 +351,18 @@ class AddPaymentWidget extends StatelessWidget {
                   fontSize: 18, fontWeight: FontWeight.w600),
             ),
             TextField(
+              controller: amountController,
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                final amount = int.tryParse(value);
+                if (amount != null && amount > 0) {
+                  if (showAmountErrorText) {
+                    setState(() {
+                      showAmountErrorText = false;
+                    });
+                  }
+                }
+              },
               decoration: InputDecoration(
                 labelText: '0',
                 labelStyle: const TextStyle(
@@ -275,6 +384,8 @@ class AddPaymentWidget extends StatelessWidget {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
+                errorText:
+                    showAmountErrorText ? "Please enter valid amount." : null,
                 filled: true,
                 fillColor: const Color(0xFFfafafa),
               ),
@@ -304,8 +415,17 @@ class AddPaymentWidget extends StatelessWidget {
                   filled: true,
                   fillColor: const Color(0xFFfafafa),
                 ),
-                items: const [DropdownMenuItem(child: Text('Ramesh'))],
-                onChanged: (aa) {}),
+                items: employeesList
+                    .map((employee) => DropdownMenuItem<String>(
+                          value: employee.id,
+                          child: Text(employee.name),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    paidToUid = value;
+                  }
+                }),
             // TextField(
             //   decoration: InputDecoration(
             //     labelText: 'Paid To',
@@ -341,6 +461,7 @@ class AddPaymentWidget extends StatelessWidget {
                   fontSize: 18, fontWeight: FontWeight.w600),
             ),
             TextField(
+              controller: notesController,
               keyboardType: TextInputType.multiline,
               minLines: 3,
               maxLines: 5,
@@ -389,7 +510,7 @@ class AddPaymentWidget extends StatelessWidget {
                         style: GoogleFonts.urbanist(
                             color: Colors.black, fontWeight: FontWeight.bold))),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: addPayment,
                     style: ElevatedButton.styleFrom(
                         elevation: 0,
                         backgroundColor:

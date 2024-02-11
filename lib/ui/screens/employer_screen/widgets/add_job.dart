@@ -1,12 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
-import 'package:worker_app/ui/screens/employer_screen/employees_list_screen.dart';
 
 class AddJobWidget extends StatelessWidget {
   const AddJobWidget({super.key});
+
+  void addJob() {}
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +207,7 @@ class AddJobWidget extends StatelessWidget {
                         style: GoogleFonts.urbanist(
                             color: Colors.black, fontWeight: FontWeight.bold))),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: addJob,
                     style: ElevatedButton.styleFrom(
                         elevation: 0,
                         backgroundColor:

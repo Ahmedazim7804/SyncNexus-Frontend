@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/employee_location_cubit.dart';
 import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_job.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:worker_app/ui/screens/employe_screen/widgets/workers/heading_text_widget.dart';
 
 class EmployeeJobsScreen extends StatefulWidget {
@@ -26,7 +28,7 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
         title: rawJob['title'],
         desc: rawJob['description'],
         employerId: rawJob['employer_id'],
-        amount: rawJob['amount'],
+        amount: rawJob['amount'].toString(),
       ));
     }
 
@@ -36,41 +38,73 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: MediaQuery.sizeOf(context).width,
-          height: 200,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
-          child: Image.asset(
-            'assets/images/jobs2.png',
-            height: 100,
+        appBar: AppBar(
+          title: Text(
+            "Available Jobs",
+            style:
+                GoogleFonts.urbanist(fontSize: 32, fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          flexibleSpace: Container(
+            color: const Color.fromARGB(255, 234, 196, 72),
           ),
         ),
-        const HeadingText(text: "Available Jobs", size: 32),
-        const SizedBox(
-          height: 20,
-        ),
-        FutureBuilder(
-          future: getNearbyJobs(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return const JobItem();
+        body: BlocBuilder<EmployeeLocationCubit, EmployeeLocationState>(
+          builder: (context, state) {
+            if (state is LocationDisabled) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/map.png',
+                      height: 200,
+                      width: 200,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Please Enable Location",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.urbanist(fontSize: 32),
+                    )
+                  ],
+                ),
+              );
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return FutureBuilder(
+                future: getNearbyJobs(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Job> jobs = snapshot.data!;
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: jobs.length,
+                        itemBuilder: (context, index) => JobItem(
+                          job: jobs[index],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              );
             }
           },
-        )
-      ],
-    ));
+        ));
   }
 }
 
 class JobItem extends StatefulWidget {
-  const JobItem({super.key});
+  const JobItem({super.key, required this.job});
+
+  final Job job;
 
   @override
   State<JobItem> createState() => _JobItemState();
@@ -116,7 +150,7 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
       child: Card(
         shape: const ContinuousRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))),
-        margin: const EdgeInsets.symmetric(vertical: 1.5, horizontal: 4),
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         color: const Color.fromARGB(255, 226, 181, 31),
         surfaceTintColor: Colors.transparent,
         child: Container(
@@ -125,45 +159,73 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.info_outlined,
                     size: 30,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
-                    "Fix The Roof",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                    widget.job.title,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 22),
                   ),
                 ],
               ),
               const SizedBox(
                 height: 10,
               ),
-              Row(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                const Icon(Icons.person),
+                const SizedBox(
+                  width: 10,
+                ),
+                RichText(
+                    overflow: TextOverflow.clip,
+                    textAlign: TextAlign.left,
+                    text: TextSpan(
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        text: "Employer : ",
+                        children: [
+                          const WidgetSpan(
+                              child: SizedBox(
+                            width: 10,
+                          )),
+                          TextSpan(
+                              text: widget.job.employerId,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.normal)),
+                        ])),
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 const Icon(Icons.person),
                 const SizedBox(
                   width: 10,
                 ),
                 RichText(
                     textAlign: TextAlign.left,
-                    text: const TextSpan(
-                        style: TextStyle(
+                    text: TextSpan(
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
-                        text: "Employer : ",
+                        text: "Amount : ",
                         children: [
-                          WidgetSpan(
+                          const WidgetSpan(
                               child: SizedBox(
                             width: 10,
                           )),
                           TextSpan(
-                              text: "Ramesh",
-                              style: TextStyle(fontWeight: FontWeight.normal)),
+                              text: widget.job.amount.toString(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.normal)),
                         ])),
               ]),
               SizeTransition(
@@ -201,20 +263,17 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
               ),
               Align(
                 alignment: Alignment.centerRight,
-                child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        shape: ContinuousRectangleBorder(
-                            borderRadius: BorderRadius.circular(5))),
-                    onPressed: () {},
-                    label: const Text(
-                      "Intersted",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    icon: const Icon(
-                      Icons.add,
-                      color: Colors.black,
-                    )),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(5))),
+                  onPressed: () {},
+                  child: const Text(
+                    "Apply",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
               ),
             ],
           ),

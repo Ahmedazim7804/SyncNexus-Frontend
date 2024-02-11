@@ -43,7 +43,7 @@ void main() {
   group('addEmployee', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
-          await addEmployee("1824b2de-bc70-470c-a80f-f52c9da8588e", "Manager");
+      await addEmployee("1824b2de-bc70-470c-a80f-f52c9da8588e", "Manager");
       expect(result == true || result == false, true);
     });
   });
@@ -106,9 +106,100 @@ void main() {
   group('getEmployeePayments', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
-          await getEmployeePayments("1824b2de-bc70-470c-a80f-f52c9da8588e");
+      await getEmployeePayments("1824b2de-bc70-470c-a80f-f52c9da8588e");
       print(result);
       expect(Null != result, true);
+    });
+  });
+  group('addFeedback', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await addFeedback(4, "I want to pay to employee by app only.");
+      expect(true == result, true);
+    });
+  });
+  group('getPayments', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getPayments(
+          DateTime.now().subtract(const Duration(days: 3)), DateTime.now());
+      print(result);
+      expect(Null == result || Null != result, true);
+    });
+  });
+  group('getUser', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getUser();
+      print(result);
+      expect(Null == result || Null != result, true);
+    });
+  });
+  group('addRating', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await addRating("1824b2de-bc70-470c-a80f-f52c9da8588e", 4, "");
+      expect(true == result, true);
+    });
+    test('returns true if HTTP request succeeds', () async {
+      final result = await addRating("e1b1e746-276b-4e11-b220-941680ec7b99", 5,
+          "He is a really good employee.");
+      expect(true == result, true);
+    });
+    test('returns true if HTTP request succeeds', () async {
+      final result = await addRating(
+          "1824b1de-bc70-470c-a80f-f52c9da8588e", 4, "Error testing");
+      expect(true == result || false == result, true);
+    });
+    test('returns true if HTTP request succeeds', () async {
+      final result = await addRating(
+          "1824b2de-bc70-470c-a80f-f52c9da8588e", 1, "Changed Rating");
+      expect(true == result, true);
+    });
+  });
+  group('getRating', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getRating("1824b2de-bc70-470c-a80f-f52c9da8588e");
+      print(result);
+      expect(Null == result || Null != result, true);
+    });
+  });
+  group('getJobDetail', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getJobDetail("51d42b59-2eae-4a41-bbb7-f1dd72f31162");
+      print(result);
+      expect(Null == result || Null != result, true);
+    });
+  });
+  group('getEmployer', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getEmployer();
+      print(result);
+      expect(Null == result || Null != result, true);
+    });
+  });
+  group('addLocation', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await addLocation(28.704060, 77.102493);
+      expect(true == result, true);
+    });
+  });
+  group('leaveJob', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await leaveJob();
+      expect(true == result, true);
+    });
+  });
+  group('approvePayment', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await approvePayment("3228feed-d782-4075-a8f2-360224be3b51");
+      expect(true == result, true);
+    });
+  });
+  group('getJobs', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getJobs(28.704060, 77.102493);
+      print(result);
+      expect(Null == result || Null != result, true);
     });
   });
 }

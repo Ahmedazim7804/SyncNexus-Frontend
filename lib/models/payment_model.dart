@@ -1,3 +1,6 @@
+import 'package:worker_app/models/employee_model.dart';
+import 'package:worker_app/models/employer_model.dart';
+
 class Payment {
   Payment({
     required this.paymentId,
@@ -13,8 +16,8 @@ class Payment {
   String paymentId;
   int amount;
 
-  String paidBy;
-  String paidTo;
+  Employer paidBy;
+  Employee paidTo;
 
   String currency;
   String remarks;

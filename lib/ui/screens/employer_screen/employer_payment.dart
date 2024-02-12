@@ -158,7 +158,7 @@ class _PaymentCardState extends State<PaymentCard>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Ramesh Kumar",
+                          widget.payment.paidTo.name,
                           style: GoogleFonts.urbanist(
                               fontSize: 16,
                               color: Colors.black,

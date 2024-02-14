@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worker_app/bloc/cubit/authentication_cubit.dart';
 import 'package:worker_app/bloc/cubit/job_cubit.dart';
 import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/provider/user_provider.dart';
@@ -20,11 +21,13 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   UidProvider uidProvider = UidProvider();
   UserProvider userProvider = UserProvider();
-  FlutterNativeSplash.remove();
 
   runApp(
-    BlocProvider(
-      create: (context) => JobCubit(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => JobCubit()),
+        BlocProvider(create: (_) => AuthenticationCubit()),
+      ],
       child: MultiProvider(
         providers: [
           Provider(create: (_) => prefs),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployerProfileScreen extends StatefulWidget {
   const EmployerProfileScreen({super.key});
@@ -10,19 +11,22 @@ class EmployerProfileScreen extends StatefulWidget {
 class _EmployerProfileScreenState extends State<EmployerProfileScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  bool showNameErrorText = false;
+  bool showPhoneErrorText = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-          title: const Text(
+          backgroundColor: Colors.grey.shade200,
+          title: Text(
             "Profile",
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            style:
+                GoogleFonts.urbanist(fontSize: 32, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
-        backgroundColor: const Color.fromARGB(255, 234, 196, 72),
+        backgroundColor: Colors.grey.shade100,
         body: Stack(
           children: [
             Positioned(
@@ -30,9 +34,9 @@ class _EmployerProfileScreenState extends State<EmployerProfileScreen> {
               child: Container(
                 width: MediaQuery.sizeOf(context).width,
                 height: 120,
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 226, 181, 31),
-                    borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20))),
               ),
@@ -43,11 +47,16 @@ class _EmployerProfileScreenState extends State<EmployerProfileScreen> {
               child: Stack(
                 children: [
                   Positioned(
-                    child: CircleAvatar(
-                      radius: 48,
-                      backgroundImage:
-                          Image.asset('assets/images/default_user.png').image,
-                    ),
+                    child: Container(
+                        width: 48 * 2,
+                        height: 48 * 2,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 2),
+                          borderRadius: BorderRadius.circular(48),
+                        ),
+                        child: Image.asset(
+                          'assets/images/default_user.png',
+                        )),
                   ),
                   Positioned(
                     bottom: 0,
@@ -84,39 +93,31 @@ class _EmployerProfileScreenState extends State<EmployerProfileScreen> {
                         TextField(
                           controller: nameController,
                           decoration: InputDecoration(
-                            labelText: 'Name',
+                            labelText: 'Title',
                             labelStyle: const TextStyle(
-                              color: Colors.black,
+                              // color: Colors.black,
                               fontSize: 16,
                               fontFamily: 'Epilogue',
                               fontWeight: FontWeight.w500,
                               height: 0.06,
                             ),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 20),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                              ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                              ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                              ),
                             ),
+                            errorText: showNameErrorText
+                                ? "Please enter valid title"
+                                : null,
                             filled: true,
-                            fillColor: const Color.fromARGB(255, 226, 181, 31),
+                            fillColor: const Color(0xFFfafafa),
                           ),
                         ),
                         const SizedBox(
@@ -127,64 +128,51 @@ class _EmployerProfileScreenState extends State<EmployerProfileScreen> {
                           decoration: InputDecoration(
                             labelText: 'Phone',
                             labelStyle: const TextStyle(
-                              color: Colors.black,
+                              // color: Colors.black,
                               fontSize: 16,
                               fontFamily: 'Epilogue',
                               fontWeight: FontWeight.w500,
                               height: 0.06,
                             ),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 20),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                              ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                              ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                              ),
                             ),
+                            errorText: showPhoneErrorText
+                                ? "Please enter valid title"
+                                : null,
                             filled: true,
-                            fillColor: const Color.fromARGB(255, 226, 181, 31),
+                            fillColor: const Color(0xFFfafafa),
                           ),
                         ),
                         const SizedBox(height: 20),
                         Center(
                           child: SizedBox(
-                            width: MediaQuery.sizeOf(context).width / 4,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  elevation: 5,
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 226, 181, 31),
-                                  shape: ContinuousRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20))),
-                              onPressed: () => {},
-                              child: const Text(
-                                'Save',
-                                textAlign: TextAlign.justify,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: 'Epilogue',
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.06,
-                                ),
-                              ),
-                            ),
-                          ),
+                              width: MediaQuery.sizeOf(context).width / 3.5,
+                              child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 226, 181, 31),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20))),
+                                  child: Text(
+                                    'Save',
+                                    style: GoogleFonts.urbanist(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ))),
                         ),
                       ]),
                 )),

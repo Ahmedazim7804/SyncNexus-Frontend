@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/job_model.dart';
-import 'package:worker_app/ui/screens/employer_screen/jobs_list_screen.dart';
-import 'package:worker_app/ui/screens/employe_screen/widgets/workers/task_widget_employee.dart';
-import 'package:worker_app/ui/screens/employe_screen/widgets/workers/task_widget_employer.dart';
+import 'package:worker_app/ui/screens/employer_screen/employer_jobs_list_screen.dart';
+import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget_employee.dart';
+import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget_employer.dart';
+import 'package:worker_app/ui/screens/employer_screen/widgets/add_task.dart';
 
 class EmployeeTaskListScreen extends StatefulWidget {
   const EmployeeTaskListScreen({super.key, required this.employee});
@@ -36,24 +38,35 @@ class _EmployeeTaskListScreenState extends State<EmployeeTaskListScreen> {
     super.initState();
   }
 
+  void addTaskSheet() {
+    showModalBottomSheet(
+        useSafeArea: true,
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => const AddTaskWidget());
+  }
+
   @override
   Widget build(BuildContext context) {
     widget.employee.getMyTasks();
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-          title: const Text(
+          backgroundColor:
+              Colors.grey.shade200, //const Color.fromARGB(255, 226, 181, 31),
+          title: Text(
             "Tasks",
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            style:
+                GoogleFonts.urbanist(fontSize: 32, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
             elevation: 5,
             backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-            onPressed: () {},
+            onPressed: addTaskSheet,
             child: const Icon(Icons.add)),
-        backgroundColor: const Color.fromARGB(255, 234, 196, 72),
+        // backgroundColor: const Color.fromARGB(255, 234, 196, 72),
+        backgroundColor: Colors.grey.shade100,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,7 +79,7 @@ class _EmployeeTaskListScreenState extends State<EmployeeTaskListScreen> {
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.black, width: 5)),
+                  border: Border.all(color: Colors.black, width: 2)),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: GoogleMap(

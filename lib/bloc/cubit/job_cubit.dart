@@ -16,7 +16,11 @@ enum JobStatus {
 class JobCubit extends Cubit<JobState> {
   JobCubit() : super(JobLoading());
   Job job = Job(
-      title: "Fix the roof", desc: "Today", amount: 'sd', employerId: 'asdas');
+      jobId: 's',
+      title: "Fix the roof",
+      desc: "Today",
+      amount: 'sd',
+      employerId: 'asdas');
   bool isJobActive = false;
   late JobStatus jobStatus;
 

@@ -10,9 +10,9 @@ import 'package:worker_app/models/employer_model.dart';
 
 import 'package:worker_app/models/worker_task_model.dart';
 
-import 'package:worker_app/ui/screens/employe_screen/widgets/workers/heading_text_widget.dart';
+import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
 
-import 'package:worker_app/ui/screens/employe_screen/widgets/workers/task_widget_employee.dart';
+import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget_employee.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WorkerHomeScreen extends StatefulWidget {

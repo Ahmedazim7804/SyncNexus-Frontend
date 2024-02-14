@@ -101,6 +101,8 @@ Future<List<dynamic>> getPayments(DateTime startTime, DateTime endTime) async {
       await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
+  } else if(response.statusCode == 404){
+    return [];
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');

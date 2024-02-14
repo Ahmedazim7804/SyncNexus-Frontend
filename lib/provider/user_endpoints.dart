@@ -29,7 +29,8 @@ Future<bool> createUserOnBackend(
     "phone_no": phoneNo,
     "name": name,
     "user_type": userType,
-    "firebase_user_id": firebaseUserId
+    "firebase_user_id": firebaseUserId,
+    "email": email
   };
   Map<String, String> header = await headers();
   final response =

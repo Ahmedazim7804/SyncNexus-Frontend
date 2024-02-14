@@ -6,7 +6,7 @@ import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_job.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worker_app/ui/screens/employe_screen/widgets/workers/heading_text_widget.dart';
+import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
 
 class EmployeeJobsScreen extends StatefulWidget {
   const EmployeeJobsScreen({super.key});
@@ -25,11 +25,11 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
 
     for (final rawJob in rawJobs) {
       jobs.add(Job(
-        title: rawJob['title'],
-        desc: rawJob['description'],
-        employerId: rawJob['employer_id'],
-        amount: rawJob['amount'].toString(),
-      ));
+          title: rawJob['title'],
+          desc: rawJob['description'],
+          employerId: rawJob['employer_id'],
+          amount: rawJob['amount'].toString(),
+          jobId: rawJob['id']));
     }
 
     return jobs;

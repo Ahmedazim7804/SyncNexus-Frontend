@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/employer_data_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
-import 'package:worker_app/ui/screens/employer_screen/employees_list_screen.dart';
+import 'package:worker_app/ui/screens/employer_screen/widgets/employees_list.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
 
 class AddTaskWidget extends StatefulWidget {

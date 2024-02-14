@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:worker_app/bloc/cubit/employer_data_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
-import 'package:worker_app/ui/screens/employer_screen/employees_list_screen.dart';
+import 'package:worker_app/ui/screens/employer_screen/widgets/employees_list.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
 
 class AddEmployeeWidget extends StatefulWidget {
@@ -24,7 +26,7 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
 
   List<Employee> searchedEmployee = [];
   void searchEmployeeOnBackend() async {
-    Map<String, dynamic> searchResult =
+    Map<dynamic, dynamic> searchResult =
         await searchByPhone(phoneController.text);
 
     setState(() {
@@ -127,17 +129,23 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
   }
 }
 
-class SearchedEmployeeItem extends StatelessWidget {
+class SearchedEmployeeItem extends StatefulWidget {
   const SearchedEmployeeItem(
       {super.key, required this.employee, required this.overlayController});
 
   final Employee employee;
   final OverlayPortalController overlayController;
 
+  @override
+  State<SearchedEmployeeItem> createState() => _SearchedEmployeeItemState();
+}
+
+class _SearchedEmployeeItemState extends State<SearchedEmployeeItem> {
   void bindEmployeeToEmployer() async {
-    overlayController.show();
-    await addEmployee(employee.id, "_");
-    overlayController.hide();
+    widget.overlayController.show();
+    await context.read<EmployerDataCubit>().bindEmployee(widget.employee);
+    widget.overlayController.hide();
+    Navigator.pop(context);
   }
 
   void showConfirmDialog(BuildContext context) {
@@ -199,7 +207,7 @@ class SearchedEmployeeItem extends StatelessWidget {
                 Image.asset('assets/images/default_user.png').image,
           ),
           title: Text(
-            employee.name,
+            widget.employee.name,
             style: const TextStyle(
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -212,7 +220,7 @@ class SearchedEmployeeItem extends StatelessWidget {
               width: 5,
             ),
             Text(
-              employee.phone,
+              widget.employee.phone,
               style: const TextStyle(color: Colors.black, fontSize: 17),
             )
           ]),

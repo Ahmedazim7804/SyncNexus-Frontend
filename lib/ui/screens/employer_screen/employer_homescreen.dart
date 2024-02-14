@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/employer_data_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/provider/uid_provider.dart';
+import 'package:worker_app/ui/screens/employer_screen/widgets/employees_list.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_employee_widget.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_task.dart';
@@ -49,12 +51,15 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 234, 196, 72),
+      backgroundColor: Colors.grey.shade100,
+      // backgroundColor: const Color.fromARGB(255, 234, 196, 72),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-        title: const Text(
+        backgroundColor:
+            Colors.grey.shade200, //const Color.fromARGB(255, 226, 181, 31),
+        title: Text(
           "Dashboard",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          style:
+              GoogleFonts.urbanist(fontSize: 32, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -110,24 +115,31 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
+                    // height: MediaQuery.sizeOf(context).height / 4,
                     width: MediaQuery.sizeOf(context).width,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 0, vertical: 0.0),
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 226, 181, 31),
-                        borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                        color: Colors
+                            .grey.shade200, //Color.fromARGB(255, 234, 196,
+                        //72), //Color.fromARGB(255, 226, 181, 31),
+                        borderRadius: const BorderRadius.only(
                             bottomLeft: Radius.circular(20),
                             bottomRight: Radius.circular(20))),
                     child: ListTile(
-                      dense: true,
-                      isThreeLine: true,
-                      title: const Text("Hi,"),
+                      minVerticalPadding: 0,
+
+                      // isThreeLine: true,
+                      title: Text(
+                        "Hi,",
+                        style: GoogleFonts.urbanist(fontSize: 18),
+                      ),
                       subtitle: Text(
                         employer.name,
-                        style:
-                            const TextStyle(fontSize: 26, color: Colors.black),
+                        style: GoogleFonts.urbanist(
+                            fontSize: 30, color: Colors.black),
                       ),
                       trailing: Stack(
                         children: [
@@ -161,7 +173,7 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
                       ),
                     )),
                 const SizedBox(
-                  height: 80,
+                  height: 35,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -170,9 +182,11 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
                       height: 165,
                       width: 150,
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 226, 181, 31),
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      decoration: BoxDecoration(
+                          color: Colors.grey
+                              .shade300, //Color.fromARGB(255, 226, 181, 31),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20))),
                       child: Column(
                         children: [
                           const Text(
@@ -193,20 +207,26 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
                       height: 165,
                       width: 150,
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 226, 181, 31),
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      child: const Column(
+                      decoration: BoxDecoration(
+                          color: Colors.grey
+                              .shade300, //Color.fromARGB(255, 226, 181, 31),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20))),
+                      child: Column(
                         children: [
-                          Text(
+                          const Text(
                             "Total\nJobs",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '2',
-                            style: TextStyle(
+                            context
+                                .read<EmployerDataCubit>()
+                                .jobsList
+                                .length
+                                .toString(),
+                            style: const TextStyle(
                                 fontSize: 64, fontWeight: FontWeight.bold),
                           )
                         ],
@@ -217,57 +237,7 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: MediaQuery.sizeOf(context).width,
-                  // padding: const EdgeInsets.symmetric(vertical: 10),
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 226, 181, 31),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      )),
-                  child: ListTile(
-                    onTap: () => context.push('/screens/employer/employees'),
-                    leading: const Icon(Icons.person),
-                    title: const Text("Employees"),
-                    trailing: const Icon(Icons.arrow_forward),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.sizeOf(context).width,
-                  // padding: const EdgeInsets.symmetric(vertical: 10),
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 226, 181, 31),
-                  ),
-                  child: ListTile(
-                    onTap: () => context.push('/screens/employer/jobs'),
-                    leading: const Icon(Icons.work),
-                    title: const Text("Jobs"),
-                    trailing: const Icon(Icons.arrow_forward),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.sizeOf(context).width,
-                  // padding: const EdgeInsets.symmetric(vertical: 10),
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 226, 181, 31),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      )),
-                  child: ListTile(
-                    onTap: () => context.push('/screens/employer/profile'),
-                    leading: const Icon(Icons.person),
-                    title: const Text("Your Profile"),
-                    trailing: const Icon(Icons.arrow_forward),
-                  ),
-                ),
+                const SingleChildScrollView(child: EmployeesListWidget())
               ],
             );
           } else {

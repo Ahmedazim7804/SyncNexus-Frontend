@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:worker_app/bloc/cubit/job_cubit.dart';
 import 'package:worker_app/models/worker_task_model.dart';
 import 'package:provider/provider.dart';
@@ -14,18 +15,26 @@ class TaskWidgetEmployer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        elevation: 4,
+        elevation: 2,
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-        color: const Color.fromARGB(255, 234, 196, 72),
+        color: Colors.grey.shade200,
+        surfaceTintColor: Colors.transparent,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           ListTile(
             leading: const Icon(Icons.info),
-            title: Text(task.task),
+            title: Text(
+              task.task,
+              style: GoogleFonts.urbanist(
+                  color: Colors.black, fontWeight: FontWeight.bold),
+            ),
             subtitle: RichText(
-              text: const TextSpan(
+              text: TextSpan(
                   text: "Deadline: ",
-                  style: TextStyle(color: Colors.black, fontSize: 14),
-                  children: [
+                  style: GoogleFonts.urbanist(
+                    color: Colors.black,
+                    fontSize: 14,
+                  ),
+                  children: const [
                     TextSpan(
                       text: "23 Jan, 1PM",
                     )

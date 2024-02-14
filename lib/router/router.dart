@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,16 +10,16 @@ import 'package:worker_app/router/auth_listenable.dart';
 import 'package:worker_app/ui/screens/authentication/signup_screen.dart';
 import 'package:worker_app/ui/screens/authentication/user_details_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employee_tasks_screen.dart';
-import 'package:worker_app/ui/screens/employer_screen/employees_list_screen.dart';
+import 'package:worker_app/ui/screens/employer_screen/widgets/employees_list.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_homescreen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_payment.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_root_scaffold.dart';
-import 'package:worker_app/ui/screens/employer_screen/jobs_list_screen.dart';
+import 'package:worker_app/ui/screens/employer_screen/employer_jobs_list_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/profile_screen.dart';
 
-import 'package:worker_app/ui/screens/employe_screen/employee_homescreen.dart';
-import 'package:worker_app/ui/screens/employe_screen/employee_jobs_screen.dart';
-import 'package:worker_app/ui/screens/employe_screen/employee_root_scaffold.dart';
+import 'package:worker_app/ui/screens/employee_screen/employee_homescreen.dart';
+import 'package:worker_app/ui/screens/employee_screen/employee_jobs_screen.dart';
+import 'package:worker_app/ui/screens/employee_screen/employee_root_scaffold.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorEmployerDashboardKey =
@@ -41,28 +42,27 @@ class MyAppRouter {
       refreshListenable: authListen,
       initialLocation: '/screens/authentication/signup',
       redirect: (context, state) {
-        if (!authListen.isSignedIn) {
-          if (authListen.user != null) {
-            context.read<UidProvider>().uid = authListen.user!.uid;
-            authListen.isSignedIn = true;
-            authListen.subscription.cancel();
+        print("redirect state.fullpath = ${state.fullPath}");
+        String? redirectTo;
 
-            try {
-              if (context.read<SharedPreferences>().getBool('employee')!) {
-                return '/screens/employer/homescreen';
-              } else {
-                return '/screens/employer/homescreen';
-              }
-            } catch (e) {
-              return '/screens/employer/homescreen';
+        if (state.fullPath == '/screens/authentication/signup') {
+          if (authListen.status == AuthenticationStatus.authenticated) {
+            if (authListen.isEmployee) {
+              redirectTo = '/screens/employee/homescreen';
+            } else {
+              redirectTo = '/screens/employer/homescreen';
             }
-          } else {
-            authListen.isSignedIn = true;
-            authListen.subscription.cancel();
-            return null;
+          } else if (authListen.status ==
+              AuthenticationStatus.unauthenticated) {
+            redirectTo = '/screens/authentication/signup';
+          } else if (authListen.status ==
+              AuthenticationStatus.needToFinishSignup) {
+            redirectTo = '/screens/authentication/other';
           }
         }
-        return null;
+        print("redirect To => $redirectTo");
+        FlutterNativeSplash.remove();
+        return redirectTo;
       },
       routes: [
         StatefulShellRoute.indexedStack(
@@ -72,11 +72,6 @@ class MyAppRouter {
               StatefulShellBranch(
                   navigatorKey: _shellNavigatorEmployerDashboardKey,
                   routes: [
-                    GoRoute(
-                      path: '/screens/employer/employees',
-                      pageBuilder: (context, state) =>
-                          const MaterialPage(child: EmployeesListScreen()),
-                    ),
                     GoRoute(
                         path: '/screens/employer/employee',
                         pageBuilder: (context, state) {
@@ -128,7 +123,7 @@ class MyAppRouter {
                   navigatorKey: _shellNavigatorEmployeeDashboardKey,
                   routes: [
                     GoRoute(
-                      path: '/screens/worker/homescreen',
+                      path: '/screens/employee/homescreen',
                       pageBuilder: (context, state) =>
                           const MaterialPage(child: WorkerHomeScreen()),
                     ),

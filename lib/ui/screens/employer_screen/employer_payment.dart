@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -7,9 +9,10 @@ import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/models/payment_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/provider/user_endpoints.dart';
-import 'package:worker_app/ui/screens/employe_screen/widgets/workers/heading_text_widget.dart';
+import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:worker_app/ui/screens/employer_screen/widgets/payment_details_sheet.dart';
 
 class EmployerPaymentScreen extends StatefulWidget {
   const EmployerPaymentScreen({super.key});
@@ -64,7 +67,7 @@ class _EmployerPaymentScreenState extends State<EmployerPaymentScreen> {
                       child: Image.asset(
                         'assets/images/payment.png',
                         width: 320,
-                        height: 275,
+                        height: 250,
                       ),
                     ),
                     ListView.builder(
@@ -131,10 +134,20 @@ class _PaymentCardState extends State<PaymentCard>
     isExpanded = !isExpanded;
   }
 
+  void showDetailedPaymentDetails() {
+    showModalBottomSheet(
+        useSafeArea: true,
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            child: PaymentDetailsSheet(payment: widget.payment)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: toggleExpand,
+      onTap: showDetailedPaymentDetails, //toggleExpand,
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         // color: Colors.white,
@@ -202,20 +215,20 @@ class _PaymentCardState extends State<PaymentCard>
                   ),
                 ],
               ),
-              SizeTransition(
-                sizeFactor: heightFactorAnimation,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const HeadingText(text: "Notes"),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 8),
-                      child: Text(widget.payment.remarks),
-                    ),
-                  ],
-                ),
-              )
+              // SizeTransition(
+              //   sizeFactor: heightFactorAnimation,
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       const HeadingText(text: "Notes"),
+              //       Padding(
+              //         padding: const EdgeInsets.symmetric(
+              //             horizontal: 24, vertical: 8),
+              //         child: Text(widget.payment.remarks),
+              //       ),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),

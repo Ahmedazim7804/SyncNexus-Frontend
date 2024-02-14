@@ -101,10 +101,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       context.read<UidProvider>().uid = userCredential.user!.uid;
 
       if (userCredential.additionalUserInfo!.isNewUser) {
-        overlayPortalController.hide();
         context.go(
           '/screens/authentication/other',
         );
+        overlayPortalController.hide();
       } else {
         overlayPortalController.hide();
         context.go('/screens/employer/homescreen');

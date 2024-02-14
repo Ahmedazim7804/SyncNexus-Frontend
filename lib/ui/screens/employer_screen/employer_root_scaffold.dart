@@ -47,6 +47,7 @@ class _EmployerRootScaffoldState extends State<EmployerRootScaffold> {
           onTap: onItemTapped,
           currentIndex: _selectedIndex,
           type: BottomNavigationBarType.fixed,
+          selectedItemColor: Colors.black,
           items: const [
             BottomNavigationBarItem(
                 label: "Dashboard", icon: Icon(Icons.dashboard)),

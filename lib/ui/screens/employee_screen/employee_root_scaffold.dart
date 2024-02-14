@@ -23,7 +23,7 @@ class _EmployeeRootScaffoldState extends State<EmployeeRootScaffold> {
     });
 
     if (selected == 0) {
-      context.go('/screens/worker/homescreen');
+      context.go('/screens/employee/homescreen');
     } else if (selected == 1) {
       context.go('/screens/employee/jobs');
     } else if (selected == 2) {

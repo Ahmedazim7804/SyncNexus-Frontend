@@ -8,7 +8,7 @@ import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/provider/user_endpoints.dart';
 import 'package:equatable/equatable.dart';
 
-part 'employer_data_state.dart';
+part 'data_state.dart';
 
 class EmployerDataCubit extends Cubit<EmployerDataState> {
   EmployerDataCubit() : super(EmployerDataLoading()) {

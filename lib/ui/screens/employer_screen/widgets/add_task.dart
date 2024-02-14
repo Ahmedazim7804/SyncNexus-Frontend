@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:worker_app/bloc/cubit/employer_data_cubit.dart';
+import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/employees_list.dart';

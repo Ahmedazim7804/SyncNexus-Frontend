@@ -1,4 +1,4 @@
-part of 'employer_payments_cubit.dart';
+part of 'payments_cubit.dart';
 
 abstract class EmployerPaymentsState {}
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:worker_app/bloc/cubit/employee_location_cubit.dart';
-import 'package:worker_app/bloc/cubit/employer_data_cubit.dart';
+import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
+import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EmployerRootScaffold extends StatefulWidget {

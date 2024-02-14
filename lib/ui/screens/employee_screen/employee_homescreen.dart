@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:worker_app/bloc/cubit/employee_data_cubit.dart';
-import 'package:worker_app/bloc/cubit/employee_location_cubit.dart';
+import 'package:worker_app/bloc/cubit/employee/data_cubit.dart';
+import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/employer_model.dart';
 

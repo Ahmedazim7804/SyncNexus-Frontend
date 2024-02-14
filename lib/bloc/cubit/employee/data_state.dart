@@ -1,4 +1,4 @@
-part of 'employee_data_cubit.dart';
+part of 'data_cubit.dart';
 
 abstract class EmployeeDataState {}
 

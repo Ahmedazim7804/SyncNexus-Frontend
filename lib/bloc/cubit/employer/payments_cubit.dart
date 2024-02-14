@@ -5,7 +5,7 @@ import 'package:worker_app/models/payment_model.dart';
 import 'package:worker_app/provider/user_endpoints.dart';
 import 'package:intl/intl.dart';
 
-part 'employer_payments_state.dart';
+part 'payments_state.dart';
 
 class EmployerPaymentsCubit extends Cubit<EmployerPaymentsState> {
   EmployerPaymentsCubit() : super(EmployerPaymentsLoading()) {

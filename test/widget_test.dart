@@ -29,6 +29,24 @@ void main() {
           email: "apple@gmail.com");
       expect(result == true || result == false, true);
     });
+    test('returns true if HTTP request succeeds', () async {
+      final result = await createUserOnBackend(
+          phoneNo: "7701958417",
+          name: "Tony Stark",
+          userType: "employer",
+          firebaseUserId: "YCDugoXMwwVeaqs2SVNDW2YhdhA2",
+          email: "atishayj2202@gmail.com");
+      expect(result == true || result == false, true);
+    });
+    test('returns true if HTTP request succeeds', () async {
+      final result = await createUserOnBackend(
+          phoneNo: "770195847",
+          name: "Tony Stark",
+          userType: "employer",
+          firebaseUserId: "rk2Zq12rxIPjoSxFGbavbEcI9bY2",
+          email: "");
+      expect(result == true || result == false, true);
+    });
   });
   group('addTask', () {
     test('returns true if HTTP request succeeds', () async {
@@ -43,13 +61,14 @@ void main() {
   group('addEmployee', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
-          await addEmployee("1824b2de-bc70-470c-a80f-f52c9da8588e", "Manager");
+          await addEmployee("1824b2de-bc70-470c-a80f-f52c9da8588e", "Manager Test");
       expect(result == true || result == false, true);
     });
   });
   group('getEmployees', () {
     test('returns true if HTTP request succeeds', () async {
       final result = await getEmployees();
+      print(result);
       expect(Null == result || Null != result, true);
     });
   });

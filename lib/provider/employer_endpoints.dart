@@ -48,6 +48,8 @@ Future<List<dynamic>> getEmployees() async {
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
+  } else if (response.statusCode == 404) {
+    return [];
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
@@ -60,7 +62,9 @@ Future<dynamic> getEmployee(String employeeID) async {
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
-  } else {
+  } else if (response.statusCode == 404) {
+    return {};
+  }else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
@@ -112,7 +116,6 @@ Future<dynamic> searchByEmail(String email) async {
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
-    print("${response.body}");
     return {};
   }
 }
@@ -217,6 +220,8 @@ Future<List<dynamic>> getEmployeePayments(String employeeID) async {
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
+  } else if (response.statusCode == 404) {
+    return [];
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
@@ -230,6 +235,8 @@ Future<List<dynamic>> getPostedJobs() async {
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
+  } else if (response.statusCode == 404) {
+    return [];
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');

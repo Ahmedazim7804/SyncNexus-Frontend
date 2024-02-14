@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
-part 'employee_location_state.dart';
+part 'location_state.dart';
 
 class LatLong {
   LatLong({required this.lat, required this.long});

@@ -7,7 +7,7 @@ import 'package:worker_app/ui/screens/employer_screen/widgets/add_job.dart';
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worker_app/bloc/cubit/employer_data_cubit.dart';
+import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 
 class JobsListScreen extends StatefulWidget {
   const JobsListScreen({super.key});

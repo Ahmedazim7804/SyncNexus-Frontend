@@ -1,4 +1,4 @@
-part of 'employee_location_cubit.dart';
+part of 'location_cubit.dart';
 
 abstract class EmployeeLocationState {}
 

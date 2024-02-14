@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:worker_app/bloc/cubit/employee_location_cubit.dart';
+import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

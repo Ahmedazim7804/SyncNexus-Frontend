@@ -84,32 +84,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void signInWithGoogle() async {
     overlayPortalController.show();
-    final GoogleSignInAccount? googleSignInAccount =
-        await GoogleSignIn().signIn();
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication? googleAuth =
-        await googleSignInAccount?.authentication;
+      final GoogleSignInAuthentication? googleAuth =
+          await googleSignInAccount?.authentication;
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
 
-    FirebaseAuth.instance
-        .signInWithCredential(credential)
-        .then((userCredential) {
-      context.read<UidProvider>().uid = userCredential.user!.uid;
+      FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .then((userCredential) {
+        context.read<UidProvider>().uid = userCredential.user!.uid;
 
-      if (userCredential.additionalUserInfo!.isNewUser) {
-        context.go(
-          '/screens/authentication/other',
-        );
-        overlayPortalController.hide();
-      } else {
-        overlayPortalController.hide();
-        context.go('/screens/employer/homescreen');
-      }
-    });
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          context.go(
+            '/screens/authentication/other',
+          );
+          overlayPortalController.hide();
+        } else {
+          overlayPortalController.hide();
+          context.go('/screens/employer/homescreen');
+        }
+      });
+    } catch (e) {
+      print(e);
+      overlayPortalController.hide();
+    }
   }
 
   @override
@@ -187,35 +192,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
 
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              width: MediaQuery.sizeOf(context).width,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey.shade300,
-                  ),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30)),
-              child: ListTile(
-                leading: Image.asset(
-                  'assets/images/facebook.png',
-                  width: 25,
-                  height: 25,
-                ),
-                title: Center(
-                  child: Text(
-                    "Continue with Facebook",
-                    style: GoogleFonts.urbanist(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ),
+            // Container(
+            //   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            //   width: MediaQuery.sizeOf(context).width,
+            //   decoration: BoxDecoration(
+            //       border: Border.all(
+            //         color: Colors.grey.shade300,
+            //       ),
+            //       color: Colors.white,
+            //       borderRadius: BorderRadius.circular(30)),
+            //   child: ListTile(
+            //     onTap: signInWithFacebook,
+            //     leading: Image.asset(
+            //       'assets/images/facebook.png',
+            //       width: 25,
+            //       height: 25,
+            //     ),
+            //     title: Center(
+            //       child: Text(
+            //         "Continue with Facebook",
+            //         style: GoogleFonts.urbanist(
+            //             fontSize: 16, fontWeight: FontWeight.bold),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () => context.push('/screens/privacy_policy'),
                     child: Text(
                       'Privacy Policy',
                       style: GoogleFonts.urbanist(

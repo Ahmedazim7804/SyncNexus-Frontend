@@ -4,7 +4,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worker_app/bloc/cubit/authentication_cubit.dart';
-import 'package:worker_app/bloc/cubit/job_cubit.dart';
 import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/provider/user_provider.dart';
 import 'package:worker_app/router/router.dart';
@@ -25,7 +24,6 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => JobCubit()),
         BlocProvider(create: (_) => AuthenticationCubit()),
       ],
       child: MultiProvider(

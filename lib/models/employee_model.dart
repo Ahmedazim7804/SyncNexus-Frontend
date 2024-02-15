@@ -6,6 +6,7 @@ import 'package:worker_app/provider/employee_endpoints.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/models/lat_long_model.dart';
 import 'package:intl/intl.dart';
+import 'package:worker_app/provider/user_endpoints.dart';
 
 class Employee extends User with ChangeNotifier {
   Employee(
@@ -23,6 +24,7 @@ class Employee extends User with ChangeNotifier {
   List<WorkerTask> tasks = [];
   List<WorkerTask> allTasks = [];
   bool removed;
+  String? rating;
   LatLongCollection locationRecords = LatLongCollection();
 
   Future<void> getMyTasks() async {
@@ -32,6 +34,7 @@ class Employee extends User with ChangeNotifier {
     try {
       final unparsedTasks =
           await getTasks(id, DateTime.parse("2000-01-01"), DateTime.now());
+
       for (final task in unparsedTasks) {
         final String taskId = task['id'];
         final String heading = task['heading'];
@@ -64,6 +67,7 @@ class Employee extends User with ChangeNotifier {
 
       tasks = pendingTasks;
       allTasks = allParsedTasks;
+      notifyListeners();
     } catch (e) {
       removed = true;
       return;
@@ -89,5 +93,20 @@ class Employee extends User with ChangeNotifier {
     await completeTask(task.taskId);
     tasks.remove(task);
     notifyListeners();
+  }
+
+  Future<void> removeThisTask(WorkerTask task) async {
+    await deleteTask(task.taskId);
+    tasks.remove(task);
+    allTasks.remove(task);
+    notifyListeners();
+  }
+
+  Future<void> getMyRating() async {
+    try {
+      rating = (await getRating(id))['rate'].toString();
+    } catch (e) {
+      rating = '0';
+    }
   }
 }

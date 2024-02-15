@@ -141,11 +141,12 @@ class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
                       ),
                       trailing: Stack(
                         children: [
-                          CircleAvatar(
-                            radius: 35,
-                            backgroundImage: Image.asset(
+                          ClipOval(
+                            child: Image.asset(
                               'assets/images/default_user.png',
-                            ).image,
+                              height: 72,
+                              width: 72,
+                            ),
                           ),
                           Positioned(
                             bottom: 0,

@@ -23,6 +23,7 @@ import 'package:worker_app/ui/screens/employer_screen/employer_profile_screen.da
 import 'package:worker_app/ui/screens/employee_screen/employee_homescreen.dart';
 import 'package:worker_app/ui/screens/employee_screen/employee_jobs_screen.dart';
 import 'package:worker_app/ui/screens/employee_screen/employee_root_scaffold.dart';
+import 'package:worker_app/ui/screens/privacy_policy_screen.dart';
 import 'package:worker_app/ui/screens/rating_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -174,6 +175,11 @@ class MyAppRouter {
           path: '/screens/authentication/other',
           pageBuilder: (context, state) =>
               const MaterialPage(child: OthersDetailScreen()),
+        ),
+        GoRoute(
+          path: '/screens/privacy_policy',
+          pageBuilder: (context, state) =>
+              const MaterialPage(child: PrivacyPolicyScreen()),
         ),
         GoRoute(
             path: '/screens/rating',

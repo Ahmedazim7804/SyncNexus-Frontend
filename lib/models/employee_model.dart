@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
 import 'package:worker_app/models/user_model.dart';
 import 'package:worker_app/models/worker_task_model.dart';
@@ -6,7 +7,7 @@ import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/models/lat_long_model.dart';
 import 'package:intl/intl.dart';
 
-class Employee extends User {
+class Employee extends User with ChangeNotifier {
   Employee(
       {required name,
       required phone,
@@ -20,19 +21,23 @@ class Employee extends User {
 
   final String id;
   List<WorkerTask> tasks = [];
+  List<WorkerTask> allTasks = [];
   bool removed;
   LatLongCollection locationRecords = LatLongCollection();
 
   Future<void> getMyTasks() async {
+    final List<WorkerTask> pendingTasks = [];
     final List<WorkerTask> allParsedTasks = [];
 
     try {
       final unparsedTasks =
           await getTasks(id, DateTime.parse("2000-01-01"), DateTime.now());
       for (final task in unparsedTasks) {
+        final String taskId = task['id'];
         final String heading = task['heading'];
         final String deadline = task['last_date'];
         final String stringStatus = task['status'];
+        final String description = task['description'];
         late final TaskStatus status;
 
         if (stringStatus == 'pending') {
@@ -43,13 +48,22 @@ class Employee extends User {
           status = TaskStatus.deleted;
         }
 
-        WorkerTask parsedTask =
-            WorkerTask(task: heading, deadline: deadline, status: status);
+        WorkerTask parsedTask = WorkerTask(
+            taskId: taskId,
+            task: heading,
+            deadline: deadline,
+            status: status,
+            desc: description);
+
+        if (status == TaskStatus.pending) {
+          pendingTasks.add(parsedTask);
+        }
 
         allParsedTasks.add(parsedTask);
       }
 
-      tasks = allParsedTasks;
+      tasks = pendingTasks;
+      allTasks = allParsedTasks;
     } catch (e) {
       removed = true;
       return;
@@ -69,5 +83,11 @@ class Employee extends User {
 
       locationRecords.add(latLong);
     }
+  }
+
+  Future<void> completeThisTask(WorkerTask task) async {
+    await completeTask(task.taskId);
+    tasks.remove(task);
+    notifyListeners();
   }
 }

@@ -79,7 +79,27 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
                       "Please Enable Location",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.urbanist(fontSize: 32),
-                    )
+                    ),
+                    ElevatedButton.icon(
+                        onPressed: () => context
+                            .read<EmployeeLocationCubit>()
+                            .isLocationEnabled(),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 234, 196, 72),
+                            shape: ContinuousRectangleBorder(
+                                borderRadius: BorderRadius.circular(15))),
+                        icon: const Icon(
+                          Icons.refresh,
+                          color: Colors.black,
+                        ),
+                        label: Text(
+                          "Refresh",
+                          style: GoogleFonts.urbanist(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ))
                   ],
                 ),
               );

@@ -1,18 +1,25 @@
-import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 enum TaskStatus { pending, completed, deleted }
 
-class WorkerTask extends Equatable {
+class WorkerTask {
   WorkerTask(
-      {required this.task,
+      {required this.taskId,
+      required this.desc,
+      required this.task,
       required this.deadline,
-      this.status = TaskStatus.pending});
+      this.status = TaskStatus.pending}) {
+    deadline = formatDate(deadline);
+  }
 
+  final String taskId;
   final String task;
-  final String deadline;
+  final String desc;
+  String deadline;
   TaskStatus status;
 
-  @override
-  // TODO: implement props
-  List<Object> get props => [task, deadline];
+  String formatDate(String deadline) {
+    DateFormat dateFormat = DateFormat('dd MMM, E');
+    return dateFormat.format(DateTime.parse(deadline)).toString();
+  }
 }

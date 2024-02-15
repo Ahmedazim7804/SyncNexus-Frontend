@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:worker_app/bloc/cubit/employee/data_cubit.dart';
 import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
@@ -10,13 +11,15 @@ import 'package:worker_app/models/employer_model.dart';
 
 import 'package:worker_app/models/worker_task_model.dart';
 import 'package:worker_app/models/lat_long_model.dart';
+import 'package:worker_app/provider/employee_endpoints.dart';
 
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/job_card.dart';
+import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget.dart';
 
-import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget_employee.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget_employer.dart';
+import 'package:worker_app/ui/screens/employee_screen/widgets/workers/tasks_list.dart';
+import 'package:worker_app/ui/screens/employer_screen/widgets/task_widget_employer.dart';
 
 class WorkerHomeScreen extends StatefulWidget {
   const WorkerHomeScreen({super.key});
@@ -48,52 +51,39 @@ class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.white.withAlpha(40),
-      //   leading: IconButton(
-      //       onPressed: () {},
-      //       icon: const Icon(
-      //         Icons.menu,
-      //       )),
-      //   title: const Text("Dashboard"),
-      //   centerTitle: true,
-      //   actions: [
-      //     IconButton(onPressed: () {}, icon: const Icon(Icons.history))
-      //   ],
-      // ),
+    return Scaffold(
       extendBodyBehindAppBar: true,
-      bottomSheet: MyBottomSheet(),
+      bottomSheet: const MyBottomSheet(),
       body: Center(
         child: Column(
           children: [
-            // SizedBox(
-            //   height: MediaQuery.sizeOf(context).height / 2.5,
-            //   width: MediaQuery.sizeOf(context).width,
-            //   child: BlocListener<EmployeeLocationCubit, EmployeeLocationState>(
-            //       listener: (context, state) {
-            //         if (state is LocationAvailable) {
-            //           LatLong latLong =
-            //               context.read<EmployeeLocationCubit>().position;
-            //           setPositionOnMap(lat: latLong.lat, long: latLong.long);
-            //         }
-            //       },
-            //       child: GoogleMap(
-            //         onCameraMove: (position) {
-            //           position.zoom;
-            //         },
-            //         mapType: MapType.normal,
-            //         buildingsEnabled: true,
-            //         myLocationEnabled: true,
-            //         myLocationButtonEnabled: true,
-            //         trafficEnabled: true,
-            //         initialCameraPosition:
-            //             initialLocation ?? defaultMapLocation,
-            //         onMapCreated: (controller) {
-            //           _controller.complete(controller);
-            //         },
-            //       )),
-            // )
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height / 2.5,
+              width: MediaQuery.sizeOf(context).width,
+              child: BlocListener<EmployeeLocationCubit, EmployeeLocationState>(
+                  listener: (context, state) {
+                    if (state is LocationAvailable) {
+                      LatLong latLong =
+                          context.read<EmployeeLocationCubit>().position;
+                      setPositionOnMap(lat: latLong.lat, long: latLong.long);
+                    }
+                  },
+                  child: GoogleMap(
+                    onCameraMove: (position) {
+                      position.zoom;
+                    },
+                    mapType: MapType.normal,
+                    buildingsEnabled: true,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    trafficEnabled: true,
+                    initialCameraPosition:
+                        initialLocation ?? defaultMapLocation,
+                    onMapCreated: (controller) {
+                      _controller.complete(controller);
+                    },
+                  )),
+            )
           ],
         ),
       ),
@@ -109,10 +99,95 @@ class MyBottomSheet extends StatefulWidget {
 }
 
 class _MyBottomSheetState extends State<MyBottomSheet> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  late final Employee employee = context.read<EmployeeDataCubit>().employee;
+  late final Employer employer = context.read<EmployeeDataCubit>().employer;
+
+  void markTaskAsComplete(WorkerTask task) async {
+    await employee.completeThisTask(task);
+  }
+
+  void markJobCompleted() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Confirm Action?",
+          style:
+              GoogleFonts.urbanist(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          "Are you sure, you want to mark this job as completed?",
+          style: TextStyle(fontSize: 16),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text(
+                "Yes",
+                style: TextStyle(color: Colors.black),
+              )),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, false),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 226, 181, 31),
+                shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.circular(15))),
+            child: const Text(
+              "No",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        ],
+      ),
+    ).then((result) async {
+      if (result) {
+        // await leaveJob().then((value) {
+        //   context.read<EmployeeDataCubit>().getAllData();
+        // });
+      }
+    });
+  }
+
+  void getFreeFromEmployer() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "You want to leave this job?",
+          style:
+              GoogleFonts.urbanist(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          "You understand the consequences and want to leave this job?",
+          style: TextStyle(fontSize: 16),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text(
+                "Yes",
+                style: TextStyle(color: Colors.black),
+              )),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, false),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 226, 181, 31),
+                shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.circular(15))),
+            child: const Text(
+              "No",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        ],
+      ),
+    ).then((result) async {
+      if (result) {
+        // await leaveJob().then((value) {
+        //   context.read<EmployeeDataCubit>().getAllData();
+        // });
+      }
+    });
   }
 
   @override
@@ -128,38 +203,99 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
           child: BlocBuilder<EmployeeDataCubit, EmployeeDataState>(
             builder: (context, state) {
               if (state is EmployeeDataLoaded) {
-                Employee employee = context.read<EmployeeDataCubit>().employee;
-                Employer employer = context.read<EmployeeDataCubit>().employer;
-
                 return SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const HeadingText(text: 'Employer'),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          HeadingText(text: 'Employer'),
+                        ],
+                      ),
                       ListTile(
                         titleAlignment: ListTileTitleAlignment.center,
-                        leading: CircleAvatar(
-                          radius: 35,
+                        leading: ClipOval(
                           child: Image.asset('assets/images/default_user.png'),
                         ),
-                        title: Text(employer.name),
-                        subtitle: Text(employer.phone),
+                        title: Text(
+                          employer.name,
+                          style: GoogleFonts.urbanist(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          employer.phone,
+                          style: GoogleFonts.urbanist(fontSize: 16),
+                        ),
+                        trailing: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 234, 196, 72),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: const Icon(
+                            Icons.call,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
-                      const HeadingText(text: 'Job'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: getFreeFromEmployer,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4))),
+                              margin: const EdgeInsets.only(
+                                  top: 20, left: 20, right: 20),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 4),
+                              child: Text(
+                                "Leave Job",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.urbanist(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          ListenableBuilder(
+                            listenable: employee,
+                            builder: (context, child) => InkWell(
+                              onTap: employee.tasks.isEmpty
+                                  ? markJobCompleted
+                                  : null,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: employee.tasks.isEmpty
+                                        ? Colors.green
+                                        : Colors.grey,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(4))),
+                                margin: const EdgeInsets.only(
+                                    top: 20, left: 20, right: 20),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 4),
+                                child: Text(
+                                  "Complete Job",
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.urbanist(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       const HeadingText(text: 'Tasks'),
-                      ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: employee.tasks.length,
-                          itemBuilder: (context, index) {
-                            String task = employee.tasks[index].task;
-                            String deadline = employee.tasks[index].deadline;
-
-                            return TaskWidgetEmployer(
-                                task:
-                                    WorkerTask(task: task, deadline: deadline));
-                          })
+                      const EmployeeTasksList()
                     ],
                   ),
                 );

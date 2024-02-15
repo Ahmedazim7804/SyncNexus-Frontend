@@ -21,7 +21,10 @@ class TaskWidgetEmployer extends StatelessWidget {
         surfaceTintColor: Colors.transparent,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           ListTile(
-            leading: const Icon(Icons.info),
+            leading: const Icon(
+              Icons.info,
+              color: Colors.black,
+            ),
             title: Text(
               task.task,
               style: GoogleFonts.urbanist(

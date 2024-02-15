@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:worker_app/models/payment_model.dart';
 
-class EmployerPaymentDetailsSheet extends StatelessWidget {
-  const EmployerPaymentDetailsSheet({super.key, required this.payment});
+class EmployeePaymentDetailsSheet extends StatelessWidget {
+  const EmployeePaymentDetailsSheet({super.key, required this.payment});
 
   final Payment payment;
 
@@ -50,14 +50,14 @@ class EmployerPaymentDetailsSheet extends StatelessWidget {
               height: 15,
             ),
             Text(
-              "Paid to ${payment.paidTo.name}",
+              "Paid by ${payment.paidBy.name}",
               style: GoogleFonts.urbanist(color: Colors.grey.shade700),
             ),
             const SizedBox(
               height: 5,
             ),
             Text(
-              payment.paidTo.email,
+              payment.paidBy.email,
               style: GoogleFonts.urbanist(color: Colors.grey.shade700),
             ),
             const SizedBox(
@@ -75,7 +75,7 @@ class EmployerPaymentDetailsSheet extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("You have paid",
+                        Text("You have been paid",
                             style: GoogleFonts.urbanist(
                                 color: const Color(0xFF616161),
                                 fontSize: 16,
@@ -94,13 +94,13 @@ class EmployerPaymentDetailsSheet extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("To",
+                        Text("From",
                             style: GoogleFonts.urbanist(
                                 color: const Color(0xFF616161),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                         Text(
-                          payment.paidTo.name,
+                          payment.paidBy.name,
                           style: GoogleFonts.urbanist(
                               color: const Color(
                                 0xFF424242,
@@ -119,7 +119,7 @@ class EmployerPaymentDetailsSheet extends StatelessWidget {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                         Text(
-                          payment.paidTo.email,
+                          payment.paidBy.email,
                           style: GoogleFonts.urbanist(
                               color: const Color(
                                 0xFF424242,

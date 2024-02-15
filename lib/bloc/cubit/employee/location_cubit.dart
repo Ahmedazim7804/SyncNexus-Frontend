@@ -20,6 +20,8 @@ class EmployeeLocationCubit extends Cubit<EmployeeLocationState> {
 
     if (isLocationOn) {
       emit(LocationOn());
+    } else {
+      emit(LocationDisabled());
     }
   }
 

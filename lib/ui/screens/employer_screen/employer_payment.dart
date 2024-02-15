@@ -158,7 +158,7 @@ class _PaymentCardState extends State<PaymentCard>
         isScrollControlled: true,
         builder: (context) => BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-            child: PaymentDetailsSheet(payment: widget.payment)));
+            child: EmployerPaymentDetailsSheet(payment: widget.payment)));
   }
 
   @override

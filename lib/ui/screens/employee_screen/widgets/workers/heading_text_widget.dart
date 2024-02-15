@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HeadingText extends StatelessWidget {
   const HeadingText({super.key, required this.text, this.size = 15});
@@ -11,13 +12,14 @@ class HeadingText extends StatelessWidget {
     return Container(
       // width: 125,
       margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: const BoxDecoration(
           color: Color.fromARGB(255, 234, 196, 72),
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+          borderRadius: BorderRadius.all(Radius.circular(4))),
       child: Text(
         text,
-        style: TextStyle(fontSize: size, fontWeight: FontWeight.bold),
+        style:
+            GoogleFonts.urbanist(fontSize: size, fontWeight: FontWeight.bold),
       ),
     );
   }

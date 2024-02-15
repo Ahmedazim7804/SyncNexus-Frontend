@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
@@ -32,12 +33,14 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
     Map<dynamic, dynamic> searchResult =
         await searchByPhone(phoneController.text);
 
+    Employee employee = Employee(
+        name: searchResult['name'],
+        phone: searchResult['phone_no'],
+        email: searchResult['email'],
+        id: searchResult['id']);
+    await employee.getMyRating();
     setState(() {
-      searchedEmployee.add(Employee(
-          name: searchResult['name'],
-          phone: searchResult['phone_no'],
-          email: searchResult['email'],
-          id: searchResult['id']));
+      searchedEmployee.add(employee);
     });
   }
 
@@ -47,6 +50,7 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
       controller: overlayPortalController,
       overlayChildBuilder: overlayChildBuilder,
       child: BottomSheet(
+          enableDrag: false,
           onClosing: () {},
           builder: (context) => Padding(
                 padding:
@@ -190,25 +194,52 @@ class _SearchedEmployeeItemState extends State<SearchedEmployeeItem> {
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),
             )),
-        child: ListTile(
-          // dense: true,
-          leading: ClipOval(
-            child: Image.asset('assets/images/default_user.png'),
-          ),
-          title: Text(
-            widget.employee.name,
-            style: const TextStyle(
-                color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(
-            widget.employee.phone,
-            style: const TextStyle(color: Colors.black, fontSize: 17),
-          ),
-          trailing: IconButton(
-              icon: const Icon(Icons.add),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, shape: const CircleBorder()),
-              onPressed: () => showConfirmDialog(context)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              // dense: true,
+              leading: ClipOval(
+                child: Image.asset('assets/images/default_user.png'),
+              ),
+              title: Wrap(
+                alignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Text(
+                    widget.employee.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  RatingBar.builder(
+                    itemSize: 16,
+                    initialRating: double.parse(widget.employee.rating!),
+                    itemBuilder: (context, index) => const Icon(
+                      Icons.star,
+                      color: Color.fromARGB(255, 234, 196, 72),
+                    ),
+                    onRatingUpdate: (value) {},
+                  ),
+                ],
+              ),
+              subtitle: Text(
+                widget.employee.phone,
+                style: const TextStyle(color: Colors.black, fontSize: 17),
+              ),
+              trailing: IconButton(
+                  icon: const Icon(Icons.add),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: const CircleBorder()),
+                  onPressed: () => showConfirmDialog(context)),
+            ),
+          ],
         ));
   }
 }

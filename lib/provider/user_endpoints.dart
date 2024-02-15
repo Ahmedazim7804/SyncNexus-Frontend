@@ -58,7 +58,7 @@ Future<dynamic> getUser() async {
   }
 }
 
-Future<bool> addRating(String userTo, double rate, String comment) async {
+Future<bool> addRating(String userTo, int rate, String comment) async {
   final Uri uri = Uri.parse('${getBaseURL()}/user/$userTo/add-rating/');
   final requestData = {"rate": rate, "comment": comment};
   Map<String, String> header = await headers();

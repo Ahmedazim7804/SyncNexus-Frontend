@@ -14,7 +14,6 @@ import 'package:worker_app/models/lat_long_model.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
 
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
-import 'package:worker_app/ui/screens/employee_screen/widgets/workers/job_card.dart';
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';

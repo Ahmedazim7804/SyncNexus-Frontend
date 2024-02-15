@@ -15,7 +15,7 @@ class RatingScreen extends StatefulWidget {
 
 class _RatingScreenState extends State<RatingScreen> {
   final TextEditingController feedbackController = TextEditingController();
-  double rating = 0;
+  int rating = 0;
 
   bool get inputIsValid {
     if (rating <= 0) {
@@ -80,7 +80,7 @@ class _RatingScreenState extends State<RatingScreen> {
                         );
                       },
                       onRatingUpdate: (value) {
-                        rating = value;
+                        rating = value.toInt();
                         setState(() {
                           inputIsValid;
                         });

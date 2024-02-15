@@ -121,18 +121,13 @@ class _EmployeeItemState extends State<EmployeeItem> {
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
                       ),
-                      Wrap(
-                        children: [
-                          // Text(
-                          //   widget.employee.phone,
-                          //   style: const TextStyle(fontSize: 15),
-                          // ),
-                          Text(
-                            "${widget.employee.phone} • ${widget.employee.tasks.length} Task",
-                            style: const TextStyle(fontSize: 15),
-                          ),
-                        ],
-                      )
+                      ListenableBuilder(
+                        listenable: widget.employee,
+                        builder: (context, child) => Text(
+                          "${widget.employee.phone} • ${widget.employee.tasks.length} Task",
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                      ),
                     ],
                   ),
                   const Spacer(),

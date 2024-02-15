@@ -24,8 +24,6 @@ class EmployerHomeScreen extends StatefulWidget {
 }
 
 class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
-  List jobList = [];
-
   @override
   void initState() {
     // TODO: implement initState

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
+import 'package:worker_app/bloc/cubit/employer/location_cubit.dart';
 import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,7 +38,7 @@ class _EmployerRootScaffoldState extends State<EmployerRootScaffold> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => EmployerDataCubit()),
-        BlocProvider(create: (_) => EmployeeLocationCubit()),
+        BlocProvider(create: (_) => EmployerLocationCubit()),
       ],
       child: Scaffold(
         body: widget.child,

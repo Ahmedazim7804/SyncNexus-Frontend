@@ -9,6 +9,7 @@ import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/employer_model.dart';
 
 import 'package:worker_app/models/worker_task_model.dart';
+import 'package:worker_app/models/lat_long_model.dart';
 
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
 

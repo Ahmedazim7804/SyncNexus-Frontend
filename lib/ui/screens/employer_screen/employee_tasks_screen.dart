@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/job_model.dart';
+import 'package:worker_app/models/lat_long_model.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_jobs_list_screen.dart';
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget_employee.dart';
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget_employer.dart';
@@ -24,18 +25,45 @@ class EmployeeTaskListScreen extends StatefulWidget {
 class _EmployeeTaskListScreenState extends State<EmployeeTaskListScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
-  CameraPosition? initialLocation;
-  final CameraPosition _kGooglePlex = const CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
+
+  late CameraPosition initialLocation =
+      widget.employee.locationRecords.initialCameraPosition;
 
   late final employeeTasks = widget.employee.tasks;
+  Set<Marker> markers = {};
+  Set<Polyline> polylines = {};
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      generatePolylines();
+    });
+
     // TODO: implement initState
     super.initState();
+  }
+
+  void generatePolylines() async {
+    final latLongCollection = widget.employee.locationRecords;
+    final latLngCollection = latLongCollection.toLatLngList();
+
+    Set<Marker> tempMarkers = {};
+    Set<Polyline> tempPolylines = {};
+
+    for (LatLng latLng in latLngCollection) {
+      tempMarkers.add(Marker(
+          markerId: MarkerId(latLng.hashCode.toString()),
+          position: latLng,
+          icon: BitmapDescriptor.defaultMarker));
+
+      tempPolylines.add(Polyline(
+          polylineId: const PolylineId('this'), points: latLngCollection));
+    }
+
+    setState(() {
+      markers = tempMarkers;
+      polylines = tempPolylines;
+    });
   }
 
   void addTaskSheet() {
@@ -48,7 +76,7 @@ class _EmployeeTaskListScreenState extends State<EmployeeTaskListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    widget.employee.getMyTasks();
+    generatePolylines();
     return Scaffold(
         appBar: AppBar(
           backgroundColor:
@@ -84,7 +112,9 @@ class _EmployeeTaskListScreenState extends State<EmployeeTaskListScreen> {
                 borderRadius: BorderRadius.circular(20),
                 child: GoogleMap(
                   mapType: MapType.normal,
-                  initialCameraPosition: initialLocation ?? _kGooglePlex,
+                  markers: markers,
+                  polylines: polylines,
+                  initialCameraPosition: initialLocation,
                   onMapCreated: (controller) {
                     _controller.complete(controller);
                   },

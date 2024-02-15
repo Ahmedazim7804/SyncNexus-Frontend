@@ -6,10 +6,9 @@ import 'package:worker_app/provider/employee_endpoints.dart';
 import 'package:worker_app/models/lat_long_model.dart';
 part 'location_state.dart';
 
-class EmployeeLocationCubit extends Cubit<EmployeeLocationState> {
-  EmployeeLocationCubit() : super(LocationLoading()) {
-    checkForPermission();
-    sendLocationAfter5Minutes();
+class EmployerLocationCubit extends Cubit<EmployerLocationState> {
+  EmployerLocationCubit() : super(LocationLoading()) {
+    isLocationEnabled();
   }
 
   LatLong position = LatLong(lat: 0, long: 0);
@@ -20,10 +19,14 @@ class EmployeeLocationCubit extends Cubit<EmployeeLocationState> {
 
     if (isLocationOn) {
       emit(LocationOn());
+    } else {
+      emit(LocationDisabled());
     }
   }
 
-  void sendLocationAfter5Minutes() async {
+  Future<void> getLocation() async {
+    checkForPermission();
+
     final isLocationOn =
         await Permission.locationWhenInUse.serviceStatus.isEnabled;
     if (isLocationOn) {
@@ -34,15 +37,9 @@ class EmployeeLocationCubit extends Cubit<EmployeeLocationState> {
       position = LatLong(lat: lat, long: long);
 
       emit(LocationAvailable());
-
-      // await addLocation(lat, long);
     } else {
       emit(LocationDisabled());
     }
-
-    // Future.delayed(const Duration(seconds: 5)).then((_) {
-    //   sendLocationAfter5Minutes();
-    // });
   }
 
   Future<void> checkForPermission() async {

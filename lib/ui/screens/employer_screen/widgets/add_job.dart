@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
+import 'package:worker_app/bloc/cubit/employer/location_cubit.dart';
+import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
+import 'package:worker_app/bloc/cubit/employer/location_cubit.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worker_app/models/lat_long_model.dart';
 
 class AddJobWidget extends StatefulWidget {
   const AddJobWidget({super.key, required this.controller});
@@ -60,9 +63,14 @@ class _AddJobWidgetState extends State<AddJobWidget> {
       final String title = titleController.text;
       final String amount = amountController.text;
       final String desc = descController.text;
-      final LatLong latLong = context.read<EmployeeLocationCubit>().position;
 
+      await context.read<EmployerLocationCubit>().getLocation();
+
+      final LatLong latLong = context.read<EmployerLocationCubit>().position;
+      print(latLong);
       await addJobs(desc, title, latLong.lat, latLong.long, int.parse(amount));
+      await context.read<EmployerDataCubit>().getAllJobs(shoudEmit: true);
+
       widget.controller.hide();
       Navigator.pop(context);
     }
@@ -70,7 +78,7 @@ class _AddJobWidgetState extends State<AddJobWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<EmployeeLocationCubit>().isLocationEnabled();
+    context.read<EmployerLocationCubit>().isLocationEnabled();
 
     return Container(
       width: MediaQuery.sizeOf(context).width,
@@ -81,9 +89,9 @@ class _AddJobWidgetState extends State<AddJobWidget> {
           color: Colors.white
           // color: Color.fromRGBO(234, 196, 72, 1),
           ),
-      child: BlocBuilder<EmployeeLocationCubit, EmployeeLocationState>(
+      child: BlocBuilder<EmployerLocationCubit, EmployerLocationState>(
         builder: (context, state) {
-          if (state is LocationAvailable || state is LocationOn) {
+          if (state is LocationOn || state is LocationAvailable) {
             return SingleChildScrollView(
                 child: Padding(
               padding: EdgeInsets.only(

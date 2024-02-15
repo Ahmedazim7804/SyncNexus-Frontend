@@ -137,3 +137,29 @@ Future<dynamic> getUserByID(String userID) async {
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
 }
+
+Future<bool> updateUser(String name, String phone, String email) async {
+  final Uri uri = Uri.parse('${getBaseURL()}/user/update-user/');
+  final requestData = {};
+  if (name != "") {
+    requestData["name"] = name;
+  }
+  if (phone != "") {
+    requestData["phone_no"] = phone;
+  }
+  if (email != "") {
+    requestData["email"] = email;
+  }
+  if(requestData.isEmpty){
+    return false;
+  }
+  Map<String, String> header = await headers();
+  final response =
+      await http.post(uri, headers: header, body: jsonEncode(requestData));
+  if (response.statusCode == 200) {
+    return true;
+  } else {
+    print(response.body);
+    return false;
+  }
+}

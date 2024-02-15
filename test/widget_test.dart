@@ -246,14 +246,14 @@ void main() {
   group('deleteJob', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
-      await deleteJob("b8ee59fb-5ccc-40e4-9c1c-d5dc8c17a5e5");
+      await deleteJob("8dc2a5ff-6ec2-472a-934a-5db4776a94db");
       expect(true == result, true);
     });
   });
   group('completeJob', () {
     test('returns true if HTTP request succeeds', () async {
       final result =
-      await completeJob("51d42b59-2eae-4a41-bbb7-f1dd72f31162");
+      await completeJob("8dc2a5ff-6ec2-472a-934a-5db4776a94db");
       expect(true == result, true);
     });
   });
@@ -279,6 +279,14 @@ void main() {
       await getUserByID("8dc0ce60-c48c-48bc-8bf5-6373b658cbe8");
       print(result);
       expect({} != result, true);
+    });
+  });
+  group('updateUser', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result =
+      await updateUser("Worker App Test", "9999999999999", "");
+      print(result);
+      expect(true == result, true);
     });
   });
 }

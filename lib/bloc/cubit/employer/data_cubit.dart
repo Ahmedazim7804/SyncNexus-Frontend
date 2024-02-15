@@ -65,7 +65,7 @@ class EmployerDataCubit extends Cubit<EmployerDataState> {
         jobId: rawJob['id'],
         title: rawJob['title'],
         desc: rawJob['description'],
-        employerId: rawJob['employer_id'],
+        employer: employer,
         amount: rawJob['amount'].toString(),
         done: rawJob['done'].toString().toLowerCase() == "null"
             ? null

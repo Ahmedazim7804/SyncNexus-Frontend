@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
+import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
+import 'package:worker_app/provider/user_endpoints.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_job.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:worker_app/models/lat_long_model.dart';
@@ -25,10 +27,17 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
     final rawJobs = await getJobs(latLong.lat, latLong.long);
 
     for (final rawJob in rawJobs) {
+      final userData = await getUserByID(rawJob['employer_id']);
+      Employer employer = Employer(
+          name: userData['name'],
+          phone: userData['phone_no'],
+          email: userData['email'],
+          id: userData['id']);
+
       jobs.add(Job(
           title: rawJob['title'],
           desc: rawJob['description'],
-          employerId: rawJob['employer_id'],
+          employer: employer,
           amount: rawJob['amount'].toString(),
           jobId: rawJob['id']));
     }
@@ -150,10 +159,12 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
       onTap: toggleTaskItem,
       child: Card(
         shape: const ContinuousRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-        color: const Color.fromARGB(255, 226, 181, 31),
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        margin: const EdgeInsets.symmetric(vertical: 1.5, horizontal: 4),
         surfaceTintColor: Colors.transparent,
+        color: Colors.grey.shade200,
+        shadowColor:
+            Colors.transparent, //const Color.fromARGB(255, 226, 181, 31),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           width: MediaQuery.sizeOf(context).width,
@@ -161,7 +172,6 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Icon(
                     Icons.info_outlined,
@@ -172,7 +182,7 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
                   ),
                   Text(
                     widget.job.title,
-                    style: const TextStyle(
+                    style: GoogleFonts.urbanist(
                         fontWeight: FontWeight.bold, fontSize: 22),
                   ),
                 ],
@@ -180,55 +190,73 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
               const SizedBox(
                 height: 10,
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                const Icon(Icons.person),
-                const SizedBox(
-                  width: 10,
-                ),
-                RichText(
-                    overflow: TextOverflow.clip,
-                    textAlign: TextAlign.left,
-                    text: TextSpan(
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        text: "Employer : ",
-                        children: [
-                          const WidgetSpan(
-                              child: SizedBox(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(children: [
+                          const Icon(Icons.currency_rupee),
+                          const SizedBox(
                             width: 10,
-                          )),
-                          TextSpan(
-                              text: widget.job.employerId,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal)),
-                        ])),
-              ]),
-              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                const Icon(Icons.person),
-                const SizedBox(
-                  width: 10,
-                ),
-                RichText(
-                    textAlign: TextAlign.left,
-                    text: TextSpan(
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                        text: "Amount : ",
-                        children: [
-                          const WidgetSpan(
-                              child: SizedBox(
+                          ),
+                          RichText(
+                              textAlign: TextAlign.left,
+                              text: TextSpan(
+                                  style: GoogleFonts.urbanist(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  text: "Amount : ",
+                                  children: [
+                                    TextSpan(
+                                        text: "${widget.job.amount}/-",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.normal)),
+                                  ])),
+                        ]),
+                        Row(children: [
+                          const Icon(Icons.person),
+                          const SizedBox(
                             width: 10,
-                          )),
-                          TextSpan(
-                              text: widget.job.amount.toString(),
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal)),
-                        ])),
-              ]),
+                          ),
+                          RichText(
+                              overflow: TextOverflow.fade,
+                              textAlign: TextAlign.left,
+                              text: TextSpan(
+                                  style: GoogleFonts.urbanist(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  text: "Employer : ",
+                                  children: [
+                                    TextSpan(
+                                        text: widget.job.employer.name,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.normal)),
+                                  ])),
+                        ]),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: ContinuousRectangleBorder(
+                            borderRadius: BorderRadius.circular(5))),
+                    onPressed: () {},
+                    child: const Text(
+                      "Apply",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               SizeTransition(
                 sizeFactor: heightFactorAnimation,
                 child: Column(
@@ -248,32 +276,16 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 5),
                       child: Text(
-                        "You have to collect some material and fix the roof. You have to bring tools they will not be provided",
-                        style: TextStyle(fontSize: 15),
+                        widget.job.desc,
+                        style: const TextStyle(fontSize: 15),
                         textAlign: TextAlign.left,
                       ),
                     ),
                   ],
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: ContinuousRectangleBorder(
-                          borderRadius: BorderRadius.circular(5))),
-                  onPressed: () {},
-                  child: const Text(
-                    "Apply",
-                    style: TextStyle(color: Colors.black),
-                  ),
                 ),
               ),
             ],

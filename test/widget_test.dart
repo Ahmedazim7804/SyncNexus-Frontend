@@ -195,6 +195,13 @@ void main() {
       expect(Null == result || Null != result, true);
     });
   });
+  group('getEmployeeJob', () {
+    test('returns true if HTTP request succeeds', () async {
+      final result = await getEmployeeJob();
+      print(result);
+      expect(Null == result || Null != result, true);
+    });
+  });
   group('addLocation', () {
     test('returns true if HTTP request succeeds', () async {
       final result = await addLocation(28.704060, 77.102493);

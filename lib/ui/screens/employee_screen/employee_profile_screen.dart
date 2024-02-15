@@ -9,28 +9,28 @@ import 'package:worker_app/provider/user_endpoints.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
 import 'package:go_router/go_router.dart';
 
-class EmployerProfileScreen extends StatefulWidget {
-  const EmployerProfileScreen({super.key});
+class EmployeeProfileScreen extends StatefulWidget {
+  const EmployeeProfileScreen({super.key});
 
   @override
-  State<EmployerProfileScreen> createState() => _EmployerProfileScreenState();
+  State<EmployeeProfileScreen> createState() => _EmployerProfileScreenState();
 }
 
-class _EmployerProfileScreenState extends State<EmployerProfileScreen> {
+class _EmployerProfileScreenState extends State<EmployeeProfileScreen> {
   final OverlayPortalController overlayPortalController =
       OverlayPortalController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  late final EmployerDataCubit employeeDataCubit =
-      context.read<EmployerDataCubit>();
-  late final email = employeeDataCubit.employer.email;
+  late final EmployeeDataCubit employeeDataCubit =
+      context.read<EmployeeDataCubit>();
+  late final email = employeeDataCubit.employee.email;
   bool showNameErrorText = false;
   bool showPhoneErrorText = false;
 
   @override
   void initState() {
-    nameController.text = employeeDataCubit.employer.name;
-    phoneController.text = employeeDataCubit.employer.phone;
+    nameController.text = employeeDataCubit.employee.name;
+    phoneController.text = employeeDataCubit.employee.phone;
 
     // TODO: implement initState
     super.initState();
@@ -59,7 +59,7 @@ class _EmployerProfileScreenState extends State<EmployerProfileScreen> {
     if (inputIsValid) {
       await updateUser(nameController.text, phoneController.text, email);
 
-      employeeDataCubit.getEmployersData();
+      employeeDataCubit.getEmployeeData();
     }
     overlayPortalController.hide();
   }

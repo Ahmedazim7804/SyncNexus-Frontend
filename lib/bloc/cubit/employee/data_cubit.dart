@@ -14,8 +14,8 @@ class EmployeeDataCubit extends Cubit<EmployeeDataState> {
     getAllData();
   }
 
-  late final Employee employee;
-  late final Employer employer;
+  late Employee employee;
+  late Employer employer;
   final Map<String, double> location = {
     'lat': 0,
     'long': 0,
@@ -36,10 +36,6 @@ class EmployeeDataCubit extends Cubit<EmployeeDataState> {
     location['long'] = long;
   }
 
-  Future<void> getJobData() async {
-    await getEmployeeJob();
-  }
-
   Future<void> getEmployeeData() async {
     final data = await getUser();
 
@@ -53,7 +49,6 @@ class EmployeeDataCubit extends Cubit<EmployeeDataState> {
   void getAllData() async {
     await getEmployeeData();
     await getEmployersData();
-    await getJobData();
     await employee.getMyTasks();
     emit(EmployeeDataLoaded());
   }

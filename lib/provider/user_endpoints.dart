@@ -46,8 +46,7 @@ Future<bool> createUserOnBackend(
   }
 }
 
-Future<dynamic> getUser(
-    ) async {
+Future<dynamic> getUser() async {
   final Uri uri = Uri.parse('${getBaseURL()}/user/get-user/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
@@ -59,7 +58,7 @@ Future<dynamic> getUser(
   }
 }
 
-Future<bool> addRating(String userTo, int rate, String comment) async {
+Future<bool> addRating(String userTo, double rate, String comment) async {
   final Uri uri = Uri.parse('${getBaseURL()}/user/$userTo/add-rating/');
   final requestData = {"rate": rate, "comment": comment};
   Map<String, String> header = await headers();
@@ -68,7 +67,7 @@ Future<bool> addRating(String userTo, int rate, String comment) async {
   print(response.statusCode);
   if (response.statusCode == 200) {
     return true;
-  } else if(response.statusCode == 500){
+  } else if (response.statusCode == 500) {
     return false;
   } else {
     throw Exception(
@@ -101,7 +100,7 @@ Future<List<dynamic>> getPayments(DateTime startTime, DateTime endTime) async {
       await http.post(uri, headers: header, body: jsonEncode(requestData));
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
-  } else if(response.statusCode == 404){
+  } else if (response.statusCode == 404) {
     return [];
   } else {
     throw Exception(
@@ -111,10 +110,7 @@ Future<List<dynamic>> getPayments(DateTime startTime, DateTime endTime) async {
 
 Future<bool> addFeedback(int rating, String feedback) async {
   final Uri uri = Uri.parse('${getBaseURL()}/user/add-feedback/');
-  final requestData = {
-    "rate": rating,
-    "comment": feedback
-  };
+  final requestData = {"rate": rating, "comment": feedback};
   Map<String, String> header = await headers();
   final response =
       await http.post(uri, headers: header, body: jsonEncode(requestData));

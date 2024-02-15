@@ -11,6 +11,7 @@ import 'package:worker_app/router/auth_listenable.dart';
 import 'package:worker_app/ui/screens/authentication/signup_screen.dart';
 import 'package:worker_app/ui/screens/authentication/user_details_screen.dart';
 import 'package:worker_app/ui/screens/employee_screen/employee_payment.dart';
+import 'package:worker_app/ui/screens/employee_screen/employee_profile_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employee_tasks_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/employees_list.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_homescreen.dart';
@@ -22,6 +23,7 @@ import 'package:worker_app/ui/screens/employer_screen/employer_profile_screen.da
 import 'package:worker_app/ui/screens/employee_screen/employee_homescreen.dart';
 import 'package:worker_app/ui/screens/employee_screen/employee_jobs_screen.dart';
 import 'package:worker_app/ui/screens/employee_screen/employee_root_scaffold.dart';
+import 'package:worker_app/ui/screens/rating_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorEmployerDashboardKey =
@@ -159,7 +161,7 @@ class MyAppRouter {
                     GoRoute(
                       path: '/screens/employee/profile',
                       pageBuilder: (context, state) =>
-                          const MaterialPage(child: EmployerProfileScreen()),
+                          const MaterialPage(child: EmployeeProfileScreen()),
                     ),
                   ]),
             ]),
@@ -173,5 +175,14 @@ class MyAppRouter {
           pageBuilder: (context, state) =>
               const MaterialPage(child: OthersDetailScreen()),
         ),
+        GoRoute(
+            path: '/screens/rating',
+            pageBuilder: (context, state) {
+              String rateUser = state.extra as String;
+              return MaterialPage(
+                  child: RatingScreen(
+                rateUser: rateUser,
+              ));
+            }),
       ]);
 }

@@ -8,7 +8,7 @@ import 'package:worker_app/bloc/cubit/employee/data_cubit.dart';
 import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/employer_model.dart';
-
+import 'package:go_router/go_router.dart';
 import 'package:worker_app/models/worker_task_model.dart';
 import 'package:worker_app/models/lat_long_model.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
@@ -20,6 +20,7 @@ import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widge
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/tasks_list.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/task_widget_employer.dart';
+import 'package:worker_app/ui/screens/rating_screen.dart';
 
 class WorkerHomeScreen extends StatefulWidget {
   const WorkerHomeScreen({super.key});
@@ -141,11 +142,16 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
       ),
     ).then((result) async {
       if (result) {
-        // await leaveJob().then((value) {
-        //   context.read<EmployeeDataCubit>().getAllData();
-        // });
+        await leaveJob().then((value) {
+          context.read<EmployeeDataCubit>().getAllData();
+        });
+        showRatingScreen();
       }
     });
+  }
+
+  void showRatingScreen() {
+    context.push('/screens/rating', extra: employer.id);
   }
 
   void getFreeFromEmployer() async {
@@ -183,9 +189,9 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
       ),
     ).then((result) async {
       if (result) {
-        // await leaveJob().then((value) {
-        //   context.read<EmployeeDataCubit>().getAllData();
-        // });
+        await leaveJob().then((value) {
+          context.read<EmployeeDataCubit>().getAllData();
+        });
       }
     });
   }

@@ -57,14 +57,15 @@ Future<List<dynamic>> getEmployees() async {
 }
 
 Future<dynamic> getEmployee(String employeeID) async {
-  final Uri uri = Uri.parse('${getBaseURL()}/employer/$employeeID/get-employee/');
+  final Uri uri =
+      Uri.parse('${getBaseURL()}/employer/$employeeID/get-employee/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else if (response.statusCode == 404) {
     return {};
-  }else {
+  } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
   }
@@ -110,7 +111,7 @@ Future<dynamic> searchByPhone(String PhoneNo) async {
 
 Future<dynamic> searchByEmail(String email) async {
   final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/$email/search-employee-email/');
+      Uri.parse('${getBaseURL()}/employer/$email/search-employee-email/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
@@ -142,10 +143,10 @@ Future<bool> addJobs(String description, String title, double latitude,
 }
 
 Future<bool> removeEmployee(String employeeID) async {
-  final Uri uri = Uri.parse('${getBaseURL()}/employer/$employeeID/remove-employee/');
+  final Uri uri =
+      Uri.parse('${getBaseURL()}/employer/$employeeID/remove-employee/');
   Map<String, String> header = await headers();
-  final response =
-  await http.get(uri, headers: header);
+  final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return true;
   } else {
@@ -157,8 +158,7 @@ Future<bool> removeEmployee(String employeeID) async {
 Future<bool> deleteTask(String taskID) async {
   final Uri uri = Uri.parse('${getBaseURL()}/employer/$taskID/delete-task/');
   Map<String, String> header = await headers();
-  final response =
-  await http.get(uri, headers: header);
+  final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return true;
   } else {
@@ -170,8 +170,7 @@ Future<bool> deleteTask(String taskID) async {
 Future<bool> deleteJob(String jobID) async {
   final Uri uri = Uri.parse('${getBaseURL()}/employer/$jobID/delete-job/');
   Map<String, String> header = await headers();
-  final response =
-  await http.get(uri, headers: header);
+  final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return true;
   } else {
@@ -183,8 +182,7 @@ Future<bool> deleteJob(String jobID) async {
 Future<bool> completeJob(String jobID) async {
   final Uri uri = Uri.parse('${getBaseURL()}/employer/$jobID/complete-job/');
   Map<String, String> header = await headers();
-  final response =
-  await http.get(uri, headers: header);
+  final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return true;
   } else {
@@ -229,8 +227,7 @@ Future<List<dynamic>> getEmployeePayments(String employeeID) async {
 }
 
 Future<List<dynamic>> getPostedJobs() async {
-  final Uri uri =
-  Uri.parse('${getBaseURL()}/employer/get-jobs/');
+  final Uri uri = Uri.parse('${getBaseURL()}/employer/get-jobs/');
   Map<String, String> header = await headers();
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {

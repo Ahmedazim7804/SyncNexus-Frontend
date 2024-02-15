@@ -74,8 +74,7 @@ Future<dynamic> getEmployer() async {
   }
 }
 
-Future<bool> addLocation(
-    double locationLat, double locationLong) async {
+Future<bool> addLocation(double locationLat, double locationLong) async {
   final requestData = {
     "location_lat": locationLat,
     "location_long": locationLong
@@ -130,6 +129,18 @@ Future<bool> approvePayment(String paymentID) async {
   final response = await http.get(uri, headers: header);
   if (response.statusCode == 200) {
     return true;
+  } else {
+    throw Exception(
+        'Failed to load data from endpoint: ${response.statusCode} ${response.body}');
+  }
+}
+
+Future<dynamic> getEmployeeJob() async {
+  final Uri uri = Uri.parse('${getBaseURL()}/employee/get-employee-job/');
+  Map<String, String> header = await headers();
+  final response = await http.get(uri, headers: header);
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
   } else {
     throw Exception(
         'Failed to load data from endpoint: ${response.statusCode} ${response.body}');

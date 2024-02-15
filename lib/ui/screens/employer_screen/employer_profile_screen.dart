@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
@@ -23,6 +24,45 @@ class _EmployerProfileScreenState extends State<EmployerProfileScreen> {
     overlayPortalController.hide();
   }
 
+  void showSignOutDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(
+                "Confirm Logout",
+                style: GoogleFonts.urbanist(
+                    fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              content: const Text(
+                "Are you sure, you want to logout?",
+                style: TextStyle(fontSize: 16),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.black),
+                    )),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 226, 181, 31),
+                      shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                  child: const Text(
+                    "Confirm",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            )).then((result) async {
+      if (result) {
+        await FirebaseAuth.instance.signOut();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return OverlayPortal(
@@ -36,6 +76,10 @@ class _EmployerProfileScreenState extends State<EmployerProfileScreen> {
               style: GoogleFonts.urbanist(
                   fontSize: 32, fontWeight: FontWeight.bold),
             ),
+            actions: [
+              IconButton(
+                  onPressed: showSignOutDialog, icon: const Icon(Icons.logout))
+            ],
             centerTitle: true,
           ),
           backgroundColor: Colors.grey.shade100,

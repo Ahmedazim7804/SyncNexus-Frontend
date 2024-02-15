@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/models/worker_task_model.dart';
 
@@ -20,7 +21,8 @@ class JobCubit extends Cubit<JobState> {
       title: "Fix the roof",
       desc: "Today",
       amount: 'sd',
-      employerId: 'asdas');
+      employer:
+          Employer(name: 'name', phone: 'phone', email: 'email', id: 'id'));
   bool isJobActive = false;
   late JobStatus jobStatus;
 

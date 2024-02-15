@@ -4,6 +4,7 @@ import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/models/worker_task_model.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
+import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/provider/user_endpoints.dart';
 
 part 'data_state.dart';
@@ -37,9 +38,7 @@ class EmployeeDataCubit extends Cubit<EmployeeDataState> {
     location['long'] = long;
   }
 
-  Future<void> getJobData() async {
-    // print(await getUser());
-  }
+  Future<void> getJobData() async {}
 
   Future<void> getEmployeeData() async {
     final data = await getUser();

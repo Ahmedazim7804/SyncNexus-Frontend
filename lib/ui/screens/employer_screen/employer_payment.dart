@@ -57,8 +57,27 @@ class _EmployerPaymentScreenState extends State<EmployerPaymentScreen> {
             if (state is EmployerPaymentsLoaded) {
               List<Payment> payments =
                   context.read<EmployerPaymentsCubit>().payments;
-              return SingleChildScrollView(
-                child: Column(
+
+              if (payments.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        'assets/images/payment.png',
+                      ),
+                      Text(
+                        "No Payments Found",
+                        style: GoogleFonts.urbanist(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -66,19 +85,19 @@ class _EmployerPaymentScreenState extends State<EmployerPaymentScreen> {
                     Center(
                       child: Image.asset(
                         'assets/images/payment.png',
-                        width: 320,
-                        height: 250,
                       ),
                     ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: payments.length,
-                      itemBuilder: (context, index) =>
-                          PaymentCard(payment: payments[index]),
-                    )
+                    payments.isNotEmpty
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: payments.length,
+                            itemBuilder: (context, index) =>
+                                PaymentCard(payment: payments[index]),
+                          )
+                        : const SizedBox.shrink()
                   ],
-                ),
-              );
+                );
+              }
             } else {
               return const Center(child: CircularProgressIndicator());
             }
@@ -103,8 +122,6 @@ class _PaymentCardState extends State<PaymentCard>
   late final Animation<double> heightFactorAnimation;
   late final AnimationController controller;
   bool isExpanded = false;
-  ShapeBorder cardShape = const ContinuousRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(20)));
 
   @override
   void initState() {

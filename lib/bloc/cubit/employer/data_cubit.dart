@@ -22,7 +22,7 @@ class EmployerDataCubit extends Cubit<EmployerDataState> {
 
   void getAllData() async {
     await getEmployersData();
-    await getAllEmployees();
+    await getAllEmployees(listRemoved: false);
     await getAllJobs();
     emit(EmployerDataLoaded());
   }
@@ -37,35 +37,51 @@ class EmployerDataCubit extends Cubit<EmployerDataState> {
         id: data['id']);
   }
 
-  Future<void> getAllEmployees() async {
+  Future<void> getAllEmployees({bool listRemoved = false}) async {
     await getEmployees().then((employeesListUnparsed) {
       for (var employee in employeesListUnparsed) {
-        employeesList.add(Employee(
-            name: employee['name'],
-            phone: employee['phone_no'],
-            email: ' ', //employee[''],
-            id: employee['employee_id']));
+        if (!listRemoved && employee['status'] == 'removed') {
+          continue;
+        }
+
+        employeesList.add(
+          Employee(
+              name: employee['name'],
+              phone: employee['phone_no'],
+              email: employee['email'],
+              id: employee['employee_id'],
+              removed: employee['status'] == 'removed'),
+        );
       }
     });
   }
 
-  Future<void> getAllJobs() async {
+  Future<void> getAllJobs({bool shoudEmit = false}) async {
     final List<Job> allJobs = [];
     final rawJobs = await getPostedJobs();
 
     for (final rawJob in rawJobs) {
       Job job = Job(
-          jobId: rawJob['id'],
-          title: rawJob['title'],
-          desc: rawJob['description'],
-          employerId: rawJob['employer_id'],
-          amount: rawJob['amount'].toString(),
-          done: rawJob['done'] == "null" ? rawJob['done'] : null);
+        jobId: rawJob['id'],
+        title: rawJob['title'],
+        desc: rawJob['description'],
+        employerId: rawJob['employer_id'],
+        amount: rawJob['amount'].toString(),
+        done: rawJob['done'].toString().toLowerCase() == "null"
+            ? null
+            : true, // stores bool
+        doneAt: rawJob['done'].toString().toLowerCase() == "null"
+            ? null
+            : rawJob['done'], // store date given in rawJob['done]
+      );
 
       allJobs.add(job);
     }
 
     jobsList = allJobs;
+    if (shoudEmit) {
+      emit(EmployerDataLoaded());
+    }
   }
 
   Future<void> freeEmployee(Employee employee) async {

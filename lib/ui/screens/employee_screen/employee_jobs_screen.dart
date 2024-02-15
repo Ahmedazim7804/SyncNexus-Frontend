@@ -6,6 +6,7 @@ import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_job.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worker_app/models/lat_long_model.dart';
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
 
 class EmployeeJobsScreen extends StatefulWidget {

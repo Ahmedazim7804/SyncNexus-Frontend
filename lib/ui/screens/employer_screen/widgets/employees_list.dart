@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EmployeesListWidget extends StatefulWidget {
   const EmployeesListWidget({super.key});
@@ -14,7 +15,7 @@ class EmployeesListWidget extends StatefulWidget {
 
 class _EmployeesListScreenState extends State<EmployeesListWidget> {
   late List<Employee> employeesList =
-      context.read<EmployerDataCubit>().employeesList;
+      context.watch<EmployerDataCubit>().employeesList;
 
   void removeEmployeeFromListView() {
     setState(() {

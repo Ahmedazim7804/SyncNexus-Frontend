@@ -19,7 +19,7 @@ class JobsListScreen extends StatefulWidget {
 class _JobsListScreenState extends State<JobsListScreen> {
   final OverlayPortalController overlayPortalController =
       OverlayPortalController();
-  late final List<Job> jobsList = context.read<EmployerDataCubit>().jobsList;
+  late List<Job> jobsList = context.read<EmployerDataCubit>().jobsList;
 
   void showAddJobSheet() {
     showModalBottomSheet(
@@ -31,6 +31,7 @@ class _JobsListScreenState extends State<JobsListScreen> {
   }
 
   void removeJobFromListView(int index) {
+    (jobsList[index]).removeThisJob();
     setState(() {
       jobsList.removeAt(index);
     });
@@ -50,47 +51,59 @@ class _JobsListScreenState extends State<JobsListScreen> {
             label: const Text("Add Job"),
             icon: const Icon(Icons.add),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(
-                height: 45,
+          body: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    height: 45,
+                  ),
+                  Container(
+                    width: MediaQuery.sizeOf(context).width,
+                    height: 150,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+                    child: Lottie.asset('assets/lottie/job4.json'),
+                    // child: Image.asset(
+                    //   'assets/images/job_employer.png',
+                    //   height: 100,
+                    // ),
+                  ),
+                  BlocBuilder<EmployerDataCubit, EmployerDataState>(
+                    builder: (context, state) {
+                      if (state is EmployerDataLoaded) {
+                        jobsList = context.read<EmployerDataCubit>().jobsList;
+
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            // physics: const AlwaysScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: jobsList.length,
+                            itemBuilder: (context, index) {
+                              return JobItem(
+                                  job: jobsList[index],
+                                  fxn: () => removeJobFromListView(index));
+                            });
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
+                  jobsList.isNotEmpty
+                      ? const SizedBox.shrink()
+                      : Text(
+                          "No Jobs Found",
+                          style: GoogleFonts.urbanist(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        )
+                ],
               ),
-              Container(
-                width: MediaQuery.sizeOf(context).width,
-                height: 150,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
-                child: Lottie.asset('assets/lottie/job4.json'),
-                // child: Image.asset(
-                //   'assets/images/job_employer.png',
-                //   height: 100,
-                // ),
-              ),
-              BlocBuilder<EmployerDataCubit, EmployerDataState>(
-                builder: (context, state) {
-                  if (state is EmployerDataLoaded) {
-                    return SizedBox(
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: jobsList.length,
-                          itemBuilder: (context, index) {
-                            return JobItem(
-                                job: jobsList[index],
-                                fxn: () => removeJobFromListView(index));
-                          }),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              )
-            ],
+            ),
           )),
     );
   }
@@ -361,12 +374,12 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 4, vertical: 5),
                                 child: Text(
-                                  "You have to collect some material and fix the roof. You have to bring tools they will not be provided",
-                                  style: TextStyle(fontSize: 15),
+                                  widget.job.desc,
+                                  style: const TextStyle(fontSize: 15),
                                   textAlign: TextAlign.left,
                                 ),
                               ),

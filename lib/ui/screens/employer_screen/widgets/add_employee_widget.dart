@@ -26,6 +26,9 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
 
   List<Employee> searchedEmployee = [];
   void searchEmployeeOnBackend() async {
+    if (phoneController.text.isEmpty || phoneController.text.length < 10) {
+      return;
+    }
     Map<dynamic, dynamic> searchResult =
         await searchByPhone(phoneController.text);
 
@@ -43,88 +46,77 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
     return OverlayPortal(
       controller: overlayPortalController,
       overlayChildBuilder: overlayChildBuilder,
-      child: Container(
-        // height: double.infinity,
-        // height: 100,
-        width: MediaQuery.sizeOf(context).width,
-        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-          color: Color.fromRGBO(234, 196, 72, 1),
-        ),
-        child: SingleChildScrollView(
-            child: Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: phoneController,
-                      keyboardType: TextInputType.phone,
-                      maxLength: 10,
-                      decoration: InputDecoration(
-                        labelText: 'Phone',
-                        prefixText: "+91 ",
-                        labelStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontFamily: 'Epilogue',
-                          fontWeight: FontWeight.w500,
-                          height: 0.06,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.green,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.green,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            width: 1,
-                            color: Colors.green,
-                          ),
-                        ),
-                        filled: true,
-                        fillColor: const Color.fromARGB(255, 226, 181, 31),
+      child: BottomSheet(
+          onClosing: () {},
+          builder: (context) => Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 32, horizontal: 8),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Center(
+                        child: Text("Add New Employee",
+                            style: GoogleFonts.urbanist(
+                                fontSize: 24, fontWeight: FontWeight.bold)),
                       ),
-                    ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: phoneController,
+                              keyboardType: TextInputType.phone,
+                              maxLength: 10,
+                              decoration: InputDecoration(
+                                labelText: 'Phone',
+                                prefixText: "+91 ",
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                filled: true,
+                                fillColor: const Color(0xFFfafafa),
+                                labelStyle: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontFamily: 'Epilogue',
+                                  fontWeight: FontWeight.w500,
+                                  height: 0.06,
+                                ),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: searchEmployeeOnBackend,
+                              icon: const Icon(Icons.check),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  shape: const CircleBorder()))
+                        ],
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: searchedEmployee.length,
+                        itemBuilder: (context, index) => SearchedEmployeeItem(
+                          employee: searchedEmployee[index],
+                          overlayController: overlayPortalController,
+                        ),
+                      )
+                    ],
                   ),
-                  IconButton(
-                      onPressed: searchEmployeeOnBackend,
-                      icon: const Icon(Icons.check),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.lightGreen,
-                          shape: const CircleBorder()))
-                ],
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: searchedEmployee.length,
-                itemBuilder: (context, index) => SearchedEmployeeItem(
-                  employee: searchedEmployee[index],
-                  overlayController: overlayPortalController,
                 ),
-              )
-            ],
-          ),
-        )),
-      ),
+              )),
     );
   }
 }
@@ -151,38 +143,36 @@ class _SearchedEmployeeItemState extends State<SearchedEmployeeItem> {
   void showConfirmDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-          title: Text(
-            "Are You Sure?",
-            style:
-                GoogleFonts.urbanist(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-          content: Text(
-            "You are going to employ a employee, please confirm the action",
-            style: GoogleFonts.urbanist(fontSize: 16),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  "Cancel",
-                )),
-            ElevatedButton(
-              onPressed: () {
-                bindEmployeeToEmployer();
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 234, 196, 72),
-                  shape: ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.circular(20))),
-              child: const Text("Confirm"),
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Are You Sure?",
+          style:
+              GoogleFonts.urbanist(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          "You are going to employ a employee, please confirm the action",
+          style: TextStyle(fontSize: 16),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text(
+                "Cancel",
+                style: TextStyle(color: Colors.black),
+              )),
+          ElevatedButton(
+            onPressed: bindEmployeeToEmployer,
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 226, 181, 31),
+                shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.circular(15))),
+            child: const Text(
+              "Confirm",
+              style: TextStyle(color: Colors.black),
             ),
-          ],
-        );
-      },
+          ),
+        ],
+      ),
     );
   }
 
@@ -192,9 +182,9 @@ class _SearchedEmployeeItemState extends State<SearchedEmployeeItem> {
         width: MediaQuery.sizeOf(context).width,
         padding: const EdgeInsets.symmetric(vertical: 10),
         margin: const EdgeInsets.symmetric(vertical: 10),
-        decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 226, 181, 31),
-            borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
               bottomLeft: Radius.circular(20),
@@ -202,28 +192,18 @@ class _SearchedEmployeeItemState extends State<SearchedEmployeeItem> {
             )),
         child: ListTile(
           // dense: true,
-          leading: CircleAvatar(
-            backgroundImage:
-                Image.asset('assets/images/default_user.png').image,
+          leading: ClipOval(
+            child: Image.asset('assets/images/default_user.png'),
           ),
           title: Text(
             widget.employee.name,
             style: const TextStyle(
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          subtitle: Wrap(children: [
-            const Icon(
-              Icons.phone,
-              color: Colors.black,
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            Text(
-              widget.employee.phone,
-              style: const TextStyle(color: Colors.black, fontSize: 17),
-            )
-          ]),
+          subtitle: Text(
+            widget.employee.phone,
+            style: const TextStyle(color: Colors.black, fontSize: 17),
+          ),
           trailing: IconButton(
               icon: const Icon(Icons.add),
               style: ElevatedButton.styleFrom(

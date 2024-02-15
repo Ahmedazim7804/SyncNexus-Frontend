@@ -15,7 +15,7 @@ import 'package:worker_app/ui/screens/employer_screen/employer_homescreen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_payment.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_root_scaffold.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_jobs_list_screen.dart';
-import 'package:worker_app/ui/screens/employer_screen/profile_screen.dart';
+import 'package:worker_app/ui/screens/employer_screen/employer_profile_screen.dart';
 
 import 'package:worker_app/ui/screens/employee_screen/employee_homescreen.dart';
 import 'package:worker_app/ui/screens/employee_screen/employee_jobs_screen.dart';

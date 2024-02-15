@@ -1,6 +1,7 @@
 import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
 import 'package:worker_app/models/worker_task_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
+import 'package:worker_app/models/lat_long_model.dart';
 
 class Job {
   Job(
@@ -11,6 +12,7 @@ class Job {
       required this.amount,
       this.latLong,
       this.done,
+      this.doneAt,
       this.deleted});
 
   final String jobId;
@@ -20,6 +22,7 @@ class Job {
   final String amount;
   LatLong? latLong;
   bool? done;
+  String? doneAt;
   bool? deleted;
 
   Future<void> removeThisJob() async {

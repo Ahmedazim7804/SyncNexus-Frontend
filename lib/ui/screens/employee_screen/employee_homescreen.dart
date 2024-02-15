@@ -12,9 +12,11 @@ import 'package:worker_app/models/worker_task_model.dart';
 import 'package:worker_app/models/lat_long_model.dart';
 
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
+import 'package:worker_app/ui/screens/employee_screen/widgets/workers/job_card.dart';
 
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget_employee.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget_employer.dart';
 
 class WorkerHomeScreen extends StatefulWidget {
   const WorkerHomeScreen({super.key});
@@ -44,55 +46,9 @@ class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
             CameraPosition(target: LatLng(lat, long), zoom: 14.4746))));
   }
 
-  // void sendLocationAfter5Minutes() async {
-  //   final isLocationOn =
-  //       await Permission.locationWhenInUse.serviceStatus.isEnabled;
-  //   if (isLocationOn) {
-  //     Position position = await Geolocator.getCurrentPosition(
-  //         desiredAccuracy: LocationAccuracy.best);
-  //     double lat = position.latitude;
-  //     double long = position.longitude;
-  //     setPositionOnMap(lat: lat, long: long);
-
-  //     await addLocation(lat, long);
-  //   }
-
-  // Future.delayed(const Duration(seconds: 5)).then((_) {
-  //   sendLocationAfter5Minutes();
-  // });
-  // }
-
-  // Future<void> checkForPermission() async {
-  //   if (await Permission.location.isGranted) {
-  //     return;
-  //   }
-
-  //   if (await Permission.location.isDenied) {
-  //     Permission.locationWhenInUse.request().then(
-  //       (value) {
-  //         if (value == PermissionStatus.denied) {
-  //           openAppSettings();
-  //           SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-  //         }
-  //       },
-  //     );
-  //   }
-
-  //   if (await Permission.location.isPermanentlyDenied) {
-  //     Permission.locationWhenInUse.request().then(
-  //       (value) {
-  //         if (value == PermissionStatus.denied) {
-  //           openAppSettings();
-  //           SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-  //         }
-  //       },
-  //     );
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       // appBar: AppBar(
       //   backgroundColor: Colors.white.withAlpha(40),
       //   leading: IconButton(
@@ -107,37 +63,37 @@ class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
       //   ],
       // ),
       extendBodyBehindAppBar: true,
-      bottomSheet: const MyBottomSheet(),
+      bottomSheet: MyBottomSheet(),
       body: Center(
         child: Column(
           children: [
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height / 2.5,
-              width: MediaQuery.sizeOf(context).width,
-              child: BlocListener<EmployeeLocationCubit, EmployeeLocationState>(
-                  listener: (context, state) {
-                    if (state is LocationAvailable) {
-                      LatLong latLong =
-                          context.read<EmployeeLocationCubit>().position;
-                      setPositionOnMap(lat: latLong.lat, long: latLong.long);
-                    }
-                  },
-                  child: GoogleMap(
-                    onCameraMove: (position) {
-                      position.zoom;
-                    },
-                    mapType: MapType.normal,
-                    buildingsEnabled: true,
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
-                    trafficEnabled: true,
-                    initialCameraPosition:
-                        initialLocation ?? defaultMapLocation,
-                    onMapCreated: (controller) {
-                      _controller.complete(controller);
-                    },
-                  )),
-            )
+            // SizedBox(
+            //   height: MediaQuery.sizeOf(context).height / 2.5,
+            //   width: MediaQuery.sizeOf(context).width,
+            //   child: BlocListener<EmployeeLocationCubit, EmployeeLocationState>(
+            //       listener: (context, state) {
+            //         if (state is LocationAvailable) {
+            //           LatLong latLong =
+            //               context.read<EmployeeLocationCubit>().position;
+            //           setPositionOnMap(lat: latLong.lat, long: latLong.long);
+            //         }
+            //       },
+            //       child: GoogleMap(
+            //         onCameraMove: (position) {
+            //           position.zoom;
+            //         },
+            //         mapType: MapType.normal,
+            //         buildingsEnabled: true,
+            //         myLocationEnabled: true,
+            //         myLocationButtonEnabled: true,
+            //         trafficEnabled: true,
+            //         initialCameraPosition:
+            //             initialLocation ?? defaultMapLocation,
+            //         onMapCreated: (controller) {
+            //           _controller.complete(controller);
+            //         },
+            //       )),
+            // )
           ],
         ),
       ),
@@ -164,7 +120,6 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
     return BottomSheet(
       enableDrag: false,
       onClosing: () {},
-      backgroundColor: const Color.fromARGB(255, 226, 181, 31),
       builder: (context) {
         return Container(
           height: 500,
@@ -192,10 +147,6 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                         subtitle: Text(employer.phone),
                       ),
                       const HeadingText(text: 'Job'),
-                      // JobCardWidget(
-                      //   job: job,
-                      //   jobStatus: jobStatus,
-                      // ),
                       const HeadingText(text: 'Tasks'),
                       ListView.builder(
                           shrinkWrap: true,
@@ -205,7 +156,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                             String task = employee.tasks[index].task;
                             String deadline = employee.tasks[index].deadline;
 
-                            return TaskWidget(
+                            return TaskWidgetEmployer(
                                 task:
                                     WorkerTask(task: task, deadline: deadline));
                           })

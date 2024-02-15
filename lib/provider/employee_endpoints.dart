@@ -74,8 +74,7 @@ Future<dynamic> getEmployer() async {
   }
 }
 
-Future<bool> addLocation(
-    double locationLat, double locationLong) async {
+Future<bool> addLocation(double locationLat, double locationLong) async {
   final requestData = {
     "location_lat": locationLat,
     "location_long": locationLong

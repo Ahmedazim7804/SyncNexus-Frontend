@@ -2,17 +2,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:worker_app/provider/employee_endpoints.dart';
 import 'package:worker_app/models/lat_long_model.dart';
 part 'location_state.dart';
 
-class EmployeeLocationCubit extends Cubit<EmployeeLocationState> {
-  EmployeeLocationCubit() : super(LocationLoading()) {
+class LocationCubit extends Cubit<LocationState> {
+  LocationCubit() : super(LocationLoading()) {
     checkForPermission();
-    sendLocationAfter5Minutes();
+    isLocationEnabled();
   }
-
-  LatLong position = LatLong(lat: 0, long: 0);
 
   void isLocationEnabled() async {
     final isLocationOn =
@@ -25,26 +22,12 @@ class EmployeeLocationCubit extends Cubit<EmployeeLocationState> {
     }
   }
 
-  void sendLocationAfter5Minutes() async {
-    final isLocationOn =
-        await Permission.locationWhenInUse.serviceStatus.isEnabled;
-    if (isLocationOn) {
-      Position tempPosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-      double lat = tempPosition.latitude;
-      double long = tempPosition.longitude;
-      position = LatLong(lat: lat, long: long);
-
-      emit(LocationAvailable());
-
-      // await addLocation(lat, long);
-    } else {
-      emit(LocationDisabled());
-    }
-
-    // Future.delayed(const Duration(seconds: 5)).then((_) {
-    //   sendLocationAfter5Minutes();
-    // });
+  Future<LatLong> getLocation() async {
+    Position tempPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+    double lat = tempPosition.latitude;
+    double long = tempPosition.longitude;
+    return LatLong(lat: lat, long: long);
   }
 
   Future<void> checkForPermission() async {

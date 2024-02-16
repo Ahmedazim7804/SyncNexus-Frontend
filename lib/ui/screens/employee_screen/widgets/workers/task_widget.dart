@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:worker_app/models/worker_task_model.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worker_app/provider/employee_endpoints.dart';
 
 class TaskWidgetEmployee extends StatelessWidget {
   const TaskWidgetEmployee(

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -6,15 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
-import 'package:worker_app/ui/screens/employer_screen/widgets/employees_list.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
 
 class AddEmployeeWidget extends StatefulWidget {
   const AddEmployeeWidget({super.key});
-
-  void searchEmployeeOnFirebase() {
-    final firebase = FirebaseAuth.instance;
-  }
 
   @override
   State<AddEmployeeWidget> createState() => _AddEmployeeWidgetState();

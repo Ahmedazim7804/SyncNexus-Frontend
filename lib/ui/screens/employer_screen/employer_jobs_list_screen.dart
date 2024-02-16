@@ -4,7 +4,6 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_job.dart';
-import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';

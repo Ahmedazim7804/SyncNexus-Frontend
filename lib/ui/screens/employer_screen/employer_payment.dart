@@ -1,17 +1,12 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 import 'package:worker_app/bloc/cubit/employer/payments_cubit.dart';
-import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/models/payment_model.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
-import 'package:worker_app/provider/user_endpoints.dart';
-import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/payment_details_sheet.dart';
 
 class EmployerPaymentScreen extends StatefulWidget {
@@ -297,7 +292,6 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
 
   void addPayment() {
     if (inputIsValid) {
-      String title = titleController.text;
       String amount = amountController.text;
       String notes = notesController.text;
 

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
+import 'package:worker_app/bloc/cubit/location_cubit.dart';
 import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/models/job_model.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
 import 'package:worker_app/provider/user_endpoints.dart';
-import 'package:worker_app/ui/screens/employer_screen/widgets/add_job.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:worker_app/models/lat_long_model.dart';
-import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
 
 class EmployeeJobsScreen extends StatefulWidget {
   const EmployeeJobsScreen({super.key});
@@ -20,7 +18,7 @@ class EmployeeJobsScreen extends StatefulWidget {
 
 class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
   Future<List<Job>> getNearbyJobs() async {
-    LatLong latLong = context.read<EmployeeLocationCubit>().position;
+    LatLong latLong = await context.read<LocationCubit>().getLocation();
 
     List<Job> jobs = [];
 
@@ -59,7 +57,7 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
             color: const Color.fromARGB(255, 234, 196, 72),
           ),
         ),
-        body: BlocBuilder<EmployeeLocationCubit, EmployeeLocationState>(
+        body: BlocBuilder<LocationCubit, LocationState>(
           builder: (context, state) {
             if (state is LocationDisabled) {
               return Center(
@@ -81,9 +79,8 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
                       style: GoogleFonts.urbanist(fontSize: 32),
                     ),
                     ElevatedButton.icon(
-                        onPressed: () => context
-                            .read<EmployeeLocationCubit>()
-                            .isLocationEnabled(),
+                        onPressed: () =>
+                            context.read<LocationCubit>().isLocationEnabled(),
                         style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 const Color.fromARGB(255, 234, 196, 72),

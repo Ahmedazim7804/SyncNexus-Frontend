@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/employee/data_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
+import 'package:worker_app/bloc/cubit/location_cubit.dart';
+import 'package:worker_app/models/lat_long_model.dart';
+import 'package:worker_app/provider/employee_endpoints.dart';
 
 class EmployeeRootScaffold extends StatefulWidget {
   const EmployeeRootScaffold({super.key, required this.child});
@@ -16,6 +18,22 @@ class EmployeeRootScaffold extends StatefulWidget {
 
 class _EmployeeRootScaffoldState extends State<EmployeeRootScaffold> {
   int _selectedIndex = 0;
+
+  void sendLocationAfter5Minutes() async {
+    final LatLong latLong = await context.read<LocationCubit>().getLocation();
+    await addLocation(latLong.lat, latLong.long);
+
+    Future.delayed(const Duration(seconds: 5)).then((_) {
+      sendLocationAfter5Minutes();
+    });
+  }
+
+  @override
+  void initState() {
+    // sendLocationAfter5Minutes();
+    // TODO: implement initState
+    super.initState();
+  }
 
   void onItemTapped(int selected) {
     setState(() {
@@ -38,7 +56,6 @@ class _EmployeeRootScaffoldState extends State<EmployeeRootScaffold> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => EmployeeDataCubit()),
-        BlocProvider(create: (_) => EmployeeLocationCubit())
       ],
       child: Scaffold(
         body: widget.child,

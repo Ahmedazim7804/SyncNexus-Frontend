@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
 import 'package:worker_app/models/user_model.dart';
 import 'package:worker_app/models/worker_task_model.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/models/lat_long_model.dart';
-import 'package:intl/intl.dart';
 import 'package:worker_app/provider/user_endpoints.dart';
 
 class Employee extends User with ChangeNotifier {

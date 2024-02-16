@@ -1,25 +1,18 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:worker_app/bloc/cubit/employee/data_cubit.dart';
-import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
+import 'package:worker_app/bloc/cubit/location_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/employer_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:worker_app/models/worker_task_model.dart';
 import 'package:worker_app/models/lat_long_model.dart';
 import 'package:worker_app/provider/employee_endpoints.dart';
-
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/heading_text_widget.dart';
-import 'package:worker_app/ui/screens/employee_screen/widgets/workers/task_widget.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:worker_app/ui/screens/employee_screen/widgets/workers/tasks_list.dart';
-import 'package:worker_app/ui/screens/employer_screen/widgets/task_widget_employer.dart';
-import 'package:worker_app/ui/screens/rating_screen.dart';
 
 class WorkerHomeScreen extends StatefulWidget {
   const WorkerHomeScreen({super.key});
@@ -60,11 +53,11 @@ class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
             SizedBox(
               height: MediaQuery.sizeOf(context).height / 2.5,
               width: MediaQuery.sizeOf(context).width,
-              child: BlocListener<EmployeeLocationCubit, EmployeeLocationState>(
-                  listener: (context, state) {
-                    if (state is LocationAvailable) {
+              child: BlocListener<LocationCubit, LocationState>(
+                  listener: (context, state) async {
+                    if (state is LocationOn) {
                       LatLong latLong =
-                          context.read<EmployeeLocationCubit>().position;
+                          await context.read<LocationCubit>().getLocation();
                       setPositionOnMap(lat: latLong.lat, long: latLong.long);
                     }
                   },

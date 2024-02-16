@@ -44,7 +44,9 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
       });
     } else {
       setState(() {
-        notFound = true;
+        if (searchedEmployee.isEmpty) {
+          notFound = true;
+        }
       });
     }
   }
@@ -175,13 +177,13 @@ class _SearchedEmployeeItemState extends State<SearchedEmployeeItem> {
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(context, true),
+              onPressed: () => Navigator.pop(context, false),
               child: const Text(
                 "Cancel",
                 style: TextStyle(color: Colors.black),
               )),
           ElevatedButton(
-            onPressed: bindEmployeeToEmployer,
+            onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 226, 181, 31),
                 shape: ContinuousRectangleBorder(
@@ -193,7 +195,11 @@ class _SearchedEmployeeItemState extends State<SearchedEmployeeItem> {
           ),
         ],
       ),
-    );
+    ).then((result) {
+      if (result) {
+        bindEmployeeToEmployer();
+      }
+    });
   }
 
   @override

@@ -1,4 +1,4 @@
-package com.example.worker_app
+package com.syncnexus.app
 
 import io.flutter.embedding.android.FlutterActivity
 

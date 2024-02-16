@@ -107,6 +107,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       listener: (context, state) {
         if (state is LocationPermissionDenied || state is LocationLoading) {
           showPermissionRequestDialog();
+        } else {
+          if (state is LocationOn || state is LocationDisabled) {
+            final bool locationGranted = (state as dynamic).locationGranted;
+            if (!locationGranted) {
+              showPermissionRequestDialog();
+            }
+          }
         }
       },
       child: Scaffold(

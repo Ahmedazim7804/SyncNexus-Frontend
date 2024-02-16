@@ -11,14 +11,16 @@ class LocationCubit extends Cubit<LocationState> {
     isLocationEnabled();
   }
 
+  bool permissionGranted = false;
+
   void isLocationEnabled() async {
     final isLocationOn =
         await Permission.locationWhenInUse.serviceStatus.isEnabled;
 
     if (isLocationOn) {
-      emit(LocationOn());
+      emit(LocationOn(locationGranted: permissionGranted));
     } else {
-      emit(LocationDisabled());
+      emit(LocationDisabled(locationGranted: permissionGranted));
     }
   }
 
@@ -47,10 +49,11 @@ class LocationCubit extends Cubit<LocationState> {
   Future<void> checkForPermission() async {
     if (await Permission.location.isGranted) {
       emit(LocationPermissionGranted());
+      permissionGranted = true;
       return;
     }
 
-    requestPermission();
+    // requestPermission();
 
     // if (await Permission.location.isDenied) {
     //   Permission.locationWhenInUse.request().then(

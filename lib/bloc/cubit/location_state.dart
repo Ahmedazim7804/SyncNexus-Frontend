@@ -8,6 +8,12 @@ final class LocationPermissionDenied extends LocationState {}
 
 final class LocationPermissionGranted extends LocationState {}
 
-final class LocationOn extends LocationState {}
+final class LocationOn extends LocationState {
+  LocationOn({required this.locationGranted});
+  bool locationGranted;
+}
 
-final class LocationDisabled extends LocationState {}
+final class LocationDisabled extends LocationState {
+  LocationDisabled({required this.locationGranted});
+  bool locationGranted;
+}

@@ -57,8 +57,11 @@ class EmployerDataCubit extends Cubit<EmployerDataState> {
   Future<void> getAllJobs({bool shoudEmit = false}) async {
     final List<Job> allJobs = [];
     final rawJobs = await getPostedJobs();
-
     for (final rawJob in rawJobs) {
+      if (rawJob['deleted'].toString().toLowerCase() != 'null') {
+        continue;
+      }
+
       Job job = Job(
         jobId: rawJob['id'],
         title: rawJob['title'],

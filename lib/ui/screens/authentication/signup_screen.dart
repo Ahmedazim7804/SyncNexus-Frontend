@@ -5,9 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:worker_app/bloc/cubit/location_cubit.dart';
 import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -23,9 +25,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showPermissionRequestDialog();
-    });
     // TODO: implement initState
     super.initState();
   }
@@ -50,7 +49,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
-                requestPermission();
+                context.read<LocationCubit>().requestPermission();
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 234, 196, 72),
@@ -65,20 +64,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       },
     );
-  }
-
-  void requestPermission() async {
-    if (await Permission.location.isPermanentlyDenied) {
-      openAppSettings();
-      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-    }
-
-    Permission.locationWhenInUse.request().then((permissionStatus) {
-      if (permissionStatus == PermissionStatus.denied ||
-          permissionStatus == PermissionStatus.permanentlyDenied) {
-        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      }
-    });
   }
 
   void signInWithGoogle() async {
@@ -118,157 +103,165 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      // backgroundColor: const Color.fromARGB(255, 226, 181, 31),
-      body: OverlayPortal(
-        controller: overlayPortalController,
-        overlayChildBuilder: overlayChildBuilder,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            Image.asset('assets/images/login_image.png'),
-            const SizedBox(height: 25),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                "Let's Get Started!",
-                style: GoogleFonts.urbanist(
-                    fontSize: 32,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
+    return BlocListener<LocationCubit, LocationState>(
+      listener: (context, state) {
+        if (state is LocationPermissionDenied || state is LocationLoading) {
+          showPermissionRequestDialog();
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        // backgroundColor: const Color.fromARGB(255, 226, 181, 31),
+        body: OverlayPortal(
+          controller: overlayPortalController,
+          overlayChildBuilder: overlayChildBuilder,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 50,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-              child: Text(
-                "With SyncNexus, coordinating tasks, tracking progress, and enhancing teamwork is simpler than ever before",
-                textAlign: TextAlign.center,
-                style: GoogleFonts.urbanist(
-                  color: Colors.grey.shade700,
-                  letterSpacing: 0.2,
-                  fontSize: 17,
+              Image.asset('assets/images/login_image.png'),
+              const SizedBox(height: 25),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  "Let's Get Started!",
+                  style: GoogleFonts.urbanist(
+                      fontSize: 32,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
-            ),
-            const Text(
-              "Continue with your google account!",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
-
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              width: MediaQuery.sizeOf(context).width,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey.shade300,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0),
+                child: Text(
+                  "With SyncNexus, coordinating tasks, tracking progress, and enhancing teamwork is simpler than ever before",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.urbanist(
+                    color: Colors.grey.shade700,
+                    letterSpacing: 0.2,
+                    fontSize: 17,
                   ),
+                ),
+              ),
+              const Text(
+                "Continue with your google account!",
+                style: TextStyle(
+                  fontSize: 16,
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(30)),
-              child: ListTile(
-                onTap: signInWithGoogle,
-                leading: Image.asset(
-                  'assets/images/google.png',
-                  width: 25,
-                  height: 25,
                 ),
-                title: Center(
-                  child: Text(
-                    "Continue with Google",
-                    style: GoogleFonts.urbanist(
-                        fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+
+              Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                width: MediaQuery.sizeOf(context).width,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey.shade300,
+                    ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30)),
+                child: ListTile(
+                  onTap: signInWithGoogle,
+                  leading: Image.asset(
+                    'assets/images/google.png',
+                    width: 25,
+                    height: 25,
+                  ),
+                  title: Center(
+                    child: Text(
+                      "Continue with Google",
+                      style: GoogleFonts.urbanist(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            // Container(
-            //   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            //   width: MediaQuery.sizeOf(context).width,
-            //   decoration: BoxDecoration(
-            //       border: Border.all(
-            //         color: Colors.grey.shade300,
-            //       ),
-            //       color: Colors.white,
-            //       borderRadius: BorderRadius.circular(30)),
-            //   child: ListTile(
-            //     onTap: signInWithFacebook,
-            //     leading: Image.asset(
-            //       'assets/images/facebook.png',
-            //       width: 25,
-            //       height: 25,
-            //     ),
-            //     title: Center(
-            //       child: Text(
-            //         "Continue with Facebook",
-            //         style: GoogleFonts.urbanist(
-            //             fontSize: 16, fontWeight: FontWeight.bold),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                    onPressed: () => context.push('/screens/privacy_policy'),
-                    child: Text(
-                      'Privacy Policy',
-                      style: GoogleFonts.urbanist(
-                          color: Colors.grey.shade700,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
-                    )),
-                Text('•',
-                    style: GoogleFonts.urbanist(
-                        color: Colors.grey.shade700,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600)),
-                TextButton(
-                    onPressed: () {},
-                    child: Text('Terms of Service',
+              // Container(
+              //   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              //   width: MediaQuery.sizeOf(context).width,
+              //   decoration: BoxDecoration(
+              //       border: Border.all(
+              //         color: Colors.grey.shade300,
+              //       ),
+              //       color: Colors.white,
+              //       borderRadius: BorderRadius.circular(30)),
+              //   child: ListTile(
+              //     onTap: signInWithFacebook,
+              //     leading: Image.asset(
+              //       'assets/images/facebook.png',
+              //       width: 25,
+              //       height: 25,
+              //     ),
+              //     title: Center(
+              //       child: Text(
+              //         "Continue with Facebook",
+              //         style: GoogleFonts.urbanist(
+              //             fontSize: 16, fontWeight: FontWeight.bold),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () => context.push('/screens/privacy_policy'),
+                      child: Text(
+                        'Privacy Policy',
                         style: GoogleFonts.urbanist(
                             color: Colors.grey.shade700,
                             fontSize: 14,
-                            fontWeight: FontWeight.w600))),
-              ],
-            )
-            // ElevatedButton.icon(
-            //   onPressed: signInWithGoogle,
-            //   icon: Image.asset(
-            //     'assets/images/google.png',
-            //     width: 25,
-            //     height: 25,
-            //   ),
-            //   label: const Text("Sign in With Google"),
-            //   style: ElevatedButton.styleFrom(
-            //     // elevation: 5,
-            //     shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(4)),
-            //     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            //     shadowColor: Theme.of(context).scaffoldBackgroundColor,
-            //     surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
-            //     // foregroundColor: Theme.of(context).scaffoldBackgroundColor,
-            //   ),
-            // ),
-            // SizedBox(
-            //   width: double.infinity,
-            //   child: Image.asset(
-            //     'assets/images/otp.png',
-            //     height: 200,
-            //     width: 200,
-            //   ),
-            // ),
-          ],
+                            fontWeight: FontWeight.w600),
+                      )),
+                  Text('•',
+                      style: GoogleFonts.urbanist(
+                          color: Colors.grey.shade700,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600)),
+                  TextButton(
+                      onPressed: () {},
+                      child: Text('Terms of Service',
+                          style: GoogleFonts.urbanist(
+                              color: Colors.grey.shade700,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600))),
+                ],
+              )
+              // ElevatedButton.icon(
+              //   onPressed: signInWithGoogle,
+              //   icon: Image.asset(
+              //     'assets/images/google.png',
+              //     width: 25,
+              //     height: 25,
+              //   ),
+              //   label: const Text("Sign in With Google"),
+              //   style: ElevatedButton.styleFrom(
+              //     // elevation: 5,
+              //     shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(4)),
+              //     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              //     shadowColor: Theme.of(context).scaffoldBackgroundColor,
+              //     surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+              //     // foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+              //   ),
+              // ),
+              // SizedBox(
+              //   width: double.infinity,
+              //   child: Image.asset(
+              //     'assets/images/otp.png',
+              //     height: 200,
+              //     width: 200,
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );

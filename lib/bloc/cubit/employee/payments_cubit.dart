@@ -38,7 +38,7 @@ class EmployeePaymentsCubit extends Cubit<EmployeePaymentsState> {
           phone: rawPayment['to_user']['phone_no'],
           email: rawPayment['to_user']['email'],
           id: rawPayment['to_user']['id']);
-      print("SADASJDHASJKD");
+
       Payment payment = Payment(
           paymentId: rawPayment['id'],
           amount: rawPayment['amount'],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:worker_app/models/employee_model.dart';
@@ -46,6 +47,11 @@ class MyAppRouter {
       redirect: (context, state) {
         print("redirect state.fullpath = ${state.fullPath}");
         String? redirectTo;
+
+        if (authListen.status == AuthenticationStatus.waiting) {
+          FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
+          return null;
+        }
 
         if (state.fullPath == '/screens/authentication/signup') {
           if (authListen.status == AuthenticationStatus.authenticated) {

@@ -49,6 +49,43 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816795186680:android:04440f957757051f77920d",
+        "android_client_info": {
+          "package_name": "com.syncnexus.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "816795186680-9mdc65iu6l5j2si80smqnhjtq2kov9v6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.syncnexus.app",
+            "certificate_hash": "67b95d47825c2cf132e07c3a058d2928ab88de20"
+          }
+        },
+        {
+          "client_id": "816795186680-e8sok4vtok4efuog7dba8bq5c69559e4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYIMATueJuTbsgtTnjR2ltWI15d8YmfKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "816795186680-e8sok4vtok4efuog7dba8bq5c69559e4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

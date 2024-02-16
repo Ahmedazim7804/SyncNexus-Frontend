@@ -209,7 +209,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Lottie.asset('assets/lottie/not_employed_2.json',
+                        Lottie.asset('assets/lottie/not_employed.json',
                             height: 250, width: 250),
                         Text(
                           "You do not have an active job.",

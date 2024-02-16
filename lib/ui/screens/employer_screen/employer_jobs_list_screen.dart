@@ -65,7 +65,7 @@ class _JobsListScreenState extends State<JobsListScreen> {
                     height: 150,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
-                    child: Lottie.asset('assets/lottie/job4.json'),
+                    child: Lottie.asset('assets/lottie/job.json'),
                     // child: Image.asset(
                     //   'assets/images/job_employer.png',
                     //   height: 100,

@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/location_cubit.dart';
 import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -92,7 +91,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           overlayPortalController.hide();
         } else {
           overlayPortalController.hide();
-          context.go('/screens/employer/homescreen');
         }
       });
     } catch (e) {

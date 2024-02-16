@@ -27,13 +27,11 @@ class AuthListen extends ChangeNotifier {
   void listenToFirebaseAuth() async {
     subscription = firebaseAuth.authStateChanges().listen((user) async {
       if (user != null) {
-        print('1');
         bool existOnBackend = await checkUser();
-        print('2');
 
         if (existOnBackend) {
           final backendUser = await getUser();
-          print('3');
+
           isEmployee = backendUser['user_type'] == 'employee' ? true : false;
 
           status = AuthenticationStatus.authenticated;
@@ -41,7 +39,6 @@ class AuthListen extends ChangeNotifier {
           status = AuthenticationStatus.needToFinishSignup;
         }
       } else {
-        print('4');
         status = AuthenticationStatus.unauthenticated;
       }
 

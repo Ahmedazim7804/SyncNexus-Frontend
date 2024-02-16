@@ -119,7 +119,7 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
                             Align(
                               alignment: Alignment.center,
                               child: Lottie.asset(
-                                'assets/lottie/job_search_2.json',
+                                'assets/lottie/job_search.json',
                               ),
                             ),
                             Align(

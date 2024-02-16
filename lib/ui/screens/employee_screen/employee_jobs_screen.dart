@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/location_cubit.dart';
 import 'package:worker_app/models/employer_model.dart';
@@ -105,7 +106,35 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
                 future: getNearbyJobs(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    List<Job> jobs = snapshot.data!;
+                    // List<Job> jobs = snapshot.data!;
+                    List<Job> jobs = [];
+
+                    if (jobs.isEmpty) {
+                      return Center(
+                          child: SizedBox(
+                        height: 250,
+                        width: MediaQuery.sizeOf(context).width,
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Lottie.asset(
+                                'assets/lottie/job_search_2.json',
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Text(
+                                "No Jobs Found",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.urbanist(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ));
+                    }
 
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),

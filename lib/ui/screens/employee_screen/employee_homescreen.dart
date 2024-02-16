@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:worker_app/bloc/cubit/employee/data_cubit.dart';
 import 'package:worker_app/bloc/cubit/location_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
@@ -93,7 +94,7 @@ class MyBottomSheet extends StatefulWidget {
 
 class _MyBottomSheetState extends State<MyBottomSheet> {
   late final Employee employee = context.read<EmployeeDataCubit>().employee;
-  late final Employer employer = context.read<EmployeeDataCubit>().employer;
+  late final Employer? employer = context.read<EmployeeDataCubit>().employer;
 
   void markTaskAsComplete(WorkerTask task) async {
     await employee.completeThisTask(task);
@@ -143,7 +144,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
   }
 
   void showRatingScreen() {
-    context.push('/screens/rating', extra: employer.id);
+    context.push('/screens/rating', extra: employer!.id);
   }
 
   void getFreeFromEmployer() async {
@@ -201,6 +202,25 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
           child: BlocBuilder<EmployeeDataCubit, EmployeeDataState>(
             builder: (context, state) {
               if (state is EmployeeDataLoaded) {
+                if (context.read<EmployeeDataCubit>().employer == null) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Lottie.asset('assets/lottie/not_employed_2.json',
+                            height: 250, width: 250),
+                        Text(
+                          "You do not have an active job.",
+                          style: GoogleFonts.urbanist(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  );
+                }
+
                 return SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -218,12 +238,12 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                           child: Image.asset('assets/images/default_user.png'),
                         ),
                         title: Text(
-                          employer.name,
+                          employer!.name,
                           style: GoogleFonts.urbanist(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
-                          employer.phone,
+                          employer!.phone,
                           style: GoogleFonts.urbanist(fontSize: 16),
                         ),
                         trailing: Container(

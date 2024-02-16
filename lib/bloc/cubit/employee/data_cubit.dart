@@ -12,20 +12,24 @@ class EmployeeDataCubit extends Cubit<EmployeeDataState> {
   }
 
   late Employee employee;
-  late Employer employer;
+  late Employer? employer;
   final Map<String, double> location = {
     'lat': 0,
     'long': 0,
   };
 
   Future<void> getEmployersData() async {
-    final data = await getEmployer();
-
-    employer = Employer(
-        name: data['name'],
-        phone: data['phone_no'],
-        email: data['email'],
-        id: data['id']);
+    try {
+      final Map<dynamic, dynamic> data = await getEmployer();
+      employer = Employer(
+          name: data['name'],
+          phone: data['phone_no'],
+          email: data['email'],
+          id: data['id']);
+    } catch (e) {
+      print(e);
+      employer = null;
+    }
   }
 
   void setLocation({required double lat, required double long}) {

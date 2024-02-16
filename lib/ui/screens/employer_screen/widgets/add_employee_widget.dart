@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
@@ -20,22 +21,32 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
       OverlayPortalController();
 
   List<Employee> searchedEmployee = [];
+  bool notFound = false;
+
   void searchEmployeeOnBackend() async {
     if (phoneController.text.isEmpty || phoneController.text.length < 10) {
       return;
     }
     Map<dynamic, dynamic> searchResult =
         await searchByPhone(phoneController.text);
-
-    Employee employee = Employee(
-        name: searchResult['name'],
-        phone: searchResult['phone_no'],
-        email: searchResult['email'],
-        id: searchResult['id']);
-    await employee.getMyRating();
-    setState(() {
-      searchedEmployee.add(employee);
-    });
+    if (searchResult.isNotEmpty) {
+      Employee employee = Employee(
+          name: searchResult['name'],
+          phone: searchResult['phone_no'],
+          email: searchResult['email'],
+          id: searchResult['id']);
+      await employee.getMyRating();
+      setState(() {
+        searchedEmployee.add(employee);
+        if (notFound) {
+          notFound = false;
+        }
+      });
+    } else {
+      setState(() {
+        notFound = true;
+      });
+    }
   }
 
   @override
@@ -110,7 +121,18 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
                           employee: searchedEmployee[index],
                           overlayController: overlayPortalController,
                         ),
-                      )
+                      ),
+                      searchedEmployee.isEmpty
+                          ? Lottie.asset('assets/lottie/employee_search.json',
+                              height: 250, width: 250)
+                          : const SizedBox.shrink(),
+                      notFound
+                          ? Text(
+                              "No Employee Found",
+                              style: GoogleFonts.urbanist(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            )
+                          : const SizedBox.shrink()
                     ],
                   ),
                 ),

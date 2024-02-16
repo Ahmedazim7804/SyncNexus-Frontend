@@ -1,17 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:worker_app/models/employee_model.dart';
-import 'package:worker_app/models/job_model.dart';
-import 'package:worker_app/models/lat_long_model.dart';
 import 'package:worker_app/models/worker_task_model.dart';
-import 'package:worker_app/ui/screens/employer_screen/employer_jobs_list_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/task_widget_employer.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_task.dart';
 

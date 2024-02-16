@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/models/payment_model.dart';
-import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:worker_app/provider/user_endpoints.dart';
 import 'package:intl/intl.dart';
 

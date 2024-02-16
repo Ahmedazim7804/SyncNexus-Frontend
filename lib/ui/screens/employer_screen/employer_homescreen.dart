@@ -1,20 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/employer_model.dart';
-import 'package:worker_app/provider/employer_endpoints.dart';
-import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/employees_list.dart';
-import 'package:worker_app/widgets/overlay_widget.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_employee_widget.dart';
 import 'package:worker_app/ui/screens/employer_screen/widgets/add_task.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 
 class EmployerHomeScreen extends StatefulWidget {
   const EmployerHomeScreen({super.key});

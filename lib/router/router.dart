@@ -1,25 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:worker_app/bloc/cubit/employee/location_cubit.dart';
 import 'package:worker_app/models/employee_model.dart';
-import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/router/auth_listenable.dart';
 import 'package:worker_app/ui/screens/authentication/signup_screen.dart';
 import 'package:worker_app/ui/screens/authentication/user_details_screen.dart';
 import 'package:worker_app/ui/screens/employee_screen/employee_payment.dart';
 import 'package:worker_app/ui/screens/employee_screen/employee_profile_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employee_tasks_screen.dart';
-import 'package:worker_app/ui/screens/employer_screen/widgets/employees_list.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_homescreen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_payment.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_root_scaffold.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_jobs_list_screen.dart';
 import 'package:worker_app/ui/screens/employer_screen/employer_profile_screen.dart';
-
 import 'package:worker_app/ui/screens/employee_screen/employee_homescreen.dart';
 import 'package:worker_app/ui/screens/employee_screen/employee_jobs_screen.dart';
 import 'package:worker_app/ui/screens/employee_screen/employee_root_scaffold.dart';

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:worker_app/models/employee_model.dart';
 import 'package:worker_app/models/worker_task_model.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:worker_app/provider/employer_endpoints.dart';
 
 class TaskWidgetEmployer extends StatefulWidget {
   const TaskWidgetEmployer({super.key, required this.task, required this.fxn});

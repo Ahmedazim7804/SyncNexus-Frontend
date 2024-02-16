@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:worker_app/bloc/cubit/employer/location_cubit.dart';
 import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
-import 'package:worker_app/bloc/cubit/employer/location_cubit.dart';
+import 'package:worker_app/bloc/cubit/location_cubit.dart';
 import 'package:worker_app/provider/employer_endpoints.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:worker_app/models/lat_long_model.dart';
@@ -64,10 +63,8 @@ class _AddJobWidgetState extends State<AddJobWidget> {
       final String amount = amountController.text;
       final String desc = descController.text;
 
-      await context.read<EmployerLocationCubit>().getLocation();
+      final LatLong latLong = await context.read<LocationCubit>().getLocation();
 
-      final LatLong latLong = context.read<EmployerLocationCubit>().position;
-      print(latLong);
       await addJobs(desc, title, latLong.lat, latLong.long, int.parse(amount));
       await context.read<EmployerDataCubit>().getAllJobs(shoudEmit: true);
 
@@ -78,7 +75,7 @@ class _AddJobWidgetState extends State<AddJobWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<EmployerLocationCubit>().isLocationEnabled();
+    context.read<LocationCubit>().isLocationEnabled();
 
     return Container(
       width: MediaQuery.sizeOf(context).width,
@@ -89,9 +86,9 @@ class _AddJobWidgetState extends State<AddJobWidget> {
           color: Colors.white
           // color: Color.fromRGBO(234, 196, 72, 1),
           ),
-      child: BlocBuilder<EmployerLocationCubit, EmployerLocationState>(
+      child: BlocBuilder<LocationCubit, LocationState>(
         builder: (context, state) {
-          if (state is LocationOn || state is LocationAvailable) {
+          if (state is LocationOn) {
             return SingleChildScrollView(
                 child: Padding(
               padding: EdgeInsets.only(

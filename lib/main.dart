@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worker_app/bloc/cubit/authentication_cubit.dart';
+import 'package:worker_app/bloc/cubit/location_cubit.dart';
 import 'package:worker_app/provider/uid_provider.dart';
 import 'package:worker_app/provider/user_provider.dart';
 import 'package:worker_app/router/router.dart';
@@ -25,6 +25,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => AuthenticationCubit()),
+        BlocProvider(create: (_) => LocationCubit()),
       ],
       child: MultiProvider(
         providers: [

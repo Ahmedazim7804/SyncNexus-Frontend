@@ -30,33 +30,50 @@ class LocationCubit extends Cubit<LocationState> {
     return LatLong(lat: lat, long: long);
   }
 
+  void requestPermission() async {
+    if (await Permission.location.isPermanentlyDenied) {
+      openAppSettings();
+      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    }
+
+    Permission.locationWhenInUse.request().then((permissionStatus) {
+      if (permissionStatus == PermissionStatus.denied ||
+          permissionStatus == PermissionStatus.permanentlyDenied) {
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      }
+    });
+  }
+
   Future<void> checkForPermission() async {
     if (await Permission.location.isGranted) {
+      emit(LocationPermissionGranted());
       return;
     }
 
-    if (await Permission.location.isDenied) {
-      Permission.locationWhenInUse.request().then(
-        (value) {
-          emit(LocationPermissionDenied());
-          if (value == PermissionStatus.denied) {
-            openAppSettings();
-            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          }
-        },
-      );
-    }
+    requestPermission();
 
-    if (await Permission.location.isPermanentlyDenied) {
-      Permission.locationWhenInUse.request().then(
-        (value) {
-          if (value == PermissionStatus.denied) {
-            emit(LocationPermissionDenied());
-            openAppSettings();
-            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          }
-        },
-      );
-    }
+    // if (await Permission.location.isDenied) {
+    //   Permission.locationWhenInUse.request().then(
+    //     (value) {
+    //       emit(LocationPermissionDenied());
+    //       if (value == PermissionStatus.denied) {
+    //         openAppSettings();
+    //         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    //       }
+    //     },
+    //   );
+    // }
+
+    // if (await Permission.location.isPermanentlyDenied) {
+    //   Permission.locationWhenInUse.request().then(
+    //     (value) {
+    //       if (value == PermissionStatus.denied) {
+    //         emit(LocationPermissionDenied());
+    //         openAppSettings();
+    //         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    //       }
+    //     },
+    //   );
+    // }
   }
 }

@@ -119,10 +119,7 @@ class _OthersDetailScreenState extends State<OthersDetailScreen> {
       userProvider.email = FirebaseAuth.instance.currentUser!.email!;
       userProvider.phone = phoneController.text;
       userProvider.name = nameController.text;
-      print(userProvider.uid);
-      print(userProvider.phone);
-      print(userProvider.email);
-      print(userProvider.name);
+
       if (role == "Employee") {
         nextEmployee();
       } else {

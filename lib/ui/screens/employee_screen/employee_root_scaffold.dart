@@ -30,7 +30,7 @@ class _EmployeeRootScaffoldState extends State<EmployeeRootScaffold> {
 
   @override
   void initState() {
-    // sendLocationAfter5Minutes();
+    sendLocationAfter5Minutes();
     // TODO: implement initState
     super.initState();
   }

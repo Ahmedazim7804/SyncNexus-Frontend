@@ -23,6 +23,13 @@ class _AddEmployeeWidgetState extends State<AddEmployeeWidget> {
   List<Employee> searchedEmployee = [];
   bool notFound = false;
 
+  @override
+  void dispose() {
+    phoneController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   void searchEmployeeOnBackend() async {
     if (phoneController.text.isEmpty || phoneController.text.length < 10) {
       return;

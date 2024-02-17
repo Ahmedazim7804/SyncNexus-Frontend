@@ -33,6 +33,14 @@ class _OthersDetailScreenState extends State<OthersDetailScreen> {
 
   String? role;
 
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   void nextEmployee() async {
     userProvider.employee = true;
 

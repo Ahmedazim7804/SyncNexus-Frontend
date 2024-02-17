@@ -251,6 +251,15 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
 
   String? paidToUid;
 
+  @override
+  void dispose() {
+    titleController.dispose();
+    amountController.dispose();
+    notesController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   bool get inputIsValid {
     if (titleController.text.length < 5) {
       setState(() {

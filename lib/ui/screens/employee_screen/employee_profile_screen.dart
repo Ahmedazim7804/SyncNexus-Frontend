@@ -27,6 +27,14 @@ class _EmployerProfileScreenState extends State<EmployeeProfileScreen> {
   bool showPhoneErrorText = false;
 
   @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   void initState() {
     nameController.text = employeeDataCubit.employee.name;
     phoneController.text = employeeDataCubit.employee.phone;

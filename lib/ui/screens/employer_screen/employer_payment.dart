@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:worker_app/bloc/cubit/employee/payments_cubit.dart';
 import 'package:worker_app/bloc/cubit/employer/data_cubit.dart';
 import 'package:worker_app/bloc/cubit/employer/payments_cubit.dart';
 import 'package:worker_app/models/payment_model.dart';
@@ -24,7 +25,9 @@ class _EmployerPaymentScreenState extends State<EmployerPaymentScreen> {
         useSafeArea: true,
         context: context,
         isScrollControlled: true,
-        builder: (context) => const AddPaymentWidget());
+        builder: (context) => AddPaymentWidget(
+              employerPaymentsCubit: employerPaymentsCubit,
+            ));
   }
 
   @override
@@ -83,11 +86,13 @@ class _EmployerPaymentScreenState extends State<EmployerPaymentScreen> {
                       ),
                     ),
                     payments.isNotEmpty
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: payments.length,
-                            itemBuilder: (context, index) =>
-                                PaymentCard(payment: payments[index]),
+                        ? Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: payments.length,
+                              itemBuilder: (context, index) =>
+                                  PaymentCard(payment: payments[index]),
+                            ),
                           )
                         : const SizedBox.shrink()
                   ],
@@ -196,14 +201,6 @@ class _PaymentCardState extends State<PaymentCard>
                               color: Colors.grey.shade900,
                               fontWeight: FontWeight.w500),
                         )
-                        // Text(
-                        //   "For transportation asdashdkj asdjash jkashdasdjk djsahdjk ashdkj sahkdjk haskj dhskajdhsakj dnash ahsjkd nhasjkd nhasjkd nhndhjdnhsajdhn kasd nhk",
-                        //   maxLines: 2,
-                        //   overflow: TextOverflow.ellipsis,
-                        //   style: GoogleFonts.urbanist(
-                        //     color: Colors.grey.shade700,
-                        //   ),
-                        // )
                       ],
                     ),
                   ),
@@ -227,20 +224,6 @@ class _PaymentCardState extends State<PaymentCard>
                   ),
                 ],
               ),
-              // SizeTransition(
-              //   sizeFactor: heightFactorAnimation,
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       const HeadingText(text: "Notes"),
-              //       Padding(
-              //         padding: const EdgeInsets.symmetric(
-              //             horizontal: 24, vertical: 8),
-              //         child: Text(widget.payment.remarks),
-              //       ),
-              //     ],
-              //   ),
-              // )
             ],
           ),
         ),
@@ -250,7 +233,9 @@ class _PaymentCardState extends State<PaymentCard>
 }
 
 class AddPaymentWidget extends StatefulWidget {
-  const AddPaymentWidget({super.key});
+  const AddPaymentWidget({super.key, required this.employerPaymentsCubit});
+
+  final EmployerPaymentsCubit employerPaymentsCubit;
 
   @override
   State<AddPaymentWidget> createState() => _AddPaymentWidgetState();
@@ -290,12 +275,14 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
     return true;
   }
 
-  void addPayment() {
+  void addPayment() async {
     if (inputIsValid) {
       String amount = amountController.text;
       String notes = notesController.text;
 
-      addPayments(paidToUid!, notes, 'INR', int.parse(amount));
+      widget.employerPaymentsCubit.getAllPayments();
+      await addPayments(paidToUid!, notes, 'INR', int.parse(amount));
+      Navigator.pop(context);
     }
   }
 
@@ -450,32 +437,6 @@ class _AddPaymentWidgetState extends State<AddPaymentWidget> {
                     paidToUid = value;
                   }
                 }),
-            // TextField(
-            //   decoration: InputDecoration(
-            //     labelText: 'Paid To',
-            //     labelStyle: const TextStyle(
-            //       // color: Colors.black,
-            //       fontSize: 16,
-            //       fontFamily: 'Epilogue',
-            //       fontWeight: FontWeight.w500,
-            //       height: 0.06,
-            //     ),
-            //     floatingLabelBehavior: FloatingLabelBehavior.never,
-            //     contentPadding:
-            //         const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            //     border: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(8),
-            //     ),
-            //     enabledBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(8),
-            //     ),
-            //     focusedBorder: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(8),
-            //     ),
-            //     filled: true,
-            //     fillColor: Color(0xFAFAFA),
-            //   ),
-            // ),
             const SizedBox(
               height: 20,
             ),

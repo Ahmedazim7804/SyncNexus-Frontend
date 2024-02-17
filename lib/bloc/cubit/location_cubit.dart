@@ -9,6 +9,7 @@ class LocationCubit extends Cubit<LocationState> {
   LocationCubit() : super(LocationLoading()) {
     checkForPermission();
     isLocationEnabled();
+    listenForLocationChanges();
   }
 
   bool permissionGranted = false;
@@ -25,11 +26,16 @@ class LocationCubit extends Cubit<LocationState> {
   }
 
   Future<LatLong> getLocation() async {
-    Position tempPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-    double lat = tempPosition.latitude;
-    double long = tempPosition.longitude;
-    return LatLong(lat: lat, long: long);
+    try {
+      Position tempPosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      double lat = tempPosition.latitude;
+      double long = tempPosition.longitude;
+      return LatLong(lat: lat, long: long);
+    } catch (e) {
+      emit(LocationDisabled(locationGranted: permissionGranted));
+      return LatLong(lat: 15.5937, long: 80.9629);
+    }
   }
 
   void requestPermission() async {
@@ -43,6 +49,13 @@ class LocationCubit extends Cubit<LocationState> {
           permissionStatus == PermissionStatus.permanentlyDenied) {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
       }
+    });
+  }
+
+  void listenForLocationChanges() {
+    Future.delayed(const Duration(seconds: 5)).then((_) {
+      isLocationEnabled();
+      listenForLocationChanges();
     });
   }
 

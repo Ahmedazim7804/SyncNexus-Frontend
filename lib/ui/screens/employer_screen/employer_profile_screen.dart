@@ -99,6 +99,7 @@ class _EmployerProfileScreenState extends State<EmployerProfileScreen> {
       if (result) {
         await FirebaseAuth.instance.signOut();
         await GoogleSignIn().signOut();
+        await context.read<EmployerDataCubit>().close();
         context.go('/screens/authentication/signup');
       }
     });

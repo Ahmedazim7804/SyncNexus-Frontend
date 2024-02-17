@@ -19,13 +19,20 @@ class EmployeeRootScaffold extends StatefulWidget {
 class _EmployeeRootScaffoldState extends State<EmployeeRootScaffold> {
   int _selectedIndex = 0;
 
-  void sendLocationAfter5Minutes() async {
-    final LatLong latLong = await context.read<LocationCubit>().getLocation();
-    await addLocation(latLong.lat, latLong.long);
+  void sendLocationAfter5Minutes() {
+    BlocListener<LocationCubit, LocationState>(
+      listener: (context, state) async {
+        final LatLong latLong =
+            await context.read<LocationCubit>().getLocation();
+        await addLocation(latLong.lat, latLong.long);
 
-    Future.delayed(const Duration(seconds: 5)).then((_) {
-      sendLocationAfter5Minutes();
-    });
+        Future.delayed(const Duration(minutes: 5)).then((_) {
+          if (state is LocationOn) {
+            sendLocationAfter5Minutes();
+          }
+        });
+      },
+    );
   }
 
   @override

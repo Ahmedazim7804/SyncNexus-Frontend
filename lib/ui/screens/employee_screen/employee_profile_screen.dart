@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:worker_app/bloc/cubit/employee/data_cubit.dart';
+import 'package:worker_app/bloc/cubit/employee/payments_cubit.dart';
 import 'package:worker_app/provider/user_endpoints.dart';
 import 'package:worker_app/widgets/overlay_widget.dart';
 import 'package:go_router/go_router.dart';
@@ -99,6 +100,7 @@ class _EmployerProfileScreenState extends State<EmployeeProfileScreen> {
       if (result) {
         await FirebaseAuth.instance.signOut();
         await GoogleSignIn().signOut();
+        await context.read<EmployeeDataCubit>().close();
         context.go('/screens/authentication/signup');
       }
     });

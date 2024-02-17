@@ -21,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final OverlayPortalController overlayPortalController =
       OverlayPortalController();
   late final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  bool dialogShowing = false;
 
   @override
   void initState() {
@@ -29,6 +30,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void showPermissionRequestDialog() {
+    if (dialogShowing) {
+      return;
+    }
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -62,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ],
         );
       },
-    );
+    ).then((value) => dialogShowing = false);
   }
 
   void signInWithGoogle() async {
@@ -105,11 +109,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       listener: (context, state) {
         if (state is LocationPermissionDenied || state is LocationLoading) {
           showPermissionRequestDialog();
+          dialogShowing = true;
         } else {
           if (state is LocationOn || state is LocationDisabled) {
             final bool locationGranted = (state as dynamic).locationGranted;
+
             if (!locationGranted) {
+              print(locationGranted);
               showPermissionRequestDialog();
+              dialogShowing = true;
             }
           }
         }

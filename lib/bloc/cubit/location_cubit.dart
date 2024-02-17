@@ -48,6 +48,9 @@ class LocationCubit extends Cubit<LocationState> {
       if (permissionStatus == PermissionStatus.denied ||
           permissionStatus == PermissionStatus.permanentlyDenied) {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      } else if (permissionStatus == PermissionStatus.granted ||
+          permissionStatus == PermissionStatus.limited) {
+        permissionGranted = true;
       }
     });
   }

@@ -51,9 +51,12 @@ class _AddJobWidgetState extends State<AddJobWidget> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  void dispose() {
+    titleController.dispose();
+    amountController.dispose();
+    descController.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   void addJob() async {

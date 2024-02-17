@@ -25,6 +25,13 @@ class _RatingScreenState extends State<RatingScreen> {
     return true;
   }
 
+  @override
+  void dispose() {
+    feedbackController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   void onSubmit() async {
     await addRating(widget.rateUser, rating, feedbackController.text).then((_) {
       Navigator.pop(context);

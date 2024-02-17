@@ -20,7 +20,7 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
   final TextEditingController descController = TextEditingController();
   late final List<Employee> employeesList =
       context.read<EmployerDataCubit>().employeesList;
-  String? selectedEmployee;
+  Employee? selectedEmployee;
   DateTime? deadline;
   bool showTitleErrorText = false;
 
@@ -74,9 +74,15 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
       final String title = titleController.text;
       final String desc = descController.text;
       overlayPortalController.show();
-      await addTask(selectedEmployee!, title, desc, deadline!);
-      overlayPortalController.hide();
-      Navigator.pop(context);
+      addTask(selectedEmployee!.id, title, desc, deadline!)
+          .then((success) async {
+        await Future.delayed(const Duration(seconds: 1));
+        if (success) {
+          await selectedEmployee!.getMyTasks();
+        }
+        overlayPortalController.hide();
+        Navigator.pop(context);
+      });
     }
   }
 
@@ -173,13 +179,13 @@ class _AddTaskWidgetState extends State<AddTaskWidget> {
                     fillColor: const Color(0xFFfafafa),
                   ),
                   items: employeesList
-                      .map((employee) => DropdownMenuItem<String>(
-                            value: employee.id,
+                      .map((employee) => DropdownMenuItem<Employee>(
+                            value: employee,
                             child: Text(employee.name),
                           ))
                       .toList(),
-                  onChanged: (value) {
-                    selectedEmployee = value;
+                  onChanged: (employee) {
+                    selectedEmployee = employee;
                   }),
               const SizedBox(
                 height: 20,

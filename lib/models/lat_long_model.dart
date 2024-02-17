@@ -10,6 +10,31 @@ class LatLong {
   LatLng toLatLng() {
     return LatLng(lat, long);
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is LatLong) {
+      if (lat.toStringAsFixed(3) == other.lat.toStringAsFixed(3)) {
+        return true;
+      }
+
+      if (long.toStringAsFixed(3) == other.long.toStringAsFixed(3)) {
+        return true;
+      }
+    } else {
+      return false;
+    }
+
+    return false;
+  }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode {
+    return LatLng(double.parse(lat.toStringAsFixed(3)),
+            double.parse(long.toStringAsFixed(3)))
+        .hashCode;
+  }
 }
 
 class LatLongCollection {
@@ -35,6 +60,10 @@ class LatLongCollection {
   }
 
   List<LatLng> toLatLngList() {
-    return collection.map((latLong) => latLong.toLatLng()).toList();
+    return collection
+        .toSet()
+        .cast<LatLong>()
+        .map((latLong) => latLong.toLatLng())
+        .toList();
   }
 }

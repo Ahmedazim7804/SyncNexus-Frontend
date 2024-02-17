@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:worker_app/bloc/cubit/location_cubit.dart';
 import 'package:worker_app/models/employer_model.dart';
 import 'package:worker_app/models/job_model.dart';
@@ -106,8 +108,7 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
                 future: getNearbyJobs(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    // List<Job> jobs = snapshot.data!;
-                    List<Job> jobs = [];
+                    List<Job> jobs = snapshot.data!;
 
                     if (jobs.isEmpty) {
                       return Center(
@@ -136,13 +137,16 @@ class _EmployeeJobsScreenState extends State<EmployeeJobsScreen> {
                       ));
                     }
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: jobs.length,
-                        itemBuilder: (context, index) => JobItem(
-                          job: jobs[index],
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: jobs.length,
+                          itemBuilder: (context, index) => JobItem(
+                            job: jobs[index],
+                          ),
                         ),
                       ),
                     );
@@ -197,6 +201,10 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
       controller.forward();
     }
     isExpanded = !isExpanded;
+  }
+
+  void applyForJob() {
+    launchUrlString("tel://+91${widget.job.employer.phone}");
   }
 
   @override
@@ -292,7 +300,7 @@ class _JobItemState extends State<JobItem> with SingleTickerProviderStateMixin {
                         backgroundColor: Colors.green,
                         shape: ContinuousRectangleBorder(
                             borderRadius: BorderRadius.circular(5))),
-                    onPressed: () {},
+                    onPressed: applyForJob,
                     child: const Text(
                       "Apply",
                       style: TextStyle(color: Colors.black),

@@ -37,10 +37,11 @@ class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
     super.initState();
   }
 
-  void setPositionOnMap({required double lat, required double long}) {
+  void setPositionOnMap(
+      {required double lat, required double long, double zoom = 14.4746}) {
     _controller.future.then((value) => value.animateCamera(
         CameraUpdate.newCameraPosition(
-            CameraPosition(target: LatLng(lat, long), zoom: 14.4746))));
+            CameraPosition(target: LatLng(lat, long), zoom: zoom))));
   }
 
   @override
@@ -52,9 +53,9 @@ class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery.sizeOf(context).height / 2.5,
-              width: MediaQuery.sizeOf(context).width,
-              child: BlocListener<LocationCubit, LocationState>(
+                height: MediaQuery.sizeOf(context).height / 2.5,
+                width: MediaQuery.sizeOf(context).width,
+                child: BlocConsumer<LocationCubit, LocationState>(
                   listener: (context, state) async {
                     if (state is LocationOn) {
                       LatLong latLong =
@@ -62,22 +63,35 @@ class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
                       setPositionOnMap(lat: latLong.lat, long: latLong.long);
                     }
                   },
-                  child: GoogleMap(
-                    onCameraMove: (position) {
-                      position.zoom;
-                    },
-                    mapType: MapType.normal,
-                    buildingsEnabled: true,
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
-                    trafficEnabled: true,
-                    initialCameraPosition:
-                        initialLocation ?? defaultMapLocation,
-                    onMapCreated: (controller) {
-                      _controller.complete(controller);
-                    },
-                  )),
-            )
+                  builder: (context, state) {
+                    if (state is LocationOn) {
+                      context
+                          .read<LocationCubit>()
+                          .getLocation()
+                          .then((LatLong latLong) {
+                        setPositionOnMap(lat: latLong.lat, long: latLong.long);
+                      });
+                    } else {
+                      setPositionOnMap(lat: 15.5937, long: 80.9629, zoom: 4);
+                    }
+
+                    return GoogleMap(
+                      onCameraMove: (position) {
+                        position.zoom;
+                      },
+                      mapType: MapType.normal,
+                      buildingsEnabled: true,
+                      myLocationEnabled: true,
+                      myLocationButtonEnabled: true,
+                      trafficEnabled: true,
+                      initialCameraPosition:
+                          initialLocation ?? defaultMapLocation,
+                      onMapCreated: (controller) {
+                        _controller.complete(controller);
+                      },
+                    );
+                  },
+                ))
           ],
         ),
       ),

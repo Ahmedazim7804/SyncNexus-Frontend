@@ -65,6 +65,7 @@ class Employee extends User with ChangeNotifier {
 
       tasks = pendingTasks;
       allTasks = allParsedTasks;
+
       notifyListeners();
     } catch (e) {
       removed = true;

@@ -13,7 +13,7 @@ class EmployerDataCubit extends Cubit<EmployerDataState> {
     getAllData();
   }
 
-  late final Employer employer;
+  late Employer employer;
   List<Employee> employeesList = [];
   List<Job> jobsList = [];
   List<WorkerTask> tasks = [];

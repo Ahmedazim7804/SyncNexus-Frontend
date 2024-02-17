@@ -54,6 +54,25 @@ class _EmployerProfileScreenState extends State<EmployeeProfileScreen> {
     return true;
   }
 
+  void profileUpdatedSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: const Color.fromARGB(255, 226, 181, 31),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        behavior: SnackBarBehavior.fixed,
+        content: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 226, 181, 31),
+              borderRadius: BorderRadius.circular(20)),
+          child: Text(
+            "Profile Updated",
+            style: GoogleFonts.urbanist(fontSize: 16, color: Colors.black),
+          ),
+        )));
+  }
+
   void updateProfile() async {
     overlayPortalController.show();
     if (inputIsValid) {
@@ -62,6 +81,7 @@ class _EmployerProfileScreenState extends State<EmployeeProfileScreen> {
       employeeDataCubit.getEmployeeData();
     }
     overlayPortalController.hide();
+    profileUpdatedSnackbar();
   }
 
   void showSignOutDialog() {

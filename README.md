@@ -37,10 +37,10 @@ The Flutter app can be deployed to the Google Play Store for Android devices and
 ## Contributing
 Contributers:
 
-Ajeem Ahmed
-Atishay Jain
-Tanmay Gupta
-Siddhant Gudwani
+- Ajeem Ahmad
+- Atishay Jain
+- Tanmay Gupta
+- Siddhant Gudwani
 
 ## License
 This project is licensed under the [MIT License](LICENSE).

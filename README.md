@@ -7,7 +7,7 @@ Welcome to the SyncNexus frontend repository for the Flutter app! This repositor
 - **Programming Language**: Dart
 - **State Management**: Provider / Bloc
 - **HTTP Requests**: Dio / http package
-- **Navigation**: Flutter Navigator
+- **Navigation**: GoRouter
 - **Authentication**: OAuth 2.0 (e.g., Google Sign-In)
 - **Deployment**: Google Play Store / Apple App Store
 
@@ -34,13 +34,11 @@ The Flutter app can be deployed to the Google Play Store for Android devices and
 2. Follow the respective platform's guidelines for preparing and submitting the app for review and publication.
 3. Configure environment variables in the deployment environment for sensitive data (e.g., API base URL).
 
-## Contributing
-Contributers:
-
-Ajeem Ahmed
-Atishay Jain
-Tanmay Gupta
-Siddhant Gudwani
+## Contributers
+- Ajeem Ahmad
+- Atishay Jain
+- Tanmay Gupta
+- Siddhant Gudwani
 
 ## License
 This project is licensed under the [MIT License](LICENSE).

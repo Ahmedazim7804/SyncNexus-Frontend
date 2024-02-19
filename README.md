@@ -34,9 +34,7 @@ The Flutter app can be deployed to the Google Play Store for Android devices and
 2. Follow the respective platform's guidelines for preparing and submitting the app for review and publication.
 3. Configure environment variables in the deployment environment for sensitive data (e.g., API base URL).
 
-## Contributing
-Contributers:
-
+## Contributers
 - Ajeem Ahmad
 - Atishay Jain
 - Tanmay Gupta

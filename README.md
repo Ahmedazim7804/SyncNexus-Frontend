@@ -7,7 +7,7 @@ Welcome to the SyncNexus frontend repository for the Flutter app! This repositor
 - **Programming Language**: Dart
 - **State Management**: Provider / Bloc
 - **HTTP Requests**: Dio / http package
-- **Navigation**: Flutter Navigator
+- **Navigation**: GoRouter
 - **Authentication**: OAuth 2.0 (e.g., Google Sign-In)
 - **Deployment**: Google Play Store / Apple App Store
 

@@ -45,3 +45,4 @@ android/app/google-services.json
 .idea/*
 worker_app.jks
 android/key.properties
+android/app/src/main/AndroidManifest.xml

@@ -17,7 +17,7 @@ void main() {
           name: "Mahesh",
           userType: "employee",
           firebaseUserId: "MM0A6CZw5hVglML2Fk7K0rWaqKn1",
-          email: "***REMOVED***.ahmad.ug23@nsut.ac.in");
+          email: "ajeem.ahmad.ug23@nsut.ac.in");
       expect(result == true || result == false, true);
     });
     test('returns true if HTTP request succeeds', () async {

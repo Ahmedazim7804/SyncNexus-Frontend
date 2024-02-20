@@ -19,6 +19,16 @@ The Flutter app project follows the Flutter recommended project structure, which
 - **lib/services**: Contains service classes for handling API requests, authentication, and other backend-related functionalities.
 - **lib/utils**: Houses utility functions and helper classes used across the project.
 
+## Screenshots
+<p float="left">
+  <img src="screenshots/employer_1.png" alt="Screenshot Gallery" width="160"/>
+  <img src="screenshots/employer_2.png" alt="Screenshot Gallery" width="160"/>
+</p>
+<p float="left">
+  <img src="screenshots/employee_1.png" alt="Screenshot Gallery" width="160"/>
+  <img src="screenshots/Employee_2.png" alt="Screenshot Gallery" width="160"/>
+</p>
+
 ## Setup Instructions
 To set up the Flutter app locally for development, follow these steps:
 1. Clone the repository: `git clone <repository-url>`

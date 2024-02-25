@@ -2,6 +2,22 @@
 
 Welcome to the SyncNexus frontend repository for the Flutter app! This repository contains the codebase for the SyncNexus mobile app frontend, built using the Flutter framework. The app provides a user-friendly interface for accessing the SyncNexus platform's features on mobile devices, enabling seamless job searching, task management, communication, and more.
 
+## Project Links
+
+This section contains links to the frontend and backend repositories, as well as the base URL and documentation for the backend API.
+
+### Frontend Repository
+- Repository URL: [Frontend Repo - https://github.com/Ahmedazim7804/SyncNexus-Frontend](https://github.com/Ahmedazim7804/SyncNexus-Frontend)
+
+### Backend Repository
+- Repository URL: [Backend Repo - https://github.com/atishayj2202/SyncNexus-Backend](https://github.com/atishayj2202/SyncNexus-Backend)
+
+### Backend API Endpoint Base URL
+- Base URL: https://google-solution-challenge-backend-jpnacpp5ta-em.a.run.app
+
+### Backend API Endpoint Documentation
+- Documentation URL: https://google-solution-challenge-backend-jpnacpp5ta-em.a.run.app/docs
+
 ## Technologies Used
 - **Framework**: Flutter
 - **Programming Language**: Dart

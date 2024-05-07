@@ -40,7 +40,7 @@ class EmployerPaymentDetailsSheet extends StatelessWidget {
               height: 15,
             ),
             Text(
-              "365.50",
+              payment.amount.toString(),
               style: GoogleFonts.urbanist(
                   color: Colors.black,
                   fontSize: 32,
